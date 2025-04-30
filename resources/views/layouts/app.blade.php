@@ -34,6 +34,31 @@
         <main>
             @yield('content')
         </main>
+        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
+            </script>
+        @endif
     </div>
 </body>
 

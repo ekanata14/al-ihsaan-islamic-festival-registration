@@ -41,7 +41,11 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        $viewData = [
+            'title' => 'Create Group',
+        ];
+
+        return view('admin.group.create', $viewData);
     }
 
     /**
@@ -56,8 +60,9 @@ class GroupController extends Controller
         DB::beginTransaction();
 
         try {
-            Group::create([$validatedData]);
+            Group::create($validatedData);
             DB::commit();
+            return redirect()->route('admin.dashboard.group')->with('success', 'Group created successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
@@ -75,24 +80,55 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit(string $id)
     {
-        //
+        $viewData = [
+            'title' => 'Edit User',
+            'data' => Group::findOrFail($id)
+        ];
+
+        return view('admin.group.edit', $viewData);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'id' => 'required|integer',
+            'name' => 'required|string',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $group = Group::findOrFail($request->id); // pastikan $id sudah tersedia
+            $group->update($validatedData);
+            DB::commit();
+
+            return redirect()->route('admin.dashboard.group')->with('success', 'Group updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy(Request $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $group = Group::findOrFail($request->id); // pastikan $id sudah tersedia
+            $group->delete();
+            DB::commit();
+            return redirect()->route('admin.dashboard.group')->with('success', 'Group deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

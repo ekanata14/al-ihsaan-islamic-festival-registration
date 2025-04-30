@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Admin Controller
+// Admin Controlleraaaaaaaaaaa
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
@@ -27,6 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin Group Route
     Route::get('/admin-dashboard/group', [AdminGroupController::class, 'index'])->name('admin.dashboard.group');
+    Route::get('/admin-dashboard/group/create', [AdminGroupController::class, 'create'])->name('admin.dashboard.group.create');
+    Route::post('/admin-dashboard/group/store', [AdminGroupController::class, 'store'])->name('admin.dashboard.group.store');
+    Route::get('/admin-dashboard/group/edit/{id}', [AdminGroupController::class, 'edit'])->name('admin.dashboard.group.edit');
+    Route::put('/admin-dashboard/group/update', [AdminGroupController::class, 'update'])->name('admin.dashboard.group.update');
+    Route::delete('/admin-dashboard/group/delete', [AdminGroupController::class, 'destroy'])->name('admin.dashboard.group.destroy');
 
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
