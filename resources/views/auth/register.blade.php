@@ -17,14 +17,83 @@
                 required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-
         <!-- Group -->
         <div class="mt-4">
             <x-input-label for="group" :value="__('Group')" />
-            <x-text-input id="group" class="block mt-1 w-full" type="text" name="group" :value="old('email')"
-                required />
+            <x-text-input id="group" class="block mt-1 w-full" type="text" name="group" :value="old('group')"
+                required autocomplete="off" />
             <x-input-error :messages="$errors->get('group')" class="mt-2" />
+            <ul id="group-suggestions" class="bg-white border border-gray-300 mt-1 rounded-md shadow-md hidden">
+                <!-- Suggestions will be dynamically added here -->
+            </ul>
+            <div id="loading-spinner" class="hidden mt-2 text-center">
+                <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+            </div>
         </div>
+
+        <input type="hidden" id="group_id" name="group_id" />
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const groupInput = document.getElementById('group');
+                const suggestionsList = document.getElementById('group-suggestions');
+                const groupIdInput = document.getElementById('group_id');
+                const loadingSpinner = document.getElementById('loading-spinner');
+
+                groupInput.addEventListener('input', async function() {
+                    const query = groupInput.value;
+
+                    if (query.length < 2) {
+                        suggestionsList.classList.add('hidden');
+                        loadingSpinner.classList.add('hidden');
+                        return;
+                    }
+
+                    loadingSpinner.classList.remove('hidden');
+
+                    try {
+                        const response = await fetch(
+                            `{{ route('admin.dashboard.group.getGroupByName') }}?name=${encodeURIComponent(query)}`
+                            );
+                        const data = await response.json();
+
+                        suggestionsList.innerHTML = '';
+                        if (data.length > 0) {
+                            data.forEach(group => {
+                                const listItem = document.createElement('li');
+                                listItem.textContent = group.name;
+                                listItem.classList.add('px-4', 'py-2', 'cursor-pointer',
+                                    'hover:bg-gray-200');
+                                listItem.addEventListener('click', function() {
+                                    groupInput.value = group.name;
+                                    groupIdInput.value = group.id;
+                                    suggestionsList.classList.add('hidden');
+                                });
+                                suggestionsList.appendChild(listItem);
+                            });
+                            suggestionsList.classList.remove('hidden');
+                        } else {
+                            suggestionsList.classList.add('hidden');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching group suggestions:', error);
+                    } finally {
+                        loadingSpinner.classList.add('hidden');
+                    }
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (!suggestionsList.contains(event.target) && event.target !== groupInput) {
+                        suggestionsList.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
 
         <!-- Password -->
         <div class="mt-4">

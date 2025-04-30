@@ -15,11 +15,15 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/admin-dashboard/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('admin.dashboard.group.getGroupByName');
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/admin-dashboard',[AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     // Admin User Route
-    Route::get('/admin-dashboard/user',[AdminUserController::class, 'index'])->name('admin.dashboard.user');
+    Route::get('/admin-dashboard/user', [AdminUserController::class, 'index'])->name('admin.dashboard.user');
+    Route::get('/admin-dashboard/user/create', [AdminUserController::class, 'create'])->name('admin.dashboard.user.create');
 
     // Admin Group Route
     Route::get('/admin-dashboard/group', [AdminGroupController::class, 'index'])->name('admin.dashboard.group');
@@ -34,4 +38,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -25,6 +25,17 @@ class GroupController extends Controller
         return view('admin.group.index', $viewData);
     }
 
+    public function getGroupByName(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $group = Group::where('name', 'like', '%' . $validatedData['name'] . '%')->get();
+
+        return response()->json($group);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -39,7 +50,7 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name'=> 'required|string',
+            'name' => 'required|string',
         ]);
 
         DB::beginTransaction();
