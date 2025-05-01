@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/user-dashboard/registration', [UserDashboardController::class, 'index'])->name('user.dashboard.registration');
 });
 
 Route::middleware('auth')->group(function () {

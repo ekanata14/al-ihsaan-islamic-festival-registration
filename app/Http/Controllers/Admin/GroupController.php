@@ -19,7 +19,7 @@ class GroupController extends Controller
     {
         $viewData = [
             'title' => 'Groups',
-            'datas' => Group::paginate(10)
+            'datas' => Group::latest()->paginate(10)
         ];
 
         return view('admin.group.index', $viewData);

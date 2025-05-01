@@ -19,7 +19,7 @@ class CompetitionController extends Controller
     {
         $viewData = [
             'title' => 'Competitions',
-            'datas' => Competition::paginate(10)
+            'datas' => Competition::latest()->paginate(10)
         ];
 
         return view('admin.competition.index', $viewData);
@@ -90,6 +90,7 @@ class CompetitionController extends Controller
         $competition = Competition::findOrFail($id);
         $viewData = [
             'title' => 'Edit Competition',
+            'categories' => Category::all(),
             'data' => $competition,
         ];
 

@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $viewData = [
             'title' => 'Categories',
-            'datas' => Category::paginate(10)
+            'datas' => Category::latest()->paginate(10)
         ];
 
         return view('admin.category.index', $viewData);
