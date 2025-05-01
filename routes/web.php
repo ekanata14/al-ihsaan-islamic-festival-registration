@@ -22,7 +22,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/image/{path}', [HelperController::class, 'getImage'])->name('get.image');
-Route::get('/admin-dashboard/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('admin.dashboard.group.getGroupByName');
+Route::get('/group/getAllGroups', [AdminGroupController::class, 'getAllGroups'])->name('group.getAllGroups');
+Route::get('/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('group.getGroupByName');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -61,6 +62,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/user-dashboard/registration', [UserDashboardController::class, 'index'])->name('user.dashboard.registration');
+    Route::get('/user-dashboard/competitions/{id}', [UserDashboardController::class, 'getCompetitionByCategory'])->name('user.dashboard.competitions.category');
+    Route::get('/user-dashboard/competitions/detail/{id}', [UserDashboardController::class, 'competitionDetail'])->name('user.dashboard.competitions.detail');
 });
 
 Route::middleware('auth')->group(function () {

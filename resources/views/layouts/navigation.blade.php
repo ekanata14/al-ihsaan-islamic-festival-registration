@@ -40,10 +40,10 @@
                 @if (auth()->user()->role == 'user')
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')">
+                        <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')">
+                        <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard.registration*')">
                             {{ __('Data Registrasi') }}
                         </x-nav-link>
                     </div>

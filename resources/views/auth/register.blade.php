@@ -17,13 +17,15 @@
                 required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
+        
         <!-- Group -->
-        <div class="mt-4">
+        <div class="mt-4 relative">
             <x-input-label for="group" :value="__('Group')" />
             <x-text-input id="group" class="block mt-1 w-full" type="text" name="group" :value="old('group')"
                 required autocomplete="off" />
             <x-input-error :messages="$errors->get('group')" class="mt-2" />
-            <ul id="group-suggestions" class="bg-white border border-gray-300 mt-1 rounded-md shadow-md hidden">
+            <ul id="group-suggestions"
+                class="absolute z-10 bg-white border border-gray-300 mt-1 rounded-md shadow-md hidden w-full">
                 <!-- Suggestions will be dynamically added here -->
             </ul>
             <div id="loading-spinner" class="hidden mt-2 text-center">
@@ -45,21 +47,12 @@
                 const groupIdInput = document.getElementById('group_id');
                 const loadingSpinner = document.getElementById('loading-spinner');
 
-                groupInput.addEventListener('input', async function() {
-                    const query = groupInput.value;
-
-                    if (query.length < 2) {
-                        suggestionsList.classList.add('hidden');
-                        loadingSpinner.classList.add('hidden');
-                        return;
-                    }
-
+                // Fetch all groups when the input is clicked
+                groupInput.addEventListener('click', async function() {
                     loadingSpinner.classList.remove('hidden');
 
                     try {
-                        const response = await fetch(
-                            `{{ route('admin.dashboard.group.getGroupByName') }}?name=${encodeURIComponent(query)}`
-                            );
+                        const response = await fetch(`{{ route('group.getAllGroups') }}`);
                         const data = await response.json();
 
                         suggestionsList.innerHTML = '';
@@ -87,6 +80,7 @@
                     }
                 });
 
+                // Hide suggestions when clicking outside
                 document.addEventListener('click', function(event) {
                     if (!suggestionsList.contains(event.target) && event.target !== groupInput) {
                         suggestionsList.classList.add('hidden');

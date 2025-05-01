@@ -25,6 +25,13 @@ class GroupController extends Controller
         return view('admin.group.index', $viewData);
     }
 
+    public function getAllGroups()
+    {
+        $groups = Group::latest()->get();
+
+        return response()->json($groups);
+    }
+
     public function getGroupByName(Request $request)
     {
         $validatedData = $request->validate([
