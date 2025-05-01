@@ -43,7 +43,7 @@
                         </table>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-                        <a href="#" class="btn-primary text-center flex items-center justify-center gap-2">
+                        <a href="{{ route('user.dashboard.competitions.registration', $data->id) }}" class="btn-primary text-center flex items-center justify-center gap-2">
                             Tambah Peserta
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"

@@ -49,15 +49,21 @@ class RegistrationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Registration $registration)
+    public function edit(string $id)
     {
-        //
+        $registration = Registration::findOrFail($id);
+        $viewData = [
+            'title' => 'Edit Registration',
+            'data' => $registration,
+        ];
+
+        return view('admin.registration.edit', $viewData);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Registration $registration)
+    public function update(Request $request)
     {
         //
     }
