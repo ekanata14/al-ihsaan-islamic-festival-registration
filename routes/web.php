@@ -58,8 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin Registration Route
     Route::get('/admin-dashboard/registration', [AdminRegistrationController::class, 'index'])->name('admin.dashboard.registration');
-    Route::get('/admin-dashboard/registration/edit/{id}', [AdminCompetitionController::class, 'edit'])->name('admin.dashboard.registration.edit');
-    Route::put('/admin-dashboard/registration/update', [AdminCompetitionController::class, 'update'])->name('admin.dashboard.registration.update');
+    Route::get('/admin-dashboard/registration/edit/{id}', [AdminRegistrationController::class, 'edit'])->name('admin.dashboard.registration.edit');
+    Route::put('/admin-dashboard/registration/update', [AdminRegistrationController::class, 'update'])->name('admin.dashboard.registration.update');
 
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
@@ -68,6 +68,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user-dashboard/competitions/detail/{id}', [UserDashboardController::class, 'competitionDetail'])->name('user.dashboard.competitions.detail');
     Route::get('/user-dashboard/competitions/registration/{id}', [UserDashboardController::class, 'competitionRegistration'])->name('user.dashboard.competitions.registration'); 
     Route::get('/user-dashboard/registrations/', [UserDashboardController::class, 'registeredParticipants'])->name('user.participants');
+    Route::get('/user-dashboard/registrations/detail/{id}', [UserDashboardController::class, 'competitionRegistrationDetail'])->name('user.participants.detail');
+    Route::get('/user-dashboard/registrations/qr/{id}', [UserDashboardController::class, 'competitionRegistrationQR'])->name('user.participants.qr-code');
     Route::post('/user-dashboard/competitions/registration/store', [UserDashboardController::class, 'competitionRegistrationStore'])->name('user.dashboard.competitions.registration.store');
 });
 

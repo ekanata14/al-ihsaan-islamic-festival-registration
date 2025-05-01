@@ -26,4 +26,9 @@ class Registration extends Model
     {
         return $this->belongsTo(Group::class);
     }
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
 }

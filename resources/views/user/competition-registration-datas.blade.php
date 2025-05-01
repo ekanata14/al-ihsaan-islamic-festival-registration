@@ -35,8 +35,10 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 flex gap-2">
-                                            {{-- <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
-                                                class="btn-yellow">Edit</a> --}}
+                                            <a href="{{ route('user.participants.detail', $item->id) }}"
+                                                class="btn-primary">Detail</a>
+                                            <a href="{{ route('user.participants.qr-code', $item->id) }}"
+                                                class="btn-dark">QR CODE</a>
 
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
                                                 method="POST" class="inline-block" onsubmit="return confirmDelete(event)">

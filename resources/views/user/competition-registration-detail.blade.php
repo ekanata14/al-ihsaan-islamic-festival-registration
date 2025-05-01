@@ -3,10 +3,9 @@
 @section('content')
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-6 gap-8">
-            <form action="{{ route('admin.dashboard.registration.update') }}" method="POST" enctype="multipart/form-data"
-                class="mx-auto max-w-xl">
-                @csrf
-                @method('PUT')
+            {{-- <form action="{{ route('admin.dashboard.registration.update') }}" method="POST" enctype="multipart/form-data"
+                class="mx-auto max-w-xl"> --}}
+            <div class="mx-auto max-w-xl">
 
                 <input type="hidden" name="competition_id" value="{{ $data->competition_id }}">
 
@@ -15,9 +14,9 @@
 
                     @foreach ($data->participants as $i => $participant)
                         <div class="participant mb-6 border-b pb-4">
-                                <input type="hidden" name="participants[{{ $i }}][id]"
-                                    class="form-input w-full" placeholder="Enter participant name"
-                                    value="{{ old("participants.$i.id", $participant->id) }}" required>
+                            <input type="hidden" name="participants[{{ $i }}][id]" class="form-input w-full"
+                                placeholder="Enter participant name"
+                                value="{{ old("participants.$i.id", $participant->id) }}" required>
                             <div class="mb-4">
                                 <label for="participants[{{ $i }}][name]"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
@@ -57,7 +56,7 @@
                                     class="form-input w-full" accept="image/*,application/pdf">
                                 @if ($participant->certificate_url)
                                     <div class="mt-2">
-                                        <iframe src="{{ asset('storage/' . $participant->certificate_url) }}" 
+                                        <iframe src="{{ asset('storage/' . $participant->certificate_url) }}"
                                             class="w-full h-64 border rounded" frameborder="0"></iframe>
                                     </div>
                                 @endif
@@ -76,7 +75,9 @@
                         Update
                     </button>
                 </div> --}}
-            </form>
+            {{-- </form> --}}
+            <a href="{{ route('user.participants') }}" class="btn-green">Kembali</a>
+            </div>
         </div>
     </div>
 @endsection

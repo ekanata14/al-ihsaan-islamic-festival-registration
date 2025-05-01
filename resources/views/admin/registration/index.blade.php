@@ -36,7 +36,7 @@
                                         </td>
                                         <td class="px-6 py-4 flex gap-2">
                                             <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
-                                                class="btn-yellow">Edit</a>
+                                                class="btn-primary">Detail</a>
 
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
                                                 method="POST" class="inline-block" onsubmit="return confirmDelete(event)">

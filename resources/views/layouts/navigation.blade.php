@@ -43,7 +43,7 @@
                         <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('user.participants')" :active="request()->routeIs('user.participants')">
+                        <x-nav-link :href="route('user.participants')" :active="request()->routeIs('user.participants*')">
                             {{ __('Data Registrasi') }}
                         </x-nav-link>
                     </div>

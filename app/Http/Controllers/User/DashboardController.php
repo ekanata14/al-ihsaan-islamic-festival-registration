@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode as QRCode;
 
 // Models
 use App\Models\Competition;
@@ -59,7 +60,7 @@ class DashboardController extends Controller
             "title" => "Competition Detail",
             "data" => $competition,
             'categories' => Category::latest()->get(),
-            'participants' => [],
+            'participants' => Participant::where('competition_id', $id)->latest()->get(),
         ];
 
         return view("user.competition-detail", $viewData);
@@ -119,5 +120,32 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
+    }
+
+    public function competitionRegistrationDetail(string $id)
+    {
+        $registration = Registration::findOrFail($id);
+        $viewData = [
+            'title' => 'Registration Detail',
+            'data' => $registration,
+        ];
+
+        return view('user.competition-registration-detail', $viewData);
+    }
+
+    public function competitionRegistrationQR(string $id)
+    {
+        $registration = Registration::findOrFail($id);
+
+        // Generate QR code based on the registration ID
+        $qrCode = QRCode::size(200)->generate($registration->registration_number);
+
+        $viewData = [
+            'title' => 'Registration QR Code',
+            'data' => $registration,
+            'qrCode' => $qrCode,
+        ];
+
+        return view('user.competition-registration-qr', $viewData);
     }
 }
