@@ -55,17 +55,19 @@ class CompetitionController extends Controller
         ]);
 
         try {
-            // Generate a custom file name with the format dmy-id
-            $date = now()->format('dmY'); // Get the current date in dmy format
-            $uniqueId = uniqid(); // Generate a unique ID
-            $extension = $request->file('image_url')->getClientOriginalExtension(); // Get the file extension
-            $fileName = "{$date}-{$uniqueId}.{$extension}"; // Combine to create the file name
+            // Handle file upload for certificate_url
+            if ($request->hasFile('certificate_url')) {
+                $date = now()->format('dmY'); // Get the current date in dmy format
+                $uniqueId = uniqid(); // Generate a unique ID
+                $extension = $request->file('certificate_url')->getClientOriginalExtension(); // Get the file extension
+                $fileName = "{$date}-{$uniqueId}.{$extension}"; // Combine to create the file name
 
-            // Store the uploaded image in the 'public/competitions' directory with the custom name
-            $imagePath = $request->file('image_url')->storeAs('public/competitions', $fileName);
+                // Store the uploaded file in the 'public/certificates' directory with the custom name
+                $certificatePath = $request->file('certificate_url')->storeAs('public/certificates', $fileName);
 
-            // Save the relative path to the image in the database
-            $validatedData['image_url'] = str_replace('public/', 'storage/', $imagePath);
+                // Save the relative path to the file in the database
+                $validatedData['certificate_url'] = str_replace('public/', 'storage/', $certificatePath);
+            }
 
             Competition::create($validatedData);
             return redirect()->route('admin.dashboard.competition')->with('success', 'Competition created successfully.');
@@ -100,6 +102,7 @@ class CompetitionController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request)
     {
         $validatedData = $request->validate([
@@ -111,10 +114,39 @@ class CompetitionController extends Controller
             'registration_start' => 'required|date',
             'registration_end' => 'required|date|after_or_equal:registration_start',
             'status' => 'required|string',
+            'certificate_url' => 'nullable|file|mimes:jpeg,png,pdf|max:2048', // Validate file if provided
         ]);
 
         try {
-            Competition::where('id', $validatedData['id'])->update($validatedData);
+            // Find the competition
+            $competition = Competition::findOrFail($validatedData['id']);
+
+            // Handle file upload for certificate_url
+            if ($request->hasFile('certificate_url')) {
+                // Delete the old file if it exists
+                if ($competition->certificate_url && Storage::exists(str_replace('storage/', 'public/', $competition->certificate_url))) {
+                    Storage::delete(str_replace('storage/', 'public/', $competition->certificate_url));
+                }
+
+                // Generate a new file name
+                $date = now()->format('dmY'); // Get the current date in dmy format
+                $uniqueId = uniqid(); // Generate a unique ID
+                $extension = $request->file('certificate_url')->getClientOriginalExtension(); // Get the file extension
+                $fileName = "{$date}-{$uniqueId}.{$extension}"; // Combine to create the file name
+
+                // Store the uploaded file in the 'public/certificates' directory with the custom name
+                $certificatePath = $request->file('certificate_url')->storeAs('public/certificates', $fileName);
+
+                // Save the relative path to the file in the database
+                $validatedData['certificate_url'] = str_replace('public/', 'storage/', $certificatePath);
+            } else {
+                // Keep the old file path if no new file is uploaded
+                $validatedData['certificate_url'] = $competition->certificate_url;
+            }
+
+            // Update the competition record
+            $competition->update($validatedData);
+
             return redirect()->route('admin.dashboard.competition')->with('success', 'Competition updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update competition: ' . $e->getMessage());

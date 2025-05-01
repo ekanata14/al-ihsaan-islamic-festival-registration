@@ -11,7 +11,7 @@
                 <input type="hidden" name="competition_id" value="{{ $data->competition_id }}">
 
                 <div id="participants-container">
-                    <h3 class="text-lg font-bold mb-4 text-center">Registration Detail</h3>
+                    <h3 class="text-lg font-bold mb-4 text-center">Registration Detail - {{ $data->registration_number }}</h3>
 
                     @foreach ($data->participants as $i => $participant)
                         <div class="participant mb-6 border-b pb-4">
@@ -53,12 +53,12 @@
                                 <label for="participants[{{ $i }}][certificate_url]"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Akta
                                     Kelahiran/KTP/KTA</label>
-                                <input type="file" name="participants[{{ $i }}][certificate_url]"
-                                    class="form-input w-full" accept="image/*,application/pdf">
+                                {{-- <input type="file" name="participants[{{ $i }}][certificate_url]"
+                                    class="form-input w-full" accept="image/*,application/pdf"> --}}
                                 @if ($participant->certificate_url)
                                     <div class="mt-2">
-                                        <iframe src="{{ asset('storage/' . $participant->certificate_url) }}" 
-                                            class="w-full h-64 border rounded" frameborder="0"></iframe>
+                                        <img src="{{ asset('storage/' . $participant->certificate_url) }}" alt="image"
+                                            class="w-1/2">
                                     </div>
                                 @endif
                                 @error("participants.{$i}.certificate_url")

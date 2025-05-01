@@ -10,7 +10,7 @@
                     <div class="text-center flex flex-col justify-center items-center">
                         {{ $qrCode }}
                         <h1 class="mt-4 text-gray-600 dark:text-gray-300 text-2xl font-bold">{{ $data->registration_number }}</h1>
-                        <p class="mt-4 text-gray-600 dark:text-gray-300">Scan this QR code to complete your registration.</p>
+                        <p class="mt-4 text-gray-600 dark:text-gray-300">Tunjukkan QR Code ini saat registrasi ulang.</p>
                     </div>
                 @endif
             </div>

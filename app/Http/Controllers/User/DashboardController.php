@@ -56,11 +56,17 @@ class DashboardController extends Controller
     public function competitionDetail(string $id)
     {
         $competition = Competition::findOrFail($id);
+        $participants = Registration::where('pic_id', auth()->user()->id)
+            ->where('competition_id', $id)
+            ->with('participants') // Eager load participants
+            ->get()
+            ->pluck('participants') // Extract participants from the registrations
+            ->flatten(); // Flatten the collection to get a single list of participants
         $viewData = [
             "title" => "Competition Detail",
             "data" => $competition,
             'categories' => Category::latest()->get(),
-            'participants' => Participant::where('competition_id', $id)->latest()->get(),
+            'participants' => $participants,
         ];
 
         return view("user.competition-detail", $viewData);
@@ -69,11 +75,11 @@ class DashboardController extends Controller
     public function competitionRegistration(string $id)
     {
         $competition = Competition::findOrFail($id);
+
         $viewData = [
             "title" => "Competition Registration",
             "data" => $competition,
             'categories' => Category::latest()->get(),
-            'participants' => [],
         ];
 
         return view("user.competition-registration", $viewData);

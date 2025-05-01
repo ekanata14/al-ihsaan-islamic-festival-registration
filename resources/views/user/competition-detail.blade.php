@@ -5,7 +5,8 @@
         <div class="container mx-auto px-4 py-8">
             <div
                 class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <img class="rounded-t-lg" src="{{ asset('storage/' . $data->image_url) }}" alt="{{ $data->name }}" />
+                <img class="rounded-t-lg" src="{{ asset($data->image_url) }}" alt="{{ $data->name }}" />
+                
                 <div class="flex flex-col justify-between gap-4">
                     <div class="flex flex-col gap-4">
                         <h1 class="text-3xl font-bold">{{ $data->name }}</h1>
@@ -30,7 +31,7 @@
                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $loop->iteration }}
                                         </th>
-                                        {{-- <td class="px-6 py-4">{{ $item->name }}</td> --}}
+                                        <td class="px-6 py-4">{{ $item->name }}</td>
                                     </tr>
                                 @empty
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
