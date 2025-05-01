@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+// Models
+use App\Models\Category;
+
+class CategoryController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $viewData = [
+            'title' => 'Categories',
+            'datas' => Category::paginate(10)
+        ];
+
+        return view('admin.category.index', $viewData);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $viewData = [
+            'title' => 'Create Category',
+        ];
+
+        return view('admin.category.create', $viewData);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            Category::create($validatedData);
+
+            DB::commit();
+            return redirect()->route('admin.dashboard.category')->with('success', 'Category created successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to create category: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Category $category)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $category = Category::findOrFail($id);
+
+        if (!$category) {
+            return redirect()->back()->with('error', 'Category not found.');
+        }
+
+        $viewData = [
+            'title' => 'Edit Category',
+            'data' => $category,
+        ];
+
+        return view('admin.category.edit', $viewData);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required',
+            'name' => 'required|string',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $category = Category::findOrFail($validatedData['id']);
+            $category->update($validatedData);
+
+            DB::commit();
+            return redirect()->route('admin.dashboard.category')->with('success', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update category: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $category = Category::findOrFail($validatedData['id']);
+            $category->delete();
+
+            DB::commit();
+            return redirect()->route('admin.dashboard.category')->with('success', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $e->getMessage());
+        }
+    }
+}

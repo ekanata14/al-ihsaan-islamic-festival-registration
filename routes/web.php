@@ -7,15 +7,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
+use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 
 // User Controller
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+
+// Helper Controller
+use App\Http\Controllers\HelperController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/image/{path}', [HelperController::class, 'getImage'])->name('get.image');
 Route::get('/admin-dashboard/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('admin.dashboard.group.getGroupByName');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -32,6 +38,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin-dashboard/group/edit/{id}', [AdminGroupController::class, 'edit'])->name('admin.dashboard.group.edit');
     Route::put('/admin-dashboard/group/update', [AdminGroupController::class, 'update'])->name('admin.dashboard.group.update');
     Route::delete('/admin-dashboard/group/delete', [AdminGroupController::class, 'destroy'])->name('admin.dashboard.group.destroy');
+
+    // Admin Category Route
+    Route::get('/admin-dashboard/category', [AdminCategoryController::class, 'index'])->name('admin.dashboard.category');
+    Route::get('/admin-dashboard/category/create', [AdminCategoryController::class, 'create'])->name('admin.dashboard.category.create');
+    Route::post('/admin-dashboard/category/store', [AdminCategoryController::class, 'store'])->name('admin.dashboard.category.store');
+    Route::get('/admin-dashboard/category/edit/{id}', [AdminCategoryController::class, 'edit'])->name('admin.dashboard.category.edit');
+    Route::put('/admin-dashboard/category/update', [AdminCategoryController::class, 'update'])->name('admin.dashboard.category.update');
+    Route::delete('/admin-dashboard/category/delete', [AdminCategoryController::class, 'destroy'])->name('admin.dashboard.category.destroy');
+
+    // Admin Competition Route
+    Route::get('/admin-dashboard/competition', [AdminCompetitionController::class, 'index'])->name('admin.dashboard.competition');
+    Route::get('/admin-dashboard/competition/create', [AdminCompetitionController::class, 'create'])->name('admin.dashboard.competition.create');
+    Route::post('/admin-dashboard/competition/store', [AdminCompetitionController::class, 'store'])->name('admin.dashboard.competition.store');
+    Route::get('/admin-dashboard/competition/edit/{id}', [AdminCompetitionController::class, 'edit'])->name('admin.dashboard.competition.edit');
+    Route::put('/admin-dashboard/competition/update', [AdminCompetitionController::class, 'update'])->name('admin.dashboard.competition.update');
+    Route::delete('/admin-dashboard/competition/delete', [AdminCompetitionController::class, 'destroy'])->name('admin.dashboard.competition.destroy');
+
+    // Admin Registration Route
+    Route::get('/admin-dashboard/registration', [AdminRegistrationController::class, 'index'])->name('admin.dashboard.registration');
 
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');

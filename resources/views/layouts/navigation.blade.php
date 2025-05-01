@@ -22,11 +22,14 @@
                         <x-nav-link :href="route('admin.dashboard.group')" :active="request()->routeIs('admin.dashboard.group*')">
                             {{ __('Group') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Lomba') }}
+                        <x-nav-link :href="route('admin.dashboard.category')" :active="request()->routeIs('admin.dashboard.category*')">
+                            {{ __('Category') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Registrasi') }}
+                        <x-nav-link :href="route('admin.dashboard.competition')" :active="request()->routeIs('admin.dashboard.competition*')">
+                            {{ __('Competition') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.dashboard.registration')" :active="request()->routeIs('admin.dashboard.registration*')">
+                            {{ __('Registration') }}
                         </x-nav-link>
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Check In') }}
