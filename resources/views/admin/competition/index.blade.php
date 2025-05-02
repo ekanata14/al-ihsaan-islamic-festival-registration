@@ -35,7 +35,7 @@
                                         <td class="px-6 py-4 capitalize">{{ $item->type }}</td>
                                         <td class="px-6 py-4">{{ $item->category->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
-                                                <img src="{{ asset($item->image_url) }}" alt="{{ $item->name }}" class="h-16 w-16 object-cover">
+                                                <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="h-16 w-16 object-cover">
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ \Carbon\Carbon::parse($item->registration_start)->format('d M Y') }}</td>

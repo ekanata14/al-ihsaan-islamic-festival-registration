@@ -19,16 +19,24 @@
                 @forelse ($competitions as $item)
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <a href="#">
-                            <img class="rounded-t-lg" src="https://flowbite.com/docs/images/blog/image-1.jpg"
-                                alt="" />
+                            <img class="rounded-t-lg" src="{{ asset('storage/' . $item->image_url) }}" alt="" />
                         </a>
                         <div class="p-5 flex flex-col gap-4">
                             <a href="#">
                                 <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     {{ $item->name }}</h5>
+                                <h6 class="text-md font-medium tracking-tight text-gray-900 dark:text-white mt-1">
+                                    Total Peserta: {{ $item->registrations->count() }}</h6>
                             </a>
                             <span
-                                class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">{{ $item->category->name }}</span>
+                                class="w-fit text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm 
+                                {{ $item->category->id == 1 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' : '' }}
+                                {{ $item->category->id == 2 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' : '' }}
+                                {{ $item->category->id == 3 ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : '' }}
+                                {{ $item->category->id == 4 ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : '' }}
+                                {{ $item->category->id == 5 ? 'bg-black text-white dark:bg-gray-800 dark:text-gray-300' : '' }}">
+                                {{ $item->category->name }}
+                            </span>
                             <a href="{{ route('user.dashboard.competitions.detail', $item->id) }}" class="btn-primary flex justify-center items-center">
                                 Daftar
                                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"

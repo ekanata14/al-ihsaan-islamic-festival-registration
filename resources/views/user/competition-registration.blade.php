@@ -22,7 +22,10 @@
                     @endphp
 
                     <div id="participants-container">
-                        <h3 class="text-lg font-bold mb-4 text-center">Form Pendaftaran</h3>
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-lg font-bold text-center">Form Pendaftaran - {{ $data->name }}</h3>
+                            <h4 class="text-lg font-bold text-center text-blue-500">{{ $data->category->name }}</h4>
+                        </div>
                         @for ($i = 0; $i < $participantCount; $i++)
                             <div class="participant mb-6 border-b pb-4">
                                 <div class="mb-4">
@@ -59,6 +62,7 @@
                                         Kelahiran/KTP/KTA</label>
                                     <input type="file" name="participants[{{ $i }}][certificate_url]"
                                         class="form-input w-full" accept="image/*,application/pdf" required>
+                                    <p class="text-red-500 text-sm mt-1">*File maximal berukuran 2 MB</p>
                                     @error("participants.{$i}.certificate_url")
                                         <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                                     @enderror
@@ -69,10 +73,28 @@
 
                     <!-- Submit Button -->
                     <div class="mt-6">
-                        <button type="submit"
+                        <button type="button" id="submit-button"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Submit
                         </button>
+
+                        <script>
+                            document.getElementById('submit-button').addEventListener('click', function() {
+                                Swal.fire({
+                                    title: 'Apakah data sudah benar?',
+                                    text: "Jika sudah benar, ayo daftar!!!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Daftar Gasss!!!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        this.closest('form').submit();
+                                    }
+                                });
+                            });
+                        </script>
                     </div>
                 </form>
             </div>

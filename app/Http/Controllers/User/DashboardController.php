@@ -21,7 +21,7 @@ class DashboardController extends Controller
     {
         $viewData = [
             "title" => "User Dashboard",
-            "competitions" => Competition::latest()->get(),
+            "competitions" => Competition::where('status', 'open')->latest()->get(),
             'category_id' => '0',
             'categories' => Category::latest()->get(),
         ];
@@ -42,7 +42,7 @@ class DashboardController extends Controller
 
     public function getCompetitionByCategory(string $id)
     {
-        $competitions = Competition::where('category_id', $id)->latest()->get();
+        $competitions = Competition::where('category_id', $id)->where('status', 'open')->latest()->get();
         $viewData = [
             "title" => "Competitions",
             "competitions" => $competitions,
@@ -75,11 +75,11 @@ class DashboardController extends Controller
     public function competitionRegistration(string $id)
     {
         $competition = Competition::findOrFail($id);
-
         $viewData = [
             "title" => "Competition Registration",
             "data" => $competition,
             'categories' => Category::latest()->get(),
+            'participants' => [],
         ];
 
         return view("user.competition-registration", $viewData);
@@ -122,7 +122,7 @@ class DashboardController extends Controller
                 ]);
             }
 
-            return redirect()->route('user.dashboard')->with('success', 'Registration and participants saved successfully.');
+            return redirect()->route('user.participants')->with('success', 'Registration and participants saved successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }

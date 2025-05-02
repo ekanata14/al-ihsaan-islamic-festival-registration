@@ -58,7 +58,7 @@
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <span
-                                                class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'Active' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
+                                                class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'checkin' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
                                                 {{ strtoupper($item->status) }}
                                             </span>
                                         </td>

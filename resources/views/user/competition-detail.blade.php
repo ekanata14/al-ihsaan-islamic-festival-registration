@@ -5,11 +5,12 @@
         <div class="container mx-auto px-4 py-8">
             <div
                 class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <img class="rounded-t-lg" src="{{ asset($data->image_url) }}" alt="{{ $data->name }}" />
+                <img class="rounded-t-lg" src="{{ asset('storage/' . $data->image_url) }}" alt="{{ $data->name }}" />
                 
                 <div class="flex flex-col justify-between gap-4">
                     <div class="flex flex-col gap-4">
-                        <h1 class="text-3xl font-bold">{{ $data->name }}</h1>
+                        <h1 class="text-3xl font-bold">{{ $data->name }}</h1> 
+                        <h2 class="text-xl font-bold">Total Peserta: {{ $data->registrations->count() }}</h2>
                         <span
                             class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">{{ $data->category->name }}</span>
                         {{-- <h2 class="text-md">IDR. {{ number_format($product->harga, 0, ',', '.') }}</h2> --}}

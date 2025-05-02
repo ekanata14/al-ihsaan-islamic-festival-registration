@@ -31,7 +31,7 @@
                         <x-nav-link :href="route('admin.dashboard.registration')" :active="request()->routeIs('admin.dashboard.registration*')">
                             {{ __('Registration') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('admin.dashboard.check-in')" :active="request()->routeIs('admin.dashboard.check-in*')">
                             {{ __('Check In') }}
                         </x-nav-link>
                     </div>

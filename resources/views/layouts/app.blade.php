@@ -33,8 +33,175 @@
         <!-- Page Content -->
         <main>
             @yield('content')
+            @if (auth()->user()->role == 'admin')
+                <button id="scanQrCode"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fixed bottom-8 right-8 shadow-lg">
+                    Scan QR Code
+                </button>
+
+                <!-- Modal -->
+                <div id="qrModal"
+                    class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold">Scan QR Code</h2>
+                            <button id="closeQrModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                        </div>
+                        <video id="qrVideo" class="w-full border border-gray-300 rounded"></video>
+                    </div>
+                </div>
+
+                <script>
+                    const scanQrCodeButton = document.getElementById('scanQrCode');
+                    const qrModal = document.getElementById('qrModal');
+                    const closeQrModalButton = document.getElementById('closeQrModal');
+                    const video = document.getElementById('qrVideo');
+                    let qrScanner;
+
+                    scanQrCodeButton.addEventListener('click', async () => {
+                        qrModal.classList.remove('hidden');
+
+                        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Camera access is not supported by your browser.',
+                                showConfirmButton: true
+                            });
+                            return;
+                        }
+
+                        try {
+                            const stream = await navigator.mediaDevices.getUserMedia({
+                                video: {
+                                    facingMode: 'environment'
+                                }
+                            });
+                            video.srcObject = stream;
+                            video.setAttribute('playsinline', true); // Required for iOS
+                            video.play();
+
+                            qrScanner = new QrScanner(video, async result => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'QR Code Scanned',
+                                    text: `QR Code Data: ${result}`,
+                                    showConfirmButton: true
+                                });
+
+                                try {
+                                    const response = await fetch('{{ route('admin.dashboard.check-in.store') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({ registration_number: result })
+                                    });
+
+                                    const data = await response.json();
+
+                                    if (data.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: data.message,
+                                            showConfirmButton: true
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: data.message || 'An error occurred.',
+                                            showConfirmButton: true
+                                        });
+                                    }
+                                } catch (error) {
+                                    console.error('Error processing QR code:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'An error occurred while processing the QR code.',
+                                        showConfirmButton: true
+                                    });
+                                }
+
+                                qrScanner.stop();
+                                video.srcObject.getTracks().forEach(track => track.stop());
+                                qrModal.classList.add('hidden');
+                            });
+                            qrScanner.start();
+                        } catch (error) {
+                            console.error('Error accessing camera:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Unable to access the camera.',
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+
+                    closeQrModalButton.addEventListener('click', () => {
+                        if (qrScanner) {
+                            qrScanner.stop();
+                        }
+                        if (video.srcObject) {
+                            video.srcObject.getTracks().forEach(track => track.stop());
+                        }
+                        qrModal.classList.add('hidden');
+                    });
+
+                    class QrScanner {
+                        constructor(video, onDecode) {
+                            this.video = video;
+                            this.onDecode = onDecode;
+                            this.canvas = document.createElement('canvas');
+                            this.context = this.canvas.getContext('2d');
+                            this.active = false;
+                        }
+
+                        start() {
+                            this.active = true;
+                            this.scan();
+                        }
+
+                        stop() {
+                            this.active = false;
+                            const stream = this.video.srcObject;
+                            if (stream) {
+                                stream.getTracks().forEach(track => track.stop());
+                            }
+                            this.video.srcObject = null;
+                        }
+
+                        scan() {
+                            if (!this.active) return;
+
+                            if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
+                                this.canvas.width = this.video.videoWidth;
+                                this.canvas.height = this.video.videoHeight;
+                                this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+
+                                const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                                const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                                if (code) {
+                                    this.onDecode(code.data);
+                                    return;
+                                }
+                            }
+
+                            requestAnimationFrame(() => this.scan());
+                        }
+                    }
+                </script>
+                <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.min.js"></script>
+            @endif
         </main>
-        
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @if (session('success'))
             <script>

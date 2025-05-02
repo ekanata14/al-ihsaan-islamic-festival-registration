@@ -97,7 +97,7 @@
                             <input type="file" id="image_url" name="image_url" accept="image/*" class="form-input w-full">
                             @if ($data->image_url)
                                 <div class="mt-4">
-                                    <img src="{{ asset($data->image_url) }}" alt="Competition Image" class="h-32 w-32 object-cover">
+                                    <img src="{{ asset('storage/' . $data->image_url) }}" alt="Competition Image" class="h-32 w-32 object-cover">
                                 </div>
                             @endif
                             @error('image_url')
