@@ -33,6 +33,61 @@
         <!-- Page Content -->
         <main>
             @yield('content')
+            @if (auth()->user()->role == 'user')
+                <button id="contactPerson"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded fixed bottom-8 right-8 shadow-lg">
+                    Contact Person
+                </button>
+
+                                <!-- Modal -->
+                                <div id="contactModal"
+                                    class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                                    <div class="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <h2 class="text-lg font-semibold">Contact Persons</h2>
+                                            <button id="closeContactModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                                        </div>
+                                        <p class="text-gray-700">Hubungi kontak di bawah untuk informasi lebih lanjut</p>
+                                        <ul class="mt-4 space-y-4">
+                                            <li>
+                                                <p class="font-semibold">Fauzan</p>
+                                                <a href="https://wa.me/+6281952476416" target="_blank"
+                                                    class="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
+                                                    Chat on WhatsApp
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <p class="font-semibold">Atha</p>
+                                                <a href="https://wa.me/+6287858741020" target="_blank"
+                                                    class="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
+                                                    Chat on WhatsApp
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <p class="font-semibold">Syawala</p>
+                                                <a href="https://wa.me/+6281237495718" target="_blank"
+                                                    class="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
+                                                    Chat on WhatsApp
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                <script>
+                    const contactPersonButton = document.getElementById('contactPerson');
+                    const contactModal = document.getElementById('contactModal');
+                    const closeContactModalButton = document.getElementById('closeContactModal');
+
+                    contactPersonButton.addEventListener('click', () => {
+                        contactModal.classList.remove('hidden');
+                    });
+
+                    closeContactModalButton.addEventListener('click', () => {
+                        contactModal.classList.add('hidden');
+                    });
+                </script>
+            @endif
             @if (auth()->user()->role == 'admin')
                 <button id="scanQrCode"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fixed bottom-8 right-8 shadow-lg">
@@ -90,14 +145,17 @@
                                 });
 
                                 try {
-                                    const response = await fetch('{{ route('admin.dashboard.check-in.store') }}', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        },
-                                        body: JSON.stringify({ registration_number: result })
-                                    });
+                                    const response = await fetch(
+                                        '{{ route('admin.dashboard.check-in.store') }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                            },
+                                            body: JSON.stringify({
+                                                registration_number: result
+                                            })
+                                        });
 
                                     const data = await response.json();
 
