@@ -60,10 +60,40 @@
                     </li>
                     <li class="flex gap-2">
                         <a href="{{ route('login') }}" class="btn-primary">Login</a>
-                        <a href="{{ route('register') }}" class="btn-green">Register</a>
+                        <a href="{{ route('register') }}" class="btn-green">Daftar</a>
                     </li>
                 </ul>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const toggleButton = document.querySelector('[data-collapse-toggle]');
+                    const navbar = document.getElementById('navbar-default');
+
+                    toggleButton.addEventListener('click', function () {
+                        navbar.classList.toggle('hidden');
+                        navbar.classList.toggle('animate-slide-down');
+                    });
+                });
+
+                // Add animation styles
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes slide-down {
+                        from {
+                            opacity: 0;
+                            transform: translateY(-20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    .animate-slide-down {
+                        animation: slide-down 0.3s ease-out;
+                    }
+                `;
+                document.head.appendChild(style);
+            </script>
         </div>
     </nav>
     <main>
