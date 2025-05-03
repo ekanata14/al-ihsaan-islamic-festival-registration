@@ -10,7 +10,10 @@ class Participant extends Model
         'registration_id',
         'name',
         'age',
+        'birth_place',
+        'birth_date',
         'nik',
+        'photo_url',
         'certificate_url',
     ];
 

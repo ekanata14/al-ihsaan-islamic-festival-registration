@@ -16,7 +16,10 @@ return new class extends Migration {
             $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
             $table->string('name'); // Name column
             $table->string('age'); // Age column
+            $table->string('birth_place'); // Birth Place
+            $table->string('birth_date'); // Birth Date
             $table->string('nik'); // NIK column
+            $table->string('photo_url'); // Certificate URL column
             $table->string('certificate_url'); // Certificate URL column
             $table->timestamps();
         });

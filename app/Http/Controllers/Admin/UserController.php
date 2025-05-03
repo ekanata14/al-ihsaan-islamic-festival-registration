@@ -45,6 +45,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone_number' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
             'group_id' => 'required|exists:groups,id',
             'role' => 'required',
@@ -87,6 +88,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
+            'phone_number' => 'required|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
             'group_id' => 'required|exists:groups,id',
             'role' => 'required',
@@ -98,6 +100,7 @@ class UserController extends Controller
             $user = User::findOrFail($request->id);
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
+            $user->phone_number = $validatedData['phone_number'];
             if (!empty($validatedData['password'])) {
                 $user->password = bcrypt($validatedData['password']);
             }

@@ -93,6 +93,9 @@ class DashboardController extends Controller
             'participants.*.name' => 'required|string',
             'participants.*.age' => 'required|integer|min:1',
             'participants.*.nik' => 'required|string|unique:participants,nik',
+            'participants.*.birth_place' => 'required|string',
+            'participants.*.birth_date' => 'required|date', 
+            'participants.*.photo_url' => 'required|file|mimes:jpeg,png,pdf|max:2048',
             'participants.*.certificate_url' => 'required|file|mimes:jpeg,png,pdf|max:2048',
         ]);
 
@@ -112,12 +115,16 @@ class DashboardController extends Controller
             foreach ($validatedData['participants'] as $participantData) {
                 // Handle file upload for certificate_url
                 $certificatePath = $participantData['certificate_url']->store('certificates', 'public');
+                $photoPath = $participantData['photo_url']->store('participants', 'public');
 
                 Participant::create([
                     'registration_id' => $registration->id,
                     'name' => $participantData['name'],
                     'age' => $participantData['age'],
+                    'birth_place' => $participantData['birth_place'],
+                    'birth_date' => $participantData['birth_date'],
                     'nik' => $participantData['nik'],
+                    'photo_url' => $photoPath,
                     'certificate_url' => $certificatePath,
                 ]);
             }

@@ -6,10 +6,10 @@
             <div
                 class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <img class="rounded-t-lg" src="{{ asset('storage/' . $data->image_url) }}" alt="{{ $data->name }}" />
-                
+
                 <div class="flex flex-col justify-between gap-4">
                     <div class="flex flex-col gap-4">
-                        <h1 class="text-3xl font-bold">{{ $data->name }}</h1> 
+                        <h1 class="text-3xl font-bold">{{ $data->name }}</h1>
                         <h2 class="text-xl font-bold">Total Peserta: {{ $data->registrations->count() }}</h2>
                         <span
                             class="w-fit bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">{{ $data->category->name }}</span>
@@ -45,15 +45,30 @@
                         </table>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-                        <a href="{{ route('user.dashboard.competitions.registration', $data->id) }}" class="btn-primary text-center flex items-center justify-center gap-2">
-                            Tambah Peserta
-                            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                        </a>
+                        @if (now()->between($data->registration_start, $data->registration_end))
+                            <a href="{{ route('user.dashboard.competitions.registration', $data->id) }}"
+                                class="btn-primary text-center flex items-center justify-center gap-2">
+                                Tambah Peserta
+                                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </a>
+                        @else
+                            <button class="btn-secondary text-center flex items-center justify-center gap-2 cursor-not-allowed"
+                                disabled>
+                                Pendaftaran Telah Ditutup
+                                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button>
+                        @endif
                         <a href="#" class="btn-red text-center flex items-center justify-center gap-2">
                             Download Modul Umum
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
