@@ -19,7 +19,7 @@
                 massal, dan
                 donor darah penuh berkah!
                 Gabung sekarang dan jadi bagian dari generasi muda yang berprestasi, berakhlak, dan peduli sesama! 🌟</p>
-            <p class="font-bold text-center md:text-right">Pendaftaran akan dibuka Senin, 5 Mei 2025, Stay Tune!!!</p>
+            <p class="font-bold text-center md:text-right text-red-500">Pendaftaran akan dibuka Senin, 5 Mei 2025, Stay Tuned!!!</p>
         </div>
     </div>
     {{-- hero-section-end --}}
