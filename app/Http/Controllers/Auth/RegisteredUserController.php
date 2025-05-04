@@ -68,7 +68,6 @@ class RegisteredUserController extends Controller
 
             return redirect(route('user.dashboard', absolute: false));
         } catch (\Exception $e) {
-            return $e->getMessage();
             return redirect()->back()->withErrors(['error' => 'Registration failed: ' . $e->getMessage()]);
         }
     }

@@ -5,7 +5,8 @@
         <div class="container mx-auto px-4 py-8">
             <div
                 class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <img class="rounded-t-lg" src="{{ asset('storage/' . $data->image_url) }}" alt="{{ $data->name }}" />
+                {{-- <img class="rounded-t-lg" src="{{ asset('storage/' . $data->image_url) }}" alt="{{ $data->name }}" /> --}}
+                <img class="rounded-t-lg" src="{{ asset('assets/images/logo.png') }}" alt="{{ $data->name }}" />
 
                 <div class="flex flex-col justify-between gap-4">
                     <div class="flex flex-col gap-4">
@@ -45,7 +46,8 @@
                         </table>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-                        @if (now()->between($data->registration_start, $data->registration_end))
+                        @if ($data->status == 'Open')
+                            {{ now()->between($data->registration_start, $data->registration_end) }}
                             <a href="{{ route('user.dashboard.competitions.registration', $data->id) }}"
                                 class="btn-primary text-center flex items-center justify-center gap-2">
                                 Tambah Peserta
@@ -58,7 +60,8 @@
                                 </svg>
                             </a>
                         @else
-                            <button class="btn-secondary text-center flex items-center justify-center gap-2 cursor-not-allowed"
+                            <button
+                                class="btn-secondary text-center flex items-center justify-center gap-2 cursor-not-allowed"
                                 disabled>
                                 Pendaftaran Telah Ditutup
                                 <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"

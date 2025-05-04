@@ -21,7 +21,8 @@
                 @forelse ($competitions as $item)
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <a href="#">
-                            <img class="rounded-t-lg" src="{{ asset('storage/' . $item->image_url) }}" alt="" />
+                            {{-- <img class="rounded-t-lg" src="{{ asset('storage/' . $item->image_url) }}" alt="" /> --}}
+                <img class="rounded-t-lg" src="{{ asset('assets/images/logo_only.png') }}" alt="{{ $item->name }}" />
                         </a>
                         <div class="p-5 flex flex-col gap-4">
                             <a href="#">
