@@ -89,6 +89,7 @@ class DashboardController extends Controller
     {
         $validatedData = $request->validate([
             'competition_id' => 'required|exists:competitions,id',
+            'total_participants' => 'required|integer',
             'participants' => 'required|array',
             'participants.*.name' => 'required|string',
             'participants.*.age' => 'required|integer|min:1',
@@ -107,6 +108,7 @@ class DashboardController extends Controller
                 'registration_number' => $registrationNumber,
                 'pic_id' => auth()->user()->id,
                 'competition_id' => $validatedData['competition_id'],
+                'total_participants' => $validatedData['total_participants'],
                 'group_id' => auth()->user()->group_id,
                 'status' => 'registered',
             ]);

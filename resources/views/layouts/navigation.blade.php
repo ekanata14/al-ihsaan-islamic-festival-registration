@@ -116,6 +116,9 @@
                 <x-responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('user.participants')" :active="request()->routeIs('user.participants*')">
+                    {{ __('Data Registrasi') }}
+                </x-responsive-nav-link>
             @endif
         </div>
 

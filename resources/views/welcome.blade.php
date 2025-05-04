@@ -68,11 +68,9 @@
         <h2 class="text-3xl font-bold text-center md:text-right">Sponsorship
         </h2>
         <div class="flex justify-center items-center h-full">
-            <h3 class="text-xl font-bold text-center md:text-right">Informasi segera menyusul, tunggu yak!
-            </h3>
+            <img src="{{ asset('assets/sponsors/cosmo_salon_bu_hj_Nining.jpeg')}}" alt="cosmo_salon_bu_hj_Nining"
+                class="h-32 w-32 object-contain">
         </div>
-        {{-- <div class="grid grid-cols-4 gap-3 text-right">
-        </div> --}}
     </div>
     {{-- sponsorship-section-end --}}
     {{-- contact-us-section-start --}}

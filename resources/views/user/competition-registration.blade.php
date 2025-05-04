@@ -17,7 +17,7 @@
                         if ($data->name === 'Cerdas Cermat') {
                             $participantCount = 3;
                         } elseif ($data->name == 'Hadrah') {
-                            $participantCount = 2;
+                            $participantCount = 1;
                         }
                     @endphp
 
@@ -26,6 +26,19 @@
                             <h3 class="text-lg font-bold text-center">Form Pendaftaran - {{ $data->name }}</h3>
                             <h4 class="text-lg font-bold text-center text-blue-500">{{ $data->category->name }}</h4>
                         </div>
+                        @if ($data->name === 'Hadrah')
+                            <div class="mb-4 border-b pb-4">
+                                <label for="total_participants"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Peserta</label>
+                                <input type="text" name="total_participants" class="form-input w-full"
+                                    placeholder="Masukkan Jumlah Peserta" required>
+                                @error("total_participants")
+                                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @else
+                            <input type="hidden" name="total_participants" value="{{ $data->name === 'Cerdas Cermat' ? 3 : 1 }}">
+                        @endif
                         @for ($i = 0; $i < $participantCount; $i++)
                             <div class="participant mb-6 border-b pb-4">
                                 <div class="mb-4">

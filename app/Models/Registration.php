@@ -10,6 +10,7 @@ class Registration extends Model
         'registration_number',
         'pic_id',
         'competition_id',
+        'total_participants',
         'group_id',
         'status',
     ];

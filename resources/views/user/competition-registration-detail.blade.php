@@ -16,6 +16,18 @@
                         {{ $data->competition->category->name }}
                     </h3>
 
+                    @if ($data->competition->name === 'Hadrah')
+                        <div class="mb-4 border-b pb-4">
+                            <label for="total_participants"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Peserta</label>
+                            <input type="text" name="total_participants" class="form-input w-full"
+                                placeholder="Masukkan Jumlah Peserta" required readonly
+                                value="{{ old('total_participants', $data->total_participants) }}">
+                            @error('total_participants')
+                                <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    @endif
                     @foreach ($data->participants as $i => $participant)
                         <div class="participant mb-6 border-b pb-4">
                             <input type="hidden" name="participants[{{ $i }}][id]" class="form-input w-full"
@@ -48,7 +60,8 @@
                                     Lahir</label>
                                 <input type="text" name="participants[{{ $i }}][birth_place]"
                                     class="form-input w-full" placeholder="Enter participant's birth place"
-                                    value="{{ old("participants.$i.birth_place", $participant->birth_place) }}" required readonly>
+                                    value="{{ old("participants.$i.birth_place", $participant->birth_place) }}" required
+                                    readonly>
                                 @error("participants.{$i}.birth_place")
                                     <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                                 @enderror
@@ -59,7 +72,8 @@
                                     Lahir</label>
                                 <input type="date" name="participants[{{ $i }}][birth_date]"
                                     class="form-input w-full"
-                                    value="{{ old("participants.$i.birth_date", $participant->birth_date) }}" required readonly>
+                                    value="{{ old("participants.$i.birth_date", $participant->birth_date) }}" required
+                                    readonly>
                                 @error("participants.{$i}.birth_date")
                                     <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                                 @enderror
