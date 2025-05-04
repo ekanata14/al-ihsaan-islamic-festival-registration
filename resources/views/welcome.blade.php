@@ -97,7 +97,7 @@
     </div>
     {{-- sponsorship-section-end --}}
     {{-- contact-us-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);" data-aos="fade-up"
+    <div class="flex flex-col justify-start items-center gap-4 px-4 mt-20" style="height: calc(100vh - 200px);" data-aos="fade-up"
         data-aos-duration="1000" id="contact-us">
         <h2 class="text-3xl font-bold text-center md:text-right">Contact Us
         </h2>
