@@ -86,6 +86,14 @@
             <img src="{{ asset('assets/sponsors/cosmo_salon_bu_hj_Nining.jpeg') }}" alt="cosmo_salon_bu_hj_Nining"
                 class="h-32 w-32 object-contain">
         </div>
+
+        <p class="text-center font-bold text-blue-500">Tertarik untuk menjadi sponsor acara ini? Silahkan Hubungi Kontak di bawah ini:</p>
+        <a href="https://wa.me/+6282340786912" target="_blank"
+            class="flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
+            <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp Logo" class="h-5 w-5">
+            Rayyan
+        </a>
+
     </div>
     {{-- sponsorship-section-end --}}
     {{-- contact-us-section-start --}}
@@ -96,38 +104,35 @@
         {{-- <div class="flex justify-center items-center h-full">
             <a href="{{ route('register') }}" class="btn-green">Daftar Sekarang!!!</a>
         </div> --}}
-        <p class="text-center text-gray-700">Hubungi kontak di bawah untuk informasi lebih lanjut:</p>
-        <ul class="mt-4 space-y-4 w-full max-w-md">
+        <p class="text-center text-gray-700">Hubungi kontak di bawah untuk informasi acara dan lomba:</p>
+        <ul class="mt-4 w-full max-w-md flex flex-col md:flex-row justify-center items-center gap-4">
             <li class="flex flex-col items-center">
-                <p class="font-semibold">Fauzan</p>
                 <a href="https://wa.me/+6281952476416" target="_blank"
                     class="flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
                     <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp Logo" class="h-5 w-5">
-                    Chat on WhatsApp
+                    Fauzan
                 </a>
             </li>
             <li class="flex flex-col items-center">
-                <p class="font-semibold">Atha</p>
                 <a href="https://wa.me/+6287858741020" target="_blank"
                     class="flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
                     <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp Logo" class="h-5 w-5">
-                    Chat on WhatsApp
+                    Atha
                 </a>
             </li>
             <li class="flex flex-col items-center">
-                <p class="font-semibold">Syawala</p>
                 <a href="https://wa.me/+6281237495718" target="_blank"
                     class="flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
                     <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp Logo" class="h-5 w-5">
-                    Chat on WhatsApp
+                    Syawala
                 </a>
             </li>
         </ul>
     </div>
     {{-- contact-us-section-end --}}
     {{-- khitanan-massal-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);" data-aos="fade-up"
-        data-aos-duration="1000" id="khitanan-massal">
+    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);"
+        data-aos="fade-up" data-aos-duration="1000" id="khitanan-massal">
         <h2 class="text-3xl font-bold text-center md:text-right">Khitanan Massal
         </h2>
         <div class="flex justify-center items-center h-full">
@@ -137,8 +142,8 @@
     </div>
     {{-- khitanan-massal-section-end --}}
     {{-- donor-darah-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);" data-aos="fade-up"
-        data-aos-duration="1000" id="donor-darah">
+    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);"
+        data-aos="fade-up" data-aos-duration="1000" id="donor-darah">
         <h2 class="text-3xl font-bold text-center md:text-right">Donor Darah
         </h2>
         {{-- <div class="grid grid-cols-4 gap-3 text-right">
