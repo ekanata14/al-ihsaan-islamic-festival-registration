@@ -73,8 +73,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Adzan',
-            'description' => 'Lomba Adzan',
+            'name' => 'Adzan',
+            'description' => 'Adzan',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 3,
@@ -84,8 +84,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Adzan',
-            'description' => 'Lomba Adzan',
+            'name' => 'Adzan',
+            'description' => 'Adzan',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 4,
@@ -95,8 +95,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Hafalan Juz 30',
-            'description' => 'Lomba Hafalan Juz 30',
+            'name' => 'Hafalan Juz 30',
+            'description' => 'Hafalan Juz 30',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 2,
@@ -106,8 +106,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Hafalan Juz 30',
-            'description' => 'Lomba Hafalan Juz 30',
+            'name' => 'Hafalan Juz 30',
+            'description' => 'Hafalan Juz 30',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 3,
@@ -117,8 +117,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Hafalan Juz 30',
-            'description' => 'Lomba Hafalan Juz 30',
+            'name' => 'Hafalan Juz 30',
+            'description' => ' Hafalan Juz 30',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 4,
@@ -128,8 +128,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Fashion Show',
-            'description' => 'Lomba Fashion Show',
+            'name' => 'Fashion Show',
+            'description' => 'Fashion Show',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 1,
@@ -139,8 +139,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Fashion Show',
-            'description' => 'Lomba Fashion Show',
+            'name' => 'Fashion Show',
+            'description' => 'Fashion Show',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 2,
@@ -150,8 +150,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Story Telling',
-            'description' => 'Lomba Story Telling',
+            'name' => 'Story Telling',
+            'description' => 'Story Telling',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 3,
@@ -161,8 +161,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Story Telling',
-            'description' => 'Lomba Story Telling',
+            'name' => 'Story Telling',
+            'description' => 'Story Telling',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 4,
@@ -172,8 +172,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Hadroh',
-            'description' => 'Lomba Hadroh',
+            'name' => 'Hadrah',
+            'description' => 'Hadrah',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Group',
             'category_id' => 6,
@@ -183,8 +183,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Doa Harian',
-            'description' => 'Lomba Doa Harian',
+            'name' => 'Doa Harian',
+            'description' => 'Doa Harian',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 1,
@@ -194,8 +194,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Cerdas Cermat',
-            'description' => 'Lomba Cerdas Cermat',
+            'name' => 'Cerdas Cermat',
+            'description' => 'Cerdas Cermat',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Group',
             'category_id' => 5,
@@ -205,8 +205,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Competition::create([
-            'name' => 'Lomba Mewarnai',
-            'description' => 'Lomba Mewarnai',
+            'name' => 'Mewarnai',
+            'description' => 'Mewarnai',
             'image_url' => 'images/logo_only.jpg',
             'type' => 'Individual',
             'category_id' => 1,
