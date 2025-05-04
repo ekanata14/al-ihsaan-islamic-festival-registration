@@ -41,6 +41,28 @@
                                 @enderror
                             </div>
                             <div class="mb-4">
+                                <label for="participants[{{ $i }}][birth_place]"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tempat
+                                    Lahir</label>
+                                <input type="text" name="participants[{{ $i }}][birth_place]"
+                                    class="form-input w-full" placeholder="Enter participant's birth place"
+                                    value="{{ old("participants.$i.birth_place", $participant->birth_place) }}" required readonly>
+                                @error("participants.{$i}.birth_place")
+                                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-4">
+                                <label for="participants[{{ $i }}][birth_date]"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
+                                    Lahir</label>
+                                <input type="date" name="participants[{{ $i }}][birth_date]"
+                                    class="form-input w-full"
+                                    value="{{ old("participants.$i.birth_date", $participant->birth_date) }}" required readonly>
+                                @error("participants.{$i}.birth_date")
+                                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-4">
                                 <label for="participants[{{ $i }}][nik]"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
                                 <input type="text" name="participants[{{ $i }}][nik]"

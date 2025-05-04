@@ -52,49 +52,88 @@
                         <a href="#donor-darah"
                             class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Donor
                             Darah</a>
-                    </li> 
+                    </li>
                     <li>
                         <a href="#sponsorship"
                             class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Sponsorship</a>
                     </li>
                     <li>
                         <a href="#contact-us"
-                            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact Us</a>
+                            class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact
+                            Us</a>
                     </li>
                     <li class="flex gap-2">
-                        <a href="{{ route('login') }}" class="btn-primary">Login</a>
-                        <a href="{{ route('register') }}" class="btn-green">Daftar</a>
+                        @if (auth()->user())
+                            @if (auth()->user()->role == 'admin')
+                                <a href="{{ route('admin.dashboard') }}" class="btn-primary">Dashboard</a>
+                            @else
+                                <a href="{{ route('user.dashboard') }}" class="btn-primary">Dashboard</a>
+                            @endif
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn-red">Logout</button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="btn-primary">Login</a>
+                            <a href="{{ route('register') }}" class="btn-green">Daftar</a>
+                        @endif
                     </li>
                 </ul>
             </div>
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function() {
                     const toggleButton = document.querySelector('[data-collapse-toggle]');
                     const navbar = document.getElementById('navbar-default');
+                    const body = document.body;
 
-                    toggleButton.addEventListener('click', function () {
+                    // Toggle navbar visibility
+                    toggleButton.addEventListener('click', function(event) {
                         navbar.classList.toggle('hidden');
                         navbar.classList.toggle('animate-slide-down');
+                    });
+
+                    // Close navbar when clicking outside
+                    body.addEventListener('click', function(event) {
+                        if (!navbar.contains(event.target) && !toggleButton.contains(event.target)) {
+                            if (!navbar.classList.contains('hidden')) {
+                                navbar.classList.add('animate-fade-out');
+                                setTimeout(() => {
+                                    navbar.classList.add('hidden');
+                                    navbar.classList.remove('animate-fade-out');
+                                }, 300); // Match the animation duration
+                            }
+                        }
                     });
                 });
 
                 // Add animation styles
                 const style = document.createElement('style');
                 style.innerHTML = `
-                    @keyframes slide-down {
-                        from {
-                            opacity: 0;
-                            transform: translateY(-20px);
-                        }
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                    .animate-slide-down {
-                        animation: slide-down 0.3s ease-out;
-                    }
-                `;
+        @keyframes slide-down {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fade-out {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        .animate-slide-down {
+            animation: slide-down 0.3s ease-out;
+        }
+        .animate-fade-out {
+            animation: fade-out 0.3s ease-out;
+        }
+    `;
                 document.head.appendChild(style);
             </script>
         </div>
