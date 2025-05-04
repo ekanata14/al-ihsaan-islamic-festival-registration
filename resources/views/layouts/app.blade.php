@@ -38,9 +38,9 @@
                 <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg flex justify-around py-4">
                     <a href="{{ route('user.dashboard') }}"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-blue-500 {{ request()->routeIs('user.dashboard*') ? 'text-blue-500' : '' }}">
-                        <svg class="w-6 h-6 {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : 'text-gray-800 dark:text-white' }}" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : 'text-gray-800 dark:text-white' }}"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            fill="currentColor" viewBox="0 0 24 24">
                             <path d="M11 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" />
                             <path fill-rule="evenodd"
                                 d="M9.896 3.051a2.681 2.681 0 0 1 4.208 0c.147.186.38.282.615.255a2.681 2.681 0 0 1 2.976 2.975.681.681 0 0 0 .254.615 2.681 2.681 0 0 1 0 4.208.682.682 0 0 0-.254.615 2.681 2.681 0 0 1-2.976 2.976.681.681 0 0 0-.615.254 2.682 2.682 0 0 1-4.208 0 .681.681 0 0 0-.614-.255 2.681 2.681 0 0 1-2.976-2.975.681.681 0 0 0-.255-.615 2.681 2.681 0 0 1 0-4.208.681.681 0 0 0 .255-.615 2.681 2.681 0 0 1 2.976-2.975.681.681 0 0 0 .614-.255ZM12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
@@ -49,17 +49,21 @@
                                 d="M5.395 15.055 4.07 19a1 1 0 0 0 1.264 1.267l1.95-.65 1.144 1.707A1 1 0 0 0 10.2 21.1l1.12-3.18a4.641 4.641 0 0 1-2.515-1.208 4.667 4.667 0 0 1-3.411-1.656Zm7.269 2.867 1.12 3.177a1 1 0 0 0 1.773.224l1.144-1.707 1.95.65A1 1 0 0 0 19.915 19l-1.32-3.93a4.667 4.667 0 0 1-3.4 1.642 4.643 4.643 0 0 1-2.53 1.21Z" />
                         </svg>
 
-                        <span class="text-sm {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : '' }}">Daftar Lomba</span>
+                        <span class="text-sm {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : '' }}">Daftar
+                            Lomba</span>
                     </a>
                     <a href="{{ route('user.participants') }}"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-red-500 {{ request()->routeIs('user.participants*') ? 'text-red-500' : '' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M5.121 17.804A3.5 3.5 0 018.5 16h7a3.5 3.5 0 013.379 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 11V9a3 3 0 00-6 0v2" />
                         </svg>
-                        <span class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta Anda</span>
+                        <span
+                            class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta
+                            Anda</span>
                     </a>
                     <button id="contactPerson"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-green-500">
@@ -123,176 +127,6 @@
                         contactModal.classList.add('hidden');
                     });
                 </script>
-            @endif
-            @if (auth()->user()->role == 'admin')
-                <button id="scanQrCode"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fixed bottom-8 right-8 shadow-lg">
-                    Scan QR Code
-                </button>
-
-                <!-- Modal -->
-                <div id="qrModal"
-                    class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-                    <div class="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-semibold">Scan QR Code</h2>
-                            <button id="closeQrModal" class="text-gray-500 hover:text-gray-700">&times;</button>
-                        </div>
-                        <video id="qrVideo" class="w-full border border-gray-300 rounded"></video>
-                    </div>
-                </div>
-
-                <script>
-                    const scanQrCodeButton = document.getElementById('scanQrCode');
-                    const qrModal = document.getElementById('qrModal');
-                    const closeQrModalButton = document.getElementById('closeQrModal');
-                    const video = document.getElementById('qrVideo');
-                    let qrScanner;
-
-                    scanQrCodeButton.addEventListener('click', async () => {
-                        qrModal.classList.remove('hidden');
-
-                        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Camera access is not supported by your browser.',
-                                showConfirmButton: true
-                            });
-                            return;
-                        }
-
-                        try {
-                            const stream = await navigator.mediaDevices.getUserMedia({
-                                video: {
-                                    facingMode: 'environment'
-                                }
-                            });
-                            video.srcObject = stream;
-                            video.setAttribute('playsinline', true); // Required for iOS
-                            video.play();
-
-                            qrScanner = new QrScanner(video, async result => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'QR Code Scanned',
-                                    text: `QR Code Data: ${result}`,
-                                    showConfirmButton: true
-                                });
-
-                                try {
-                                    const response = await fetch(
-                                        '{{ route('admin.dashboard.check-in.store') }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                            },
-                                            body: JSON.stringify({
-                                                registration_number: result
-                                            })
-                                        });
-
-                                    const data = await response.json();
-
-                                    if (data.success) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Success',
-                                            text: data.message,
-                                            showConfirmButton: true
-                                        }).then(() => {
-                                            location.reload();
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: data.message || 'An error occurred.',
-                                            showConfirmButton: true
-                                        });
-                                    }
-                                } catch (error) {
-                                    console.error('Error processing QR code:', error);
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error',
-                                        text: 'An error occurred while processing the QR code.',
-                                        showConfirmButton: true
-                                    });
-                                }
-
-                                qrScanner.stop();
-                                video.srcObject.getTracks().forEach(track => track.stop());
-                                qrModal.classList.add('hidden');
-                            });
-                            qrScanner.start();
-                        } catch (error) {
-                            console.error('Error accessing camera:', error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Unable to access the camera.',
-                                showConfirmButton: true
-                            });
-                        }
-                    });
-
-                    closeQrModalButton.addEventListener('click', () => {
-                        if (qrScanner) {
-                            qrScanner.stop();
-                        }
-                        if (video.srcObject) {
-                            video.srcObject.getTracks().forEach(track => track.stop());
-                        }
-                        qrModal.classList.add('hidden');
-                    });
-
-                    class QrScanner {
-                        constructor(video, onDecode) {
-                            this.video = video;
-                            this.onDecode = onDecode;
-                            this.canvas = document.createElement('canvas');
-                            this.context = this.canvas.getContext('2d');
-                            this.active = false;
-                        }
-
-                        start() {
-                            this.active = true;
-                            this.scan();
-                        }
-
-                        stop() {
-                            this.active = false;
-                            const stream = this.video.srcObject;
-                            if (stream) {
-                                stream.getTracks().forEach(track => track.stop());
-                            }
-                            this.video.srcObject = null;
-                        }
-
-                        scan() {
-                            if (!this.active) return;
-
-                            if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
-                                this.canvas.width = this.video.videoWidth;
-                                this.canvas.height = this.video.videoHeight;
-                                this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
-
-                                const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-                                const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-                                if (code) {
-                                    this.onDecode(code.data);
-                                    return;
-                                }
-                            }
-
-                            requestAnimationFrame(() => this.scan());
-                        }
-                    }
-                </script>
-                <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.min.js"></script>
             @endif
         </main>
 
