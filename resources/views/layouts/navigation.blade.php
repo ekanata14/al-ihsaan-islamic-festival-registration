@@ -155,12 +155,12 @@
                                         });
 
                                         qrScanner = new QrScanner(video, async result => {
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'QR Code Scanned',
-                                                text: `QR Code Data: ${result}`,
-                                                showConfirmButton: true
-                                            });
+                                            // Swal.fire({
+                                            //     icon: 'success',
+                                            //     title: 'QR Code Scanned',
+                                            //     text: `QR Code Data: ${result}`,
+                                            //     showConfirmButton: true
+                                            // });
 
                                             try {
                                                 const response = await fetch(
