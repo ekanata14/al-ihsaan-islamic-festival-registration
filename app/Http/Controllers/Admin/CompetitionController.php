@@ -68,7 +68,7 @@ class CompetitionController extends Controller
             //     // Save the relative path to the file in the database
             //     $validatedData['image_url'] = str_replace('public/', 'storage/', $imagePath);
             // }
-            $validatedData['image_url'] = $validatedData['image_url']->store('certificates', 'public');
+            $validatedData['image_url'] = $validatedData['image_url']->store('competitions', 'public');
 
             Competition::create($validatedData);
             return redirect()->route('admin.dashboard.competition')->with('success', 'Competition created successfully.');
@@ -146,7 +146,7 @@ class CompetitionController extends Controller
                 }
 
                 // Store the new image file
-                $validatedData['image_url'] = $request->file('image_url')->store('certificates', 'public');
+                $validatedData['image_url'] = $request->file('image_url')->store('competitions', 'public');
             }
 
             // Update the competition record

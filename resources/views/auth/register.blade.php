@@ -17,10 +17,18 @@
                 required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-        
+
+        <!-- Phone Number -->
+        <div class="mt-4">
+            <x-input-label for="phone_number" :value="__('No. WhatsApp')" />
+            <x-text-input id="phone_number" class="block mt-1 w-full" type="text" name="phone_number"
+                :value="old('phone_number', '+62')" required autocomplete="phone_number" />
+            <span class="text-red-500 text-xs">*Masukkan dengan format seperti berikut: +62xxx</span>
+            <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
+        </div>
         <!-- Group -->
         <div class="mt-4 relative">
-            <x-input-label for="group" :value="__('Group')" />
+            <x-input-label for="group" :value="__('TPQ')" />
             <x-text-input id="group" class="block mt-1 w-full" type="text" name="group" :value="old('group')"
                 required autocomplete="off" />
             <x-input-error :messages="$errors->get('group')" class="mt-2" />
@@ -28,6 +36,7 @@
                 class="absolute z-10 bg-white border border-gray-300 mt-1 rounded-md shadow-md hidden w-full">
                 <!-- Suggestions will be dynamically added here -->
             </ul>
+            <span class="text-red-500 text-xs">*Jika nama TPQ tidak ada, maka TPQ akan terdaftar secara otomatis</span>
             <div id="loading-spinner" class="hidden mt-2 text-center">
                 <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">

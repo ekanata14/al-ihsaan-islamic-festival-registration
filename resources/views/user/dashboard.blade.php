@@ -4,22 +4,25 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"> --}}
             {{-- </div> --}}
-            <div class="py-4 px-4 sm:px-0">
-                <a href="{{ route('user.dashboard') }}" class="{{ $category_id == 0 ? 'btn-primary' : 'btn-secondary' }}">Semua Kategori</a>
-                @forelse ($categories as $item)
-                    <a href="{{ route('user.dashboard.competitions.category', $item->id) }}"
-                        class="{{ $item->id == $category_id ? 'btn-primary' : 'btn-secondary' }}">
-                        {{ $item->name }}
-                    </a>
-                @empty
-                @endforelse
+            <div class="py-4 px-4 sm:px-0 overflow-x-auto">
+                <div class="inline-flex gap-2">
+                    <a href="{{ route('user.dashboard') }}" class="{{ $category_id == 0 ? 'btn-primary' : 'btn-secondary' }}">Semua Kategori</a>
+                    @forelse ($categories as $item)
+                        <a href="{{ route('user.dashboard.competitions.category', $item->id) }}"
+                            class="{{ $item->id == $category_id ? 'btn-primary' : 'btn-secondary' }}">
+                            {{ $item->name }}
+                        </a>
+                    @empty
+                    @endforelse
+                </div>
             </div>
 
             <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-4 sm:px-0">
                 @forelse ($competitions as $item)
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <a href="#">
-                            <img class="rounded-t-lg" src="{{ asset('storage/' . $item->image_url) }}" alt="" />
+                            {{-- <img class="rounded-t-lg" src="{{ asset('storage/' . $item->image_url) }}" alt="" /> --}}
+                <img class="rounded-t-lg" src="{{ asset('assets/images/logo_only.png') }}" alt="{{ $item->name }}" />
                         </a>
                         <div class="p-5 flex flex-col gap-4">
                             <a href="#">

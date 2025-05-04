@@ -18,9 +18,17 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 // Helper Controller
 use App\Http\Controllers\HelperController;
 
+// Models
+use App\Models\Competition;
+
 
 Route::get('/', function () {
-    return view('welcome');
+    $viewData  = [
+        'title' => 'Home',
+        'description' => 'Welcome to the home page.',
+        'competitions' => Competition::where('status', 'open')->latest()->get(),
+    ];
+    return view('welcome', $viewData);
 });
 Route::get('/image/{path}', [HelperController::class, 'getImage'])->name('get.image');
 Route::get('/group/getAllGroups', [AdminGroupController::class, 'getAllGroups'])->name('group.getAllGroups');
