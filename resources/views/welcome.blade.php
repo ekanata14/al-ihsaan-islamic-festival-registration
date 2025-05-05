@@ -2,15 +2,15 @@
 @section('content')
     {{-- hero-section-start --}}
     <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 px-4" style="height: calc(100vh - 200px);"
-        data-aos="fade-left" data-aos-duration="1000">
+        data-aos="fade-up" data-aos-duration="1000">
         <div class="flex flex-col justify-end md:justify-center items-center md:items-center gap-3 h-full"
-            data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
+            data-aos="fade-up" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
             {{-- <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="h-48 md:h-fit w-full md:w-fit"
                 data-aos="fade-up" data-aos-duration="1000"> --}}
             <img src="{{ asset('assets/images/logo.png') }}" alt="logo"
                 class="h-48 md:h-fit w-full md:w-fit object-contain" data-aos="fade-up" data-aos-duration="1000">
         </div>
-        <div class="flex flex-col justify-center items-start gap-3 text-right" data-aos="fade-up" data-aos-duration="1000"
+        <div class="flex flex-col justify-center items-center md:items-start gap-3 text-right" data-aos="fade-up" data-aos-duration="1000"
             data-aos-delay="1000">
             <h1 class="text-2xl md:text-4xl font-bold text-center md:text-left" data-aos="fade-up" data-aos-duration="1000">
                 Merajut Ukhuwah, Menggapai Berkah
@@ -19,7 +19,8 @@
                 massal, dan
                 donor darah penuh berkah!
                 Gabung sekarang dan jadi bagian dari generasi muda yang berprestasi, berakhlak, dan peduli sesama! 🌟</p>
-            <div class="flex gap-4 justify-start">
+            <p class="text-center text-red-500 md:text-justify font-bold">*Peserta khusus TPQ Domisili Denpasar</p>
+            <div class="flex gap-4 justify-center md:justify-start">
                 <a href="{{ route('register') }}" class="btn-green flex justify-center items-center">
                     Daftar Sekarang!
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -50,7 +51,7 @@
         data-aos-duration="1000" id="lomba">
         <h2 class="text-3xl font-bold text-center md:text-right">Lomba-Lomba
         </h2>
-        <div class="grid grid-cols-4 gap-3 text-right">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-right">
             @forelse ($competitions->unique('name') as $item)
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <a href="#">
