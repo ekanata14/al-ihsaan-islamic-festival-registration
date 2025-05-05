@@ -62,8 +62,6 @@
                         <a href="#">
                             <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 {{ $item->name }}</h5>
-                            <h6 class="text-md font-medium tracking-tight text-gray-900 dark:text-white mt-1">
-                                Total Peserta: {{ $item->registrations->count() }}</h6>
                         </a>
                         <a href="{{ route('register') }}" class="btn-primary flex justify-center items-center">
                             Daftar!
