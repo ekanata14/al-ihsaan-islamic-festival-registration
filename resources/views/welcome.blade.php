@@ -3,15 +3,15 @@
     {{-- hero-section-start --}}
     <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 px-4" style="height: calc(100vh - 200px);"
         data-aos="fade-up" data-aos-duration="1000">
-        <div class="flex flex-col justify-end md:justify-center items-center md:items-center gap-3 h-full"
-            data-aos="fade-up" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
+        <div class="flex flex-col justify-end md:justify-center items-center md:items-center gap-3 h-full" data-aos="fade-up"
+            data-aos-easing="ease-out-cubic" data-aos-duration="2000">
             {{-- <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="h-48 md:h-fit w-full md:w-fit"
                 data-aos="fade-up" data-aos-duration="1000"> --}}
             <img src="{{ asset('assets/images/logo.png') }}" alt="logo"
                 class="h-48 md:h-fit w-full md:w-fit object-contain" data-aos="fade-up" data-aos-duration="1000">
         </div>
-        <div class="flex flex-col justify-center items-center md:items-start gap-3 text-right" data-aos="fade-up" data-aos-duration="1000"
-            data-aos-delay="1000">
+        <div class="flex flex-col justify-center items-center md:items-start gap-3 text-right" data-aos="fade-up"
+            data-aos-duration="1000" data-aos-delay="1000">
             <h1 class="text-2xl md:text-4xl font-bold text-center md:text-left" data-aos="fade-up" data-aos-duration="1000">
                 Merajut Ukhuwah, Menggapai Berkah
             </h1>
@@ -21,23 +21,29 @@
                 Gabung sekarang dan jadi bagian dari generasi muda yang berprestasi, berakhlak, dan peduli sesama! 🌟</p>
             <p class="text-center text-red-500 md:text-justify font-bold">*Peserta khusus TPQ Domisili Denpasar</p>
             <div class="flex gap-4 justify-center md:justify-start">
-                <a href="{{ route('register') }}" class="btn-green flex justify-center items-center">
-                    Daftar Sekarang!
-                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
-                            clip-rule="evenodd" />
-                        <path fill-rule="evenodd"
-                            d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
+                @if (auth()->user())
+                    <a href="{{ route('register') }}" class="btn-green flex justify-center items-center">
+                        Daftar Sekarang!
+                        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
+                                clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                @else
+                    <a href="{{ route('register') }}" class="btn-primary flex justify-center items-center">
+                        Dashboard
+                    </a>
+                @endif
                 <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing"
                     class="btn-red flex justify-center items-center">
                     Guidebook
-                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4" />
                     </svg>
