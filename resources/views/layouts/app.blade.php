@@ -33,6 +33,35 @@
         <!-- Page Content -->
         <main>
             @yield('content')
+            @if (auth()->user()->role == 'user')
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (!localStorage.getItem('whatsappModalShown')) {
+                            setTimeout(() => {
+                                Swal.fire({
+                                    title: 'Bergabung dengan Grup WhatsApp Kami',
+                                    text: 'Klik tombol di bawah ini untuk bergabung dengan grup WhatsApp kami dan dapatkan informasi serta pembaruan terkini.',
+                                    icon: 'info',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Join Now',
+                                    cancelButtonText: 'Close',
+                                    customClass: {
+                                        confirmButton: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded',
+                                        cancelButton: 'bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.open('https://chat.whatsapp.com/Hi9IYZYEknYCMpF5mXayuN',
+                                            '_blank');
+                                    }
+                                });
+                                localStorage.setItem('whatsappModalShown', 'true');
+                            }, 0); // Show modal immediately
+                        }
+                    });
+                </script>
+            @endif
             <div class="mb-20"></div>
             @if (auth()->user()->role == 'user')
                 <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg flex justify-around py-4">
@@ -64,6 +93,16 @@
                         <span
                             class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta
                             Anda</span>
+                    </a>
+                    <a href="https://chat.whatsapp.com/Hi9IYZYEknYCMpF5mXayuN" target="_blank"
+                        class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-green-500">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 0C5.372 0 0 5.373 0 12c0 2.123.553 4.193 1.6 6.033L0 24l6.15-1.567C8.007 23.448 10.003 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm6.16 17.19c-.25.7-1.45 1.34-2.01 1.43-.53.08-1.17.12-1.89-.12-.44-.15-1.01-.33-1.74-.65-3.07-1.33-5.07-4.42-5.23-4.63-.15-.2-1.25-1.66-1.25-3.17 0-1.5.79-2.24 1.07-2.55.28-.31.62-.39.83-.39.2 0 .42.01.6.01.19 0 .45-.07.7.54.25.61.85 2.1.92 2.25.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.18-.31.4-.45.54-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.77.84 2.08.99.31.15.52.23.6.36.08.13.08.74-.18 1.44z" />
+                        </svg>
+                        WA Group
                     </a>
                     <button id="contactPerson"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-green-500">

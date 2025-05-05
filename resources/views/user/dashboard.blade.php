@@ -9,7 +9,7 @@
                     <a href="{{ route('user.dashboard') }}" class="{{ $category_id == 0 ? 'btn-primary' : 'btn-secondary' }}">Semua Kategori</a>
                     @forelse ($categories as $item)
                         <a href="{{ route('user.dashboard.competitions.category', $item->id) }}"
-                            class="{{ $item->id == $category_id ? 'btn-primary' : 'btn-secondary' }}">
+                            class="{{ $item->id == $category_id ? 'btn-primary whitespace-nowrap' : 'btn-secondary whitespace-nowrap' }} text-xs">
                             {{ $item->name }}
                         </a>
                     @empty
