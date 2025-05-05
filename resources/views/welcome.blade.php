@@ -32,6 +32,15 @@
                             clip-rule="evenodd" />
                     </svg>
                 </a>
+                <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing"
+                    class="btn-red flex justify-center items-center">
+                    Guidebook
+                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4" />
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
@@ -87,7 +96,8 @@
                 class="h-32 w-32 object-contain">
         </div>
 
-        <p class="text-center font-bold text-blue-500">Tertarik untuk menjadi sponsor acara ini? Silahkan Hubungi Kontak di bawah ini:</p>
+        <p class="text-center font-bold text-blue-500">Tertarik untuk menjadi sponsor acara ini? Silahkan Hubungi Kontak di
+            bawah ini:</p>
         <a href="https://wa.me/+6282340786912" target="_blank"
             class="flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center">
             <img src="{{ asset('assets/icons/whatsapp.png') }}" alt="WhatsApp Logo" class="h-5 w-5">
@@ -97,8 +107,8 @@
     </div>
     {{-- sponsorship-section-end --}}
     {{-- contact-us-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4 mt-20" style="height: calc(100vh - 200px);" data-aos="fade-up"
-        data-aos-duration="1000" id="contact-us">
+    <div class="flex flex-col justify-start items-center gap-4 px-4 mt-20" style="height: calc(100vh - 200px);"
+        data-aos="fade-up" data-aos-duration="1000" id="contact-us">
         <h2 class="text-3xl font-bold text-center md:text-right">Contact Us
         </h2>
         {{-- <div class="flex justify-center items-center h-full">
