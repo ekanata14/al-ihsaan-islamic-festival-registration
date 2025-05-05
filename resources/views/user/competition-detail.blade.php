@@ -47,7 +47,6 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
                         @if ($data->status == 'Open')
-                            {{ now()->between($data->registration_start, $data->registration_end) }}
                             <a href="{{ route('user.dashboard.competitions.registration', $data->id) }}"
                                 class="btn-primary text-center flex items-center justify-center gap-2">
                                 Tambah Peserta
@@ -72,8 +71,8 @@
                                 </svg>
                             </button>
                         @endif
-                        <a href="#" class="btn-red text-center flex items-center justify-center gap-2">
-                            Download Modul Umum
+                        <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing" class="btn-red text-center flex items-center justify-center gap-2">
+                            Download Guidebook
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
