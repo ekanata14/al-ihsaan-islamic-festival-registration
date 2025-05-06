@@ -21,7 +21,7 @@
                 Gabung sekarang dan jadi bagian dari generasi muda yang berprestasi, berakhlak, dan peduli sesama! 🌟</p>
             <p class="text-center text-red-500 md:text-justify font-bold">*Peserta khusus TPQ Domisili Denpasar</p>
             <div class="flex gap-4 justify-center md:justify-start">
-                @if (auth()->user())
+                @if (auth()->check())
                     <a href="{{ route('register') }}" class="btn-green flex justify-center items-center">
                         Daftar Sekarang!
                         <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
