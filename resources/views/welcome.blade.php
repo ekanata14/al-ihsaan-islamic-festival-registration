@@ -22,6 +22,16 @@
             <p class="text-center text-red-500 md:text-justify font-bold">*Peserta khusus TPQ Domisili Denpasar</p>
             <div class="flex gap-4 justify-center md:justify-start">
                 @if (auth()->check())
+                    @if (auth()->user()->role == 'admin')
+                        <a href="{{ route('admin.dashboard') }}" class="btn-primary flex justify-center items-center">
+                            Dashboard
+                        </a>
+                    @elseif(auth()->user()->role == 'user')
+                        <a href="{{ route('user.dashboard') }}" class="btn-primary flex justify-center items-center">
+                            Dashboard
+                        </a>
+                    @endif
+                @else
                     <a href="{{ route('register') }}" class="btn-green flex justify-center items-center">
                         Daftar Sekarang!
                         <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -33,10 +43,6 @@
                                 d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z"
                                 clip-rule="evenodd" />
                         </svg>
-                    </a>
-                @else
-                    <a href="{{ route('register') }}" class="btn-primary flex justify-center items-center">
-                        Dashboard
                     </a>
                 @endif
                 <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing"
