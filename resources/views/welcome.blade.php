@@ -102,9 +102,10 @@
         data-aos-duration="1000" id="sponsorship">
         <h2 class="text-3xl font-bold text-center md:text-right mb-10">Sponsorship
         </h2>
-        <div class="flex justify-center items-center h-full">
-            <img src="{{ asset('assets/sponsors/cosmo_salon_bu_hj_Nining.jpeg') }}" alt="cosmo_salon_bu_hj_Nining"
-                class="h-32 w-32 object-contain">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 justify-center items-center h-full gap-2 md:gap-4">
+            @foreach ($sponsors as $sponsor)
+                <img src="{{ asset($sponsor->img_url) }}" alt="{{ $sponsor->name }}" class="h-32 w-32 object-contain">
+            @endforeach
         </div>
 
         <p class="text-center font-bold text-blue-500">Tertarik untuk menjadi sponsor acara ini? Silahkan Hubungi Kontak di

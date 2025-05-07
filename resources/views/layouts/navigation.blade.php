@@ -33,6 +33,9 @@
                         <x-nav-link :href="route('admin.dashboard.check-in')" :active="request()->routeIs('admin.dashboard.check-in*')">
                             {{ __('Check In') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.dashboard.sponsor')" :active="request()->routeIs('admin.dashboard.sponsor*')">
+                            {{ __('Sponsor') }}
+                        </x-nav-link>
                     </div>
                     <!-- Bottom Navbar for Mobile -->
                     <div

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
+use App\Http\Controllers\Admin\SponsorController as AdminSponsorController;
 
 // User Controller
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\HelperController;
 
 // Models
 use App\Models\Competition;
+use App\Models\Sponsor;
 
 
 Route::get('/', function () {
@@ -27,6 +29,7 @@ Route::get('/', function () {
         'title' => 'Home',
         'description' => 'Welcome to the home page.',
         'competitions' => Competition::where('status', 'open')->latest()->get(),
+        'sponsors' => Sponsor::all(),
     ];
     return view('welcome', $viewData);
 });
@@ -73,13 +76,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Check In Route
     Route::get('/admin-dashboard/check-in', [AdminCheckInController::class, 'index'])->name('admin.dashboard.check-in');
     Route::post('/admin-dashboard/check-in/store', [AdminCheckInController::class, 'checkin'])->name('admin.dashboard.check-in.store');
+    // Admin Sponsor Route
+    Route::get('/admin-dashboard/sponsor', [AdminSponsorController::class, 'index'])->name('admin.dashboard.sponsor');
+    Route::get('/admin-dashboard/sponsor/create', [AdminSponsorController::class, 'create'])->name('admin.dashboard.sponsor.create');
+    Route::post('/admin-dashboard/sponsor/store', [AdminSponsorController::class, 'store'])->name('admin.dashboard.sponsor.store');
+    Route::get('/admin-dashboard/sponsor/edit/{id}', [AdminSponsorController::class, 'edit'])->name('admin.dashboard.sponsor.edit');
+    Route::put('/admin-dashboard/sponsor/update', [AdminSponsorController::class, 'update'])->name('admin.dashboard.sponsor.update');
+    Route::delete('/admin-dashboard/sponsor/delete', [AdminSponsorController::class, 'destroy'])->name('admin.dashboard.sponsor.destroy');
 
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/user-dashboard/registration', [UserDashboardController::class, 'index'])->name('user.dashboard.registration');
     Route::get('/user-dashboard/competitions/{id}', [UserDashboardController::class, 'getCompetitionByCategory'])->name('user.dashboard.competitions.category');
     Route::get('/user-dashboard/competitions/detail/{id}', [UserDashboardController::class, 'competitionDetail'])->name('user.dashboard.competitions.detail');
-    Route::get('/user-dashboard/competitions/registration/{id}', [UserDashboardController::class, 'competitionRegistration'])->name('user.dashboard.competitions.registration'); 
+    Route::get('/user-dashboard/competitions/registration/{id}', [UserDashboardController::class, 'competitionRegistration'])->name('user.dashboard.competitions.registration');
     Route::get('/user-dashboard/registrations/', [UserDashboardController::class, 'registeredParticipants'])->name('user.participants');
     Route::get('/user-dashboard/registrations/detail/{id}', [UserDashboardController::class, 'competitionRegistrationDetail'])->name('user.participants.detail');
     Route::get('/user-dashboard/registrations/qr/{id}', [UserDashboardController::class, 'competitionRegistrationQR'])->name('user.participants.qr-code');
