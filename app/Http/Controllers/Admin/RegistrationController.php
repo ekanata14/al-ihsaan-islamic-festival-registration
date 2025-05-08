@@ -19,7 +19,7 @@ class RegistrationController extends Controller
     public function index()
     {
         $viewData = [
-            'title' => 'Registrations',
+            'title' => 'Khitan Registrations',
             'datas' => Registration::paginate(10)
         ];
 
