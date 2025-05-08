@@ -71,14 +71,14 @@
 
         <!-- Photo URL -->
         <div class="mt-4">
-            <x-input-label for="photo_url" :value="__('Photo')" />
+            <x-input-label for="photo_url" :value="__('Foto Anak')" />
             <input id="photo_url" class="block mt-1 w-full" type="file" name="photo_url" accept="image/*" required />
             <x-input-error :messages="$errors->get('photo_url')" class="mt-2" />
         </div>
 
         <!-- Certificate URL -->
         <div class="mt-4">
-            <x-input-label for="certificate_url" :value="__('Certificate')" />
+            <x-input-label for="certificate_url" :value="__('Akta Kelahiran')" />
             <input id="certificate_url" class="block mt-1 w-full" type="file" name="certificate_url" accept="image/*"
                 required />
             <x-input-error :messages="$errors->get('certificate_url')" class="mt-2" />

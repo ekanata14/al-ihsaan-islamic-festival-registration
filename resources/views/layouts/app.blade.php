@@ -44,7 +44,7 @@
                                     text: 'Klik tombol di bawah ini untuk bergabung dengan grup WhatsApp kami dan dapatkan informasi serta pembaruan terkini.',
                                     icon: 'info',
                                     showCancelButton: true,
-                                    confirmButtonText: 'Join Now',
+                                    confirmButtonText: 'Grup Lomba',
                                     cancelButtonText: 'Close',
                                     customClass: {
                                         confirmButton: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded',
