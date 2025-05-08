@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Competition;
 use App\Models\Group;
 use App\Models\Registration;
+use App\Models\KhitanRegistration;
 
 class DashboardController extends Controller
 {
@@ -20,6 +21,7 @@ class DashboardController extends Controller
             'totalCompetitions' => Competition::count(),
             'totalGroups' => Group::count(),
             'totalRegistrations' => Registration::count(),
+            'totalRegistrationKhitans' => KhitanRegistration::count(),
         ];
 
         return view("admin.dashboard", $viewData);

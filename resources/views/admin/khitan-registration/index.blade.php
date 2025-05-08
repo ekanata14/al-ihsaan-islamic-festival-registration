@@ -29,14 +29,31 @@
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->domicile }}</td>
+
                                         <td class="px-6 py-4">
-                                            <a href="{{ asset('storage/' . $item->certificate_url) }}" target="_blank"
-                                                class="btn-primary">View Certificate</a>
+                                            <button type="button" class="btn-primary"
+                                                onclick="openModal('{{ asset('storage/' . $item->certificate_url) }}', 'Certificate')">
+                                                View Certificate
+                                            </button>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="{{ asset('storage/' . $item->photo_url) }}" target="_blank"
-                                                class="btn-primary">View Photo</a>
+                                            <button type="button" class="btn-primary"
+                                                onclick="openModal('{{ asset('storage/' . $item->photo_url) }}', 'Photo')">
+                                                View Photo
+                                            </button>
                                         </td>
+                                        <script>
+                                            function openModal(imageUrl, title) {
+                                                document.getElementById('modalImage').src = imageUrl;
+                                                document.getElementById('modalTitle').textContent = title;
+                                                document.getElementById('imageModal').classList.remove('hidden');
+                                            }
+
+                                            function closeModal() {
+                                                document.getElementById('imageModal').classList.add('hidden');
+                                                document.getElementById('modalImage').src = '';
+                                            }
+                                        </script>
                                         <td class="px-6 py-4">
                                             <span
                                                 class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'checkin' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
@@ -70,6 +87,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="imageModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full relative">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 id="modalTitle" class="text-lg font-semibold">Title</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <img id="modalImage" src="" alt="Preview" class="w-full max-h-[75vh] object-contain">
             </div>
         </div>
     </div>
