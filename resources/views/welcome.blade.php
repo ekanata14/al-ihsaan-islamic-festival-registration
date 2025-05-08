@@ -1,7 +1,7 @@
 @extends('layouts.landing')
 @section('content')
     {{-- hero-section-start --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 px-4" style="height: calc(100vh - 200px);"
+    <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 px-4 h-screen"
         data-aos="fade-up" data-aos-duration="1000">
         <div class="flex flex-col justify-end md:justify-center items-center md:items-center gap-3 h-full" data-aos="fade-up"
             data-aos-easing="ease-out-cubic" data-aos-duration="2000">
