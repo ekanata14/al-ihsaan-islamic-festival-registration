@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode as QRCode;
 
 // Models
 use App\Models\KhitanRegistration;
@@ -86,9 +87,12 @@ class KhitanRegistrationController extends Controller
     public function edit(string $id)
     {
         $khitanRegistration = KhitanRegistration::findOrFail($id);
+        // Generate QR code based on the registration ID
+        $qrCode = QRCode::size(200)->generate($khitanRegistration->registration_number);
         $viewData = [
             'title' => 'Edit Khitan Registration',
             'data' => $khitanRegistration,
+            'qrCode' => $qrCode,
         ];
         return view('admin.khitan-registration.edit', $viewData);
     }
@@ -138,18 +142,15 @@ class KhitanRegistrationController extends Controller
      */
     public function destroy(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|integer|exists:khitan_registrations,id',
-        ]);
-
         try {
             DB::beginTransaction();
-            $khitanRegistration = KhitanRegistration::findOrFail($validatedData['id']);
+            $khitanRegistration = KhitanRegistration::findOrFail($request->id);
             $khitanRegistration->delete();
             DB::commit();
 
-            return redirect()->route('khitan-registration.index')->with('success', 'Registration deleted successfully.');
+            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration deleted successfully.');
         } catch (\Exception $e) {
+            return $e->getMessage();
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Failed to delete registration: ' . $e->getMessage()]);
         }

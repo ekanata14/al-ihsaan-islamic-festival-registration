@@ -3,6 +3,20 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-5 flex flex-col gap-4 max-w-md">
+                    <a href="#">
+                        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            Daftar Khitan</h5>
+                    </a>
+                    <a href="{{ route('khitan.registration.person') }}" class="btn-primary flex justify-center items-center">
+                        Daftar
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -12,6 +26,7 @@
                                     <th scope="col" class="px-6 py-3">Actions</th>
                                     <th scope="col" class="px-6 py-3">Registration Number</th>
                                     <th scope="col" class="px-6 py-3">Wali</th>
+                                    <th scope="col" class="px-6 py-3">Nama Anak</th>
                                     <th scope="col" class="px-6 py-3">Domisili & Tempat Tinggal</th>
                                     <th scope="col" class="px-6 py-3">Sanur?</th>
                                     <th scope="col" class="px-6 py-3">Akta</th>
@@ -41,6 +56,7 @@
                                         </td>
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->domicile }}</td>
                                         <td class="px-6 py-4">
                                             <span
