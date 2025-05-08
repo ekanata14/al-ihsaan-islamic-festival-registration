@@ -17,6 +17,17 @@
                         {{-- <h2 class="text-md">IDR. {{ number_format($product->harga, 0, ',', '.') }}</h2> --}}
                         <p>{{ $data->description }}</p>
                     </div>
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        Lomba berikut akan
+                        <span class="font-bold"> berjalan bersamaan:</span>
+                        <ul class="list-disc pl-5">
+                            <li>Doa Harian</li>
+                            <li>Hafalan Juz 30</li>
+                            <li>Mewarnai</li>
+                            <li>Adzan</li>
+                        </ul>
+                    </div>
                     <h3 class="text-xl font-bold text-center">Peserta Anda</h3>
                     <div class="overflow-y-auto" style="max-height: 200px">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -71,7 +82,8 @@
                                 </svg>
                             </button>
                         @endif
-                        <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing" class="btn-red text-center flex items-center justify-center gap-2">
+                        <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing"
+                            class="btn-red text-center flex items-center justify-center gap-2">
                             Download Guidebook
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"

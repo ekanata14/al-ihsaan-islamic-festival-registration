@@ -87,6 +87,58 @@ class DashboardController extends Controller
 
     public function competitionRegistrationStore(Request $request)
     {
+        $startTogetherCompetitionId = [1, 2, 3, 4, 5, 11, 13];
+        $niks = collect($request->participants)->pluck('nik');
+        $competitionId = Participant::whereIn('nik', $niks)->first();
+
+        // Ambil competition yang sedang ingin didaftarkan
+        $competitionBeingRegistered = $request->competition_id;
+
+        if ($competitionId != null) {
+            $registeredCompetitionId = $competitionId->registration->competition_id;
+
+            // Jika sama-sama startTogether dan competition ID-nya sama → error
+            if (
+                in_array($competitionBeingRegistered, $startTogetherCompetitionId) &&
+                in_array($registeredCompetitionId, $startTogetherCompetitionId) &&
+                $competitionBeingRegistered == $registeredCompetitionId
+            ) {
+                $competition = Competition::findOrFail($registeredCompetitionId);
+                return redirect()->back()->with('error', "Peserta dengan NIK {$competitionId->nik} sudah terdaftar pada lomba yang sama: {$competition->name} ({$competition->category->name}).");
+            }
+
+            // Cek apakah peserta sudah terdaftar di lomba manapun
+            $alreadyRegistered = DB::table('participants')
+                ->whereIn('nik', $niks)
+                ->get();
+
+            if ($alreadyRegistered->isNotEmpty()) {
+                // Ambil detail lomba yang berjalan bersamaan
+                $conflictRegistrations = DB::table('participants')
+                    ->join('registrations', 'participants.registration_id', '=', 'registrations.id')
+                    ->join('competitions', 'registrations.competition_id', '=', 'competitions.id')
+                    ->whereIn('participants.nik', $niks)
+                    ->whereNotIn('registrations.competition_id', $startTogetherCompetitionId)
+                    ->where('registrations.status', 'registered')
+                    ->select('participants.nik', 'competitions.name as competition_name')
+                    ->get();
+
+                if ($conflictRegistrations->isNotEmpty()) {
+                    $messages = $conflictRegistrations->map(function ($row) {
+                        return "NIK {$row->nik} sudah terdaftar di lomba '{$row->competition_name}'";
+                    })->implode(', ');
+
+                    return redirect()->back()->with('error', "Peserta Anda terdaftar di lomba yang berjalan bersamaan: $messages. Untuk perubahan silahkan hubungi panitia.");
+                }
+
+                // Kalau tidak bentrok, tetap beri tahu bahwa peserta sudah pernah mendaftar
+                $nikList = $alreadyRegistered->pluck('nik')->implode(', ');
+                $competition = Competition::findOrFail($registeredCompetitionId);
+                return redirect()->back()->with('error', "Peserta dengan NIK berikut sudah terdaftar: $nikList pada Lomba {$competition->name} ({$competition->category->name}). Silakan gunakan NIK lain atau hubungi panitia.");
+            }
+        }
+
+
         $validatedData = $request->validate([
             'competition_id' => 'required|exists:competitions,id',
             'total_participants' => 'required|integer',
@@ -95,12 +147,14 @@ class DashboardController extends Controller
             'participants.*.age' => 'required|integer|min:1',
             'participants.*.nik' => 'required|string|unique:participants,nik',
             'participants.*.birth_place' => 'required|string',
-            'participants.*.birth_date' => 'required|date', 
+            'participants.*.birth_date' => 'required|date',
             'participants.*.photo_url' => 'required|file|mimes:jpeg,png,pdf|max:2048',
             'participants.*.certificate_url' => 'required|file|mimes:jpeg,png,pdf|max:2048',
         ]);
 
+
         try {
+            DB::beginTransaction();
             // Create registration number
             $registrationNumber = 'AIIF-' . now()->format('dmY') . '-' . Str::random(6);
             // Create the registration
@@ -130,9 +184,11 @@ class DashboardController extends Controller
                     'certificate_url' => $certificatePath,
                 ]);
             }
+            DB::commit();
 
             return redirect()->route('user.participants')->with('success', 'Registration and participants saved successfully.');
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }

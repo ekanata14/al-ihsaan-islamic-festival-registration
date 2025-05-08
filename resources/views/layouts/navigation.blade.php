@@ -36,6 +36,9 @@
                         <x-nav-link :href="route('admin.dashboard.sponsor')" :active="request()->routeIs('admin.dashboard.sponsor*')">
                             {{ __('Sponsor') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.dashboard.khitan-registration')" :active="request()->routeIs('admin.dashboard.khitan-registration*')">
+                            {{ __('Khitan') }}
+                        </x-nav-link>
                     </div>
                     <!-- Bottom Navbar for Mobile -->
                     <div
@@ -310,6 +313,9 @@
                         </x-nav-link>
                         <x-nav-link :href="route('user.participants')" :active="request()->routeIs('user.participants*')">
                             {{ __('Data Registrasi') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('khitan.dashboard')" :active="request()->routeIs('khitan.dashboard*')">
+                            {{ __('Khitan') }}
                         </x-nav-link>
                     </div>
                 @endif

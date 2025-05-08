@@ -12,9 +12,14 @@ use App\Http\Controllers\Admin\CompetitionController as AdminCompetitionControll
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
 use App\Http\Controllers\Admin\SponsorController as AdminSponsorController;
+use App\Http\Controllers\Admin\KhitanRegistrationController as AdminKhitanRegistrationController;
+
 
 // User Controller
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+
+// Khitan User Controller
+use App\Http\Controllers\KhitanDashboardController as KhitanUserDashboardController;
 
 // Helper Controller
 use App\Http\Controllers\HelperController;
@@ -25,7 +30,7 @@ use App\Models\Sponsor;
 
 
 Route::get('/', function () {
-    $viewData  = [
+    $viewData = [
         'title' => 'Home',
         'description' => 'Welcome to the home page.',
         'competitions' => Competition::where('status', 'open')->latest()->get(),
@@ -36,6 +41,10 @@ Route::get('/', function () {
 Route::get('/image/{path}', [HelperController::class, 'getImage'])->name('get.image');
 Route::get('/group/getAllGroups', [AdminGroupController::class, 'getAllGroups'])->name('group.getAllGroups');
 Route::get('/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('group.getGroupByName');
+Route::get('/register/khitan', [KhitanUserDashboardController::class, 'registration'])->name('khitan.registration');
+Route::get('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPerson'])->name('khitan.registration.person');
+Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -73,6 +82,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin-dashboard/registration/edit/{id}', [AdminRegistrationController::class, 'edit'])->name('admin.dashboard.registration.edit');
     Route::put('/admin-dashboard/registration/update', [AdminRegistrationController::class, 'update'])->name('admin.dashboard.registration.update');
 
+    // Admin Khitanan Registration Route
+    Route::get('/admin-dashboard/khitan-registration', [AdminKhitanRegistrationController::class, 'index'])->name('admin.dashboard.khitan-registration');
+    Route::get('/admin-dashboard/khitan-registration/create', [AdminKhitanRegistrationController::class, 'create'])->name('admin.dashboard.khitan-registration.create');
+    Route::post('/admin-dashboard/khitan-registration/store', [AdminKhitanRegistrationController::class, 'store'])->name('admin.dashboard.khitan-registration.store');
+    Route::get('/admin-dashboard/khitan-registration/edit/{id}', [AdminKhitanRegistrationController::class, 'edit'])->name('admin.dashboard.khitan-registration.edit');
+    Route::put('/admin-dashboard/khitan-registration/update/{id}', [AdminKhitanRegistrationController::class, 'update'])->name('admin.dashboard.khitan-registration.update');
+    Route::delete('/admin-dashboard/khitan-registration/delete/{id}', [AdminKhitanRegistrationController::class, 'destroy'])->name('admin.dashboard.khitan-registration.destroy');
+
+
     // Admin Check In Route
     Route::get('/admin-dashboard/check-in', [AdminCheckInController::class, 'index'])->name('admin.dashboard.check-in');
     Route::post('/admin-dashboard/check-in/store', [AdminCheckInController::class, 'checkin'])->name('admin.dashboard.check-in.store');
@@ -94,6 +112,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user-dashboard/registrations/detail/{id}', [UserDashboardController::class, 'competitionRegistrationDetail'])->name('user.participants.detail');
     Route::get('/user-dashboard/registrations/qr/{id}', [UserDashboardController::class, 'competitionRegistrationQR'])->name('user.participants.qr-code');
     Route::post('/user-dashboard/competitions/registration/store', [UserDashboardController::class, 'competitionRegistrationStore'])->name('user.dashboard.competitions.registration.store');
+
+    // Khitan User Route
+    Route::get('/khitan-dashboard', [KhitanUserDashboardController::class, 'index'])->name('khitan.dashboard');
+    Route::get('/khitan-dashboard/qr/{id}', [KhitanUserDashboardController::class, 'khitanRegistrationQR'])->name('khitan.registration.qr-code');
 });
 
 Route::middleware('auth')->group(function () {
