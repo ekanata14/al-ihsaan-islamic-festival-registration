@@ -30,7 +30,7 @@
                             <div class="mb-4 border-b pb-4">
                                 <label for="total_participants"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Peserta</label>
-                                <input type="text" name="total_participants" class="form-input w-full"
+                                <input type="number" name="total_participants" class="form-input w-full"
                                     placeholder="Masukkan Jumlah Peserta" required>
                                 @error("total_participants")
                                     <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
@@ -85,7 +85,7 @@
                                 <div class="mb-4">
                                     <label for="participants[{{ $i }}][nik]"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
-                                    <input type="text" name="participants[{{ $i }}][nik]"
+                                    <input type="number" name="participants[{{ $i }}][nik]"
                                         class="form-input w-full" placeholder="Enter participant NIK" required>
                                     @error("participants.{$i}.nik")
                                         <p class="text-red-500 text-sm mt-2">{{ $message }}</p>

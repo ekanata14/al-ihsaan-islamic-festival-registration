@@ -314,6 +314,9 @@
                         <x-nav-link :href="route('user.participants')" :active="request()->routeIs('user.participants*')">
                             {{ __('Data Registrasi') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('khitan.dashboard')" :active="request()->routeIs('khitan.dashboard*')">
+                            {{ __('Khitan') }}
+                        </x-nav-link>
                     </div>
                 @endif
             </div>

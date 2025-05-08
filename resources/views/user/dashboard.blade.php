@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="py-12">
+    <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"> --}}
             {{-- </div> --}}
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-4 sm:px-0">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 sm:px-0">
                 @forelse ($competitions as $item)
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <a href="#">

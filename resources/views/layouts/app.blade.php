@@ -64,7 +64,8 @@
             @endif
             <div class="mb-20"></div>
             @if (auth()->user()->role == 'user')
-                <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg flex justify-around py-4">
+                <div
+                    class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg flex justify-around py-4 text-sm">
                     <a href="{{ route('user.dashboard') }}"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-blue-500 {{ request()->routeIs('user.dashboard*') ? 'text-blue-500' : '' }}">
                         <svg class="w-6 h-6 {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : 'text-gray-800 dark:text-white' }}"
@@ -78,8 +79,8 @@
                                 d="M5.395 15.055 4.07 19a1 1 0 0 0 1.264 1.267l1.95-.65 1.144 1.707A1 1 0 0 0 10.2 21.1l1.12-3.18a4.641 4.641 0 0 1-2.515-1.208 4.667 4.667 0 0 1-3.411-1.656Zm7.269 2.867 1.12 3.177a1 1 0 0 0 1.773.224l1.144-1.707 1.95.65A1 1 0 0 0 19.915 19l-1.32-3.93a4.667 4.667 0 0 1-3.4 1.642 4.643 4.643 0 0 1-2.53 1.21Z" />
                         </svg>
 
-                        <span class="text-sm {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : '' }}">Daftar
-                            Lomba</span>
+                        <span
+                            class="text-sm {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : '' }}">Lomba</span>
                     </a>
                     <a href="{{ route('user.participants') }}"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-red-500 {{ request()->routeIs('user.participants*') ? 'text-red-500' : '' }}">
@@ -91,10 +92,60 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 11V9a3 3 0 00-6 0v2" />
                         </svg>
                         <span
-                            class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta
-                            Anda</span>
+                            class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta</span>
                     </a>
-                    <a href="https://chat.whatsapp.com/Hi9IYZYEknYCMpF5mXayuN" target="_blank"
+                    <a href="{{ route('khitan.dashboard') }}"
+                        class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-red-500 {{ request()->routeIs('khitan.dashboard*') ? 'text-red-500' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 {{ request()->routeIs('khitan.dashboard*') ? 'text-red-500' : '' }}"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M5.121 17.804A3.5 3.5 0 018.5 16h7a3.5 3.5 0 013.379 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11V9a3 3 0 00-6 0v2" />
+                        </svg>
+                        <span
+                            class="text-sm {{ request()->routeIs('khitan.dashboard*') ? 'text-red-500' : '' }}">Khitan</span>
+                    </a>
+                    <button type="button" id="dropdownMenuButton" data-dropdown-toggle="dropdownMenu"
+                        class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-green-500 cursor-pointer">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 0C5.372 0 0 5.373 0 12c0 2.123.553 4.193 1.6 6.033L0 24l6.15-1.567C8.007 23.448 10.003 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm6.16 17.19c-.25.7-1.45 1.34-2.01 1.43-.53.08-1.17.12-1.89-.12-.44-.15-1.01-.33-1.74-.65-3.07-1.33-5.07-4.42-5.23-4.63-.15-.2-1.25-1.66-1.25-3.17 0-1.5.79-2.24 1.07-2.55.28-.31.62-.39.83-.39.2 0 .42.01.6.01.19 0 .45-.07.7.54.25.61.85 2.1.92 2.25.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.18-.31.4-.45.54-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.77.84 2.08.99.31.15.52.23.6.36.08.13.08.74-.18 1.44z" />
+                        </svg>
+                        <span class="text-sm">Grup</span>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="dropdownMenu"
+                        class="hidden absolute bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 w-48 z-50 bottom-16">
+                        <a href="https://chat.whatsapp.com/Hi9IYZYEknYCMpF5mXayuN" target="_blank"
+                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Grup Lomba
+                        </a>
+                        <a href="https://chat.whatsapp.com/Hi9IYZYEknYCMpF5mXayuN" target="_blank"
+                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Grup Khitan
+                        </a>
+                    </div>
+
+                    <!-- Dropdown Script -->
+                    <script>
+                        const dropdownButton = document.getElementById('dropdownMenuButton');
+                        const dropdownMenu = document.getElementById('dropdownMenu');
+
+                        dropdownButton.addEventListener('click', () => {
+                            dropdownMenu.classList.toggle('hidden');
+                        });
+
+                        document.addEventListener('click', (event) => {
+                            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                                dropdownMenu.classList.add('hidden');
+                            }
+                        });
+                    </script>
+                    <button id="contactPerson"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-green-500">
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -102,20 +153,7 @@
                             <path
                                 d="M12 0C5.372 0 0 5.373 0 12c0 2.123.553 4.193 1.6 6.033L0 24l6.15-1.567C8.007 23.448 10.003 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm6.16 17.19c-.25.7-1.45 1.34-2.01 1.43-.53.08-1.17.12-1.89-.12-.44-.15-1.01-.33-1.74-.65-3.07-1.33-5.07-4.42-5.23-4.63-.15-.2-1.25-1.66-1.25-3.17 0-1.5.79-2.24 1.07-2.55.28-.31.62-.39.83-.39.2 0 .42.01.6.01.19 0 .45-.07.7.54.25.61.85 2.1.92 2.25.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.18-.31.4-.45.54-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.36 1.45.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.77.84 2.08.99.31.15.52.23.6.36.08.13.08.74-.18 1.44z" />
                         </svg>
-                        WA Group
-                    </a>
-                    <button id="contactPerson"
-                        class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-green-500">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path d="M16 10c0-.55228-.4477-1-1-1h-3v2h3c.5523 0 1-.4477 1-1Z" />
-                            <path
-                                d="M13 15v-2h2c1.6569 0 3-1.3431 3-3 0-1.65685-1.3431-3-3-3h-2.256c.1658-.46917.256-.97405.256-1.5 0-.51464-.0864-1.0091-.2454-1.46967C12.8331 4.01052 12.9153 4 13 4h7c.5523 0 1 .44772 1 1v9c0 .5523-.4477 1-1 1h-2.5l1.9231 4.6154c.2124.5098-.0287 1.0953-.5385 1.3077-.5098.2124-1.0953-.0287-1.3077-.5385L15.75 16l-1.827 4.3846c-.1825.438-.6403.6776-1.0889.6018.1075-.3089.1659-.6408.1659-.9864v-2.6002L14 15h-1ZM6 5.5C6 4.11929 7.11929 3 8.5 3S11 4.11929 11 5.5 9.88071 8 8.5 8 6 6.88071 6 5.5Z" />
-                            <path
-                                d="M15 11h-4v9c0 .5523-.4477 1-1 1-.55228 0-1-.4477-1-1v-4H8v4c0 .5523-.44772 1-1 1s-1-.4477-1-1v-6.6973l-1.16797 1.752c-.30635.4595-.92722.5837-1.38675.2773-.45952-.3063-.5837-.9272-.27735-1.3867l2.99228-4.48843c.09402-.14507.2246-.26423.37869-.34445.11427-.05949.24148-.09755.3763-.10887.03364-.00289.06747-.00408.10134-.00355H15c.5523 0 1 .44772 1 1 0 .5523-.4477 1-1 1Z" />
-                        </svg>
-                        <span class="text-sm">Contact Person</span>
+                        <span class="text-sm">Panitia</span>
                     </button>
                 </div>
                 <!-- Modal -->
@@ -177,7 +215,6 @@
                     title: 'Success',
                     text: '{{ session('success') }}',
                     showConfirmButton: true,
-                    timer: 3000
                 });
             </script>
         @endif
@@ -189,7 +226,6 @@
                     title: 'Error',
                     text: '{{ session('error') }}',
                     showConfirmButton: true,
-                    timer: 3000
                 });
             </script>
         @endif
