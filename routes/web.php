@@ -43,10 +43,10 @@ Route::get('/group/getAllGroups', [AdminGroupController::class, 'getAllGroups'])
 Route::get('/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('group.getGroupByName');
 Route::get('/register/khitan', [KhitanUserDashboardController::class, 'registration'])->name('khitan.registration');
 Route::get('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPerson'])->name('khitan.registration.person');
-Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     // Admin User Route

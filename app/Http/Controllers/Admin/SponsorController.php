@@ -44,7 +44,7 @@ class SponsorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'img_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'img_url' => 'required|image|mimes:jpeg,png,jpg,gif',
             'nominal' => 'nullable|integer|min:0',
         ]);
 
@@ -103,7 +103,7 @@ class SponsorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'img_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'img_url' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'nominal' => 'nullable|integer|min:0',
         ]);
 

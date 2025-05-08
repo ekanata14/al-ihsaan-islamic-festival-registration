@@ -148,8 +148,8 @@ class DashboardController extends Controller
             'participants.*.nik' => 'required|string|unique:participants,nik',
             'participants.*.birth_place' => 'required|string',
             'participants.*.birth_date' => 'required|date',
-            'participants.*.photo_url' => 'required|file|mimes:jpeg,png,pdf|max:2048',
-            'participants.*.certificate_url' => 'required|file|mimes:jpeg,png,pdf|max:2048',
+            'participants.*.photo_url' => 'required|file|mimes:jpeg,png,pdf',
+            'participants.*.certificate_url' => 'required|file|mimes:jpeg,png,pdf',
         ]);
 
 
