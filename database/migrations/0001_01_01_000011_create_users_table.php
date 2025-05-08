@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('group_id')->nullable();
             $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('role'); // admin, user
+            $table->string('role'); // admin, user, khitan
             $table->rememberToken();
             $table->timestamps();
         });

@@ -43,14 +43,22 @@ class RegisteredUserController extends Controller
             ]);
 
             $group = $request->group_id;
+            $role = null;
+            if ($request->role) {
+                $role = $request->role;
+            } else {
+                $role = 'user';
+            }
 
-            // Check if group exists with the similar name
-            if (!$request->group_id) {
-                $createdGroup = Group::create([
-                    'name' => $request->group,
-                ]);
+            if ($role != 'khitan') {
+                // Check if group exists with the similar name
+                if (!$request->group_id) {
+                    $createdGroup = Group::create([
+                        'name' => $request->group,
+                    ]);
 
-                $group = $createdGroup->id;
+                    $group = $createdGroup->id;
+                }
             }
 
             $user = User::create([
@@ -58,7 +66,7 @@ class RegisteredUserController extends Controller
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
                 'password' => Hash::make($request->password),
-                'role' => 'user',
+                'role' => $role,
                 'group_id' => $group,
             ]);
 
@@ -66,7 +74,11 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            return redirect(route('user.dashboard', absolute: false));
+            if ($role == 'khitan') {
+                return redirect(route('khitan.registration.person', absolute: false))->with('success', 'Pendaftaran berhasil, silahkan isi data anak Anda');
+            } else {
+                return redirect(route('user.dashboard', absolute: false))->with('success', 'Pendaftaran berhasil, silahkan pilih lomba');
+            }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Registration failed: ' . $e->getMessage()]);
         }
