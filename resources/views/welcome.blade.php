@@ -1,8 +1,8 @@
 @extends('layouts.landing')
 @section('content')
     {{-- hero-section-start --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 px-4 h-screen"
-        data-aos="fade-up" data-aos-duration="1000">
+    <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 px-4 h-screen" data-aos="fade-up"
+        data-aos-duration="1000">
         <div class="flex flex-col justify-end md:justify-center items-center md:items-center gap-3 h-full" data-aos="fade-up"
             data-aos-easing="ease-out-cubic" data-aos-duration="2000">
             {{-- <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="h-48 md:h-fit w-full md:w-fit"
@@ -57,7 +57,7 @@
                         </svg>
                     </a>
                 @endif
-                <a href="https://drive.google.com/file/d/18RWfMVRad5v5P-Opfdzsy3eAmircjtI7/view?usp=sharing"
+                <a href="https://drive.google.com/file/d/1KLpVmlDURKjs_Nngye2wDRtVbbI_J0HR/view?usp=sharing"
                     class="btn-yellow flex justify-center items-center">
                     Guidebook
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
