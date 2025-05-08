@@ -82,7 +82,7 @@
                                 </svg>
                             </button>
                         @endif
-                        <a href="https://drive.google.com/file/d/1KLpVmlDURKjs_Nngye2wDRtVbbI_J0HR/view?usp=sharing"
+                        <a href="https://drive.google.com/file/d/1ajDBWL_DAIumTEOYH-y14BM6e_PAsibM/view?usp=sharing"
                             class="btn-red text-center flex items-center justify-center gap-2">
                             Download Guidebook
                             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"

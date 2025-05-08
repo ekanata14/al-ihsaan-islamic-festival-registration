@@ -57,7 +57,7 @@
                         </svg>
                     </a>
                 @endif
-                <a href="https://drive.google.com/file/d/1KLpVmlDURKjs_Nngye2wDRtVbbI_J0HR/view?usp=sharing"
+                <a href="https://drive.google.com/file/d/1ajDBWL_DAIumTEOYH-y14BM6e_PAsibM/view?usp=sharing"
                     class="btn-yellow flex justify-center items-center">
                     Guidebook
                     <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
