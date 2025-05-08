@@ -46,7 +46,7 @@ class CompetitionController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
-            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image file
+            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif', // Validate image file
             'type' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
             'registration_start' => 'required|date',
@@ -115,7 +115,7 @@ class CompetitionController extends Controller
             'registration_start' => 'required|date',
             'registration_end' => 'required|date|after_or_equal:registration_start',
             'status' => 'required|string',
-            'certificate_url' => 'nullable|file|mimes:jpeg,png,pdf|max:2048', // Validate file if provided
+            'certificate_url' => 'nullable|file|mimes:jpeg,png,pdf', // Validate file if provided
         ]);
         try {
             // Find the competition

@@ -74,7 +74,7 @@ class RegistrationController extends Controller
             'participants.*.name' => 'required|string',
             'participants.*.age' => 'required|integer|min:1',
             'participants.*.nik' => 'required|string',
-            'participants.*.certificate_url' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
+            'participants.*.certificate_url' => 'nullable|file|mimes:jpeg,png,pdf',
         ]);
 
         try {

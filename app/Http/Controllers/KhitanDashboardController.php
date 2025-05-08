@@ -49,8 +49,8 @@ class KhitanDashboardController extends Controller
             'birth_place' => 'required|string',
             'domicile' => 'required|string',
             'is_sanur' => 'required|boolean',
-            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
         // Create registration number
         $registrationNumber = 'AIIF-KHITAN-' . now()->format('dmY') . '-' . Str::random(6);
