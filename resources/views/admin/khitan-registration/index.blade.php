@@ -91,14 +91,14 @@
         </div>
     </div>
     <!-- Modal -->
-    <div id="imageModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div id="imageModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50 h-1/2">
         <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full relative">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 id="modalTitle" class="text-lg font-semibold">Title</h3>
                 <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
             </div>
-            <div class="p-4">
-                <img id="modalImage" src="" alt="Preview" class="w-full max-h-[75vh] object-contain">
+            <div class="p-4 flex justify-center">
+                <img id="modalImage" src="" alt="Preview" class="w-1/2 max-h-[75vh] object-contain">
             </div>
         </div>
     </div>
