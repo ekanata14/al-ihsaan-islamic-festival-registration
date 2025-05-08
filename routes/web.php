@@ -88,7 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin-dashboard/khitan-registration/store', [AdminKhitanRegistrationController::class, 'store'])->name('admin.dashboard.khitan-registration.store');
     Route::get('/admin-dashboard/khitan-registration/edit/{id}', [AdminKhitanRegistrationController::class, 'edit'])->name('admin.dashboard.khitan-registration.edit');
     Route::put('/admin-dashboard/khitan-registration/update/{id}', [AdminKhitanRegistrationController::class, 'update'])->name('admin.dashboard.khitan-registration.update');
-    Route::delete('/admin-dashboard/khitan-registration/delete/{id}', [AdminKhitanRegistrationController::class, 'destroy'])->name('admin.dashboard.khitan-registration.destroy');
+    Route::delete('/admin-dashboard/khitan-registration/delete', [AdminKhitanRegistrationController::class, 'destroy'])->name('admin.dashboard.khitan-registration.destroy');
 
 
     // Admin Check In Route

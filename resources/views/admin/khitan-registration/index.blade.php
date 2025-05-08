@@ -11,6 +11,7 @@
                                     <th scope="col" class="px-6 py-3">No</th>
                                     <th scope="col" class="px-6 py-3">Registration Number</th>
                                     <th scope="col" class="px-6 py-3">Wali</th>
+                                    <th scope="col" class="px-6 py-3">Nama Anak</th>
                                     <th scope="col" class="px-6 py-3">Domisili & Tempat Tinggal</th>
                                     <th scope="col" class="px-6 py-3">Sanur?</th>
                                     <th scope="col" class="px-6 py-3">Akta</th>
@@ -28,6 +29,7 @@
                                         </th>
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->domicile }}</td>
 
                                         <td class="px-6 py-4">
@@ -61,17 +63,43 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 flex gap-2">
-                                            <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
+                                            <a href="{{ route('admin.dashboard.khitan-registration.edit', $item->id) }}"
                                                 class="btn-primary">Detail</a>
 
-                                            {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
-                                                method="POST" class="inline-block" onsubmit="return confirmDelete(event)">
+                                            <form action="{{ route('admin.dashboard.khitan-registration.destroy') }}"
+                                                method="POST" class="inline-block delete-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
                                                 <button type="submit" class="btn-red">Delete</button>
-                                            </form> --}}
+                                            </form>
                                         </td>
+
+                                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                        <script>
+                                            // Add SweetAlert confirmation for delete forms
+                                            document.querySelectorAll('.delete-form').forEach(form => {
+                                                form.addEventListener('submit', function(e) {
+                                                    e.preventDefault(); // Prevent form submission
+
+                                                    Swal.fire({
+                                                        title: 'Are you sure?',
+                                                        text: "This action cannot be undone!",
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#d33',
+                                                        cancelButtonColor: '#3085d6',
+                                                        confirmButtonText: 'Yes, delete it!',
+                                                        cancelButtonText: 'Cancel',
+                                                        reverseButtons: true
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            form.submit(); // Proceed with form submission
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
                                     </tr>
                                 @empty
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
@@ -91,10 +119,10 @@
         </div>
     </div>
     <!-- Modal -->
-    <div id="imageModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50 h-1/2">
+    <div id="imageModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
         <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full relative">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 id="modalTitle" class="text-lg font-semibold">Title</h3>
+                <h3 id="modalTitle" class="text-lg font-semibold">Photos</h3>
                 <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
             </div>
             <div class="p-4 flex justify-center">
