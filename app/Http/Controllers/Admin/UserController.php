@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $viewData = [
             "title" => "User Datas",
-            "datas" => User::where('role', 'user')->latest()->paginate(10)
+            "datas" => User::where('role', 'user')->orWhere('role', 'khitan')->latest()->paginate(10)
         ];
 
         return view('admin.user.index', $viewData);

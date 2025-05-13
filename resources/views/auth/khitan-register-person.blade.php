@@ -39,7 +39,7 @@
 
         <!-- NIK -->
         <div class="mt-4">
-            <x-input-label for="nik" :value="__('NIK')" />
+            <x-input-label for="nik" :value="__('Pekerjaan Orang Tua')" />
             <x-text-input id="nik" class="block mt-1 w-full" type="text" name="nik" :value="old('nik')"
                 required />
             <x-input-error :messages="$errors->get('nik')" class="mt-2" />
@@ -82,6 +82,13 @@
             <input id="certificate_url" class="block mt-1 w-full" type="file" name="certificate_url" accept="image/*"
                 required />
             <x-input-error :messages="$errors->get('certificate_url')" class="mt-2" />
+        </div>
+
+        <!-- Family Card URL -->
+        <div class="mt-4">
+            <x-input-label for="family_card_url" :value="__('Kartu Keluarga')" />
+            <input id="family_card_url" class="block mt-1 w-full" type="file" name="family_card_url" accept="image/*" required />
+            <x-input-error :messages="$errors->get('family_card_url')" class="mt-2" />
         </div>
 
         <div class="flex items-center flex-col mt-4">

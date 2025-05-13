@@ -63,37 +63,39 @@
                 </script>
             @endif
             <div class="mb-20"></div>
-            @if (auth()->user()->role == 'user')
+            @if (auth()->user()->role == 'user' || auth()->user()->role == 'khitan')
                 <div
                     class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 shadow-lg flex justify-around py-4 text-sm">
-                    <a href="{{ route('user.dashboard') }}"
-                        class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-blue-500 {{ request()->routeIs('user.dashboard*') ? 'text-blue-500' : '' }}">
-                        <svg class="w-6 h-6 {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : 'text-gray-800 dark:text-white' }}"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M11 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" />
-                            <path fill-rule="evenodd"
-                                d="M9.896 3.051a2.681 2.681 0 0 1 4.208 0c.147.186.38.282.615.255a2.681 2.681 0 0 1 2.976 2.975.681.681 0 0 0 .254.615 2.681 2.681 0 0 1 0 4.208.682.682 0 0 0-.254.615 2.681 2.681 0 0 1-2.976 2.976.681.681 0 0 0-.615.254 2.682 2.682 0 0 1-4.208 0 .681.681 0 0 0-.614-.255 2.681 2.681 0 0 1-2.976-2.975.681.681 0 0 0-.255-.615 2.681 2.681 0 0 1 0-4.208.681.681 0 0 0 .255-.615 2.681 2.681 0 0 1 2.976-2.975.681.681 0 0 0 .614-.255ZM12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
-                                clip-rule="evenodd" />
-                            <path
-                                d="M5.395 15.055 4.07 19a1 1 0 0 0 1.264 1.267l1.95-.65 1.144 1.707A1 1 0 0 0 10.2 21.1l1.12-3.18a4.641 4.641 0 0 1-2.515-1.208 4.667 4.667 0 0 1-3.411-1.656Zm7.269 2.867 1.12 3.177a1 1 0 0 0 1.773.224l1.144-1.707 1.95.65A1 1 0 0 0 19.915 19l-1.32-3.93a4.667 4.667 0 0 1-3.4 1.642 4.643 4.643 0 0 1-2.53 1.21Z" />
-                        </svg>
+                    @if (auth()->user()->role == 'user')
+                        <a href="{{ route('user.dashboard') }}"
+                            class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-blue-500 {{ request()->routeIs('user.dashboard*') ? 'text-blue-500' : '' }}">
+                            <svg class="w-6 h-6 {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : 'text-gray-800 dark:text-white' }}"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" />
+                                <path fill-rule="evenodd"
+                                    d="M9.896 3.051a2.681 2.681 0 0 1 4.208 0c.147.186.38.282.615.255a2.681 2.681 0 0 1 2.976 2.975.681.681 0 0 0 .254.615 2.681 2.681 0 0 1 0 4.208.682.682 0 0 0-.254.615 2.681 2.681 0 0 1-2.976 2.976.681.681 0 0 0-.615.254 2.682 2.682 0 0 1-4.208 0 .681.681 0 0 0-.614-.255 2.681 2.681 0 0 1-2.976-2.975.681.681 0 0 0-.255-.615 2.681 2.681 0 0 1 0-4.208.681.681 0 0 0 .255-.615 2.681 2.681 0 0 1 2.976-2.975.681.681 0 0 0 .614-.255ZM12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                                    clip-rule="evenodd" />
+                                <path
+                                    d="M5.395 15.055 4.07 19a1 1 0 0 0 1.264 1.267l1.95-.65 1.144 1.707A1 1 0 0 0 10.2 21.1l1.12-3.18a4.641 4.641 0 0 1-2.515-1.208 4.667 4.667 0 0 1-3.411-1.656Zm7.269 2.867 1.12 3.177a1 1 0 0 0 1.773.224l1.144-1.707 1.95.65A1 1 0 0 0 19.915 19l-1.32-3.93a4.667 4.667 0 0 1-3.4 1.642 4.643 4.643 0 0 1-2.53 1.21Z" />
+                            </svg>
 
-                        <span
-                            class="text-sm {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : '' }}">Lomba</span>
-                    </a>
-                    <a href="{{ route('user.participants') }}"
-                        class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-red-500 {{ request()->routeIs('user.participants*') ? 'text-red-500' : '' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-6 w-6 {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M5.121 17.804A3.5 3.5 0 018.5 16h7a3.5 3.5 0 013.379 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11V9a3 3 0 00-6 0v2" />
-                        </svg>
-                        <span
-                            class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta</span>
-                    </a>
+                            <span
+                                class="text-sm {{ request()->routeIs('user.dashboard') ? 'text-blue-500' : '' }}">Lomba</span>
+                        </a>
+                        <a href="{{ route('user.participants') }}"
+                            class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-red-500 {{ request()->routeIs('user.participants*') ? 'text-red-500' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-6 w-6 {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M5.121 17.804A3.5 3.5 0 018.5 16h7a3.5 3.5 0 013.379 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11V9a3 3 0 00-6 0v2" />
+                            </svg>
+                            <span
+                                class="text-sm {{ request()->routeIs('user.participants') ? 'text-red-500' : '' }}">Peserta</span>
+                        </a>
+                    @endif
                     <a href="{{ route('khitan.dashboard') }}"
                         class="flex flex-col items-center text-gray-700 dark:text-gray-200 hover:text-red-500 {{ request()->routeIs('khitan.dashboard*') ? 'text-red-500' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg"

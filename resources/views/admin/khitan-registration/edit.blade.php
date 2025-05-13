@@ -25,6 +25,14 @@
                         value="{{ old('pic_id', $data->pic->name ?? '-') }}" readonly>
                 </div>
 
+                <!-- PIC -->
+                <div class="mb-4">
+                    <label for="pic_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
+                        Wali</label>
+                    <input type="text" name="pic_id" class="form-input w-full"
+                        value="{{ old('pic_id', $data->pic->phone_number ?? '-') }}" readonly>
+                </div>
+
                 <!-- Name -->
                 <div class="mb-4">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
@@ -117,13 +125,30 @@
                     @enderror
                 </div>
 
+                <!-- Family Card -->
+                <div class="mb-4">
+                    <label for="certificate_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kartu
+                        Keluarga</label>
+                    @if ($data->familyCard->family_card_url)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/' . $data->familyCard->family_card_url) }}" alt="Certificate"
+                                class="w-1/2">
+                        </div>
+                    @endif
+                    <input type="file" name="certificate_url" class="form-input w-full mt-2" accept="image/*">
+                    @error('certificate_url')
+                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Certificate -->
                 <div class="mb-4">
                     <label for="certificate_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Akta
                         Kelahiran/KTP/KTA</label>
                     @if ($data->certificate_url)
                         <div class="mt-2">
-                            <img src="{{ asset('storage/' . $data->certificate_url) }}" alt="Certificate" class="w-1/2">
+                            <img src="{{ asset('storage/' . $data->certificate_url) }}" alt="Certificate"
+                                class="w-1/2">
                         </div>
                     @endif
                     <input type="file" name="certificate_url" class="form-input w-full mt-2" accept="image/*">
@@ -147,13 +172,13 @@
                     @enderror
                 </div>
 
-                <!-- Submit Button -->
+                {{-- <!-- Submit Button -->
                 <div class="mt-6">
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Update
                     </button>
-                </div>
+                </div> --}}
             </form>
         </div>
     </div>

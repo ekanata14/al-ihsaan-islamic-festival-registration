@@ -11,9 +11,11 @@
                                     <th scope="col" class="px-6 py-3">No</th>
                                     <th scope="col" class="px-6 py-3">Registration Number</th>
                                     <th scope="col" class="px-6 py-3">Wali</th>
+                                    <th scope="col" class="px-6 py-3">Nomor Wali</th>
                                     <th scope="col" class="px-6 py-3">Nama Anak</th>
                                     <th scope="col" class="px-6 py-3">Domisili & Tempat Tinggal</th>
                                     <th scope="col" class="px-6 py-3">Sanur?</th>
+                                    <th scope="col" class="px-6 py-3">Kartu Keluarga</th>
                                     <th scope="col" class="px-6 py-3">Akta</th>
                                     <th scope="col" class="px-6 py-3">Foto</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
@@ -29,8 +31,17 @@
                                         </th>
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->pic->phone_number ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->domicile }}</td>
+                                        <td class="px-6 py-4">{{ $item->is_sanur ? 'Yes' : 'No' }}</td>
+
+                                        <td class="px-6 py-4">
+                                            <button type="button" class="btn-primary"
+                                                onclick="openModal('{{ asset('storage/' . $item->familyCard->family_card_url) }}', 'Certificate')">
+                                                View Family Card
+                                            </button>
+                                        </td>
 
                                         <td class="px-6 py-4">
                                             <button type="button" class="btn-primary"
