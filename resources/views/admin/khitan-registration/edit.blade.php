@@ -124,16 +124,18 @@
                         <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                     @enderror
                 </div>
-
+                
                 <!-- Family Card -->
                 <div class="mb-4">
                     <label for="certificate_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kartu
                         Keluarga</label>
-                    @if ($data->familyCard->family_card_url)
+                    @if (isset($data->familyCard) && $data->familyCard->family_card_url)
                         <div class="mt-2">
-                            <img src="{{ asset('storage/' . $data->familyCard->family_card_url) }}" alt="Certificate"
+                            <img src="{{ asset('storage/' . $data->familyCard->family_card_url) }}" alt="Kartu Keluarga"
                                 class="w-1/2">
                         </div>
+                    @else
+                        <div class="mt-2 text-gray-500 dark:text-gray-400">Not available</div>
                     @endif
                     <input type="file" name="certificate_url" class="form-input w-full mt-2" accept="image/*">
                     @error('certificate_url')

@@ -72,10 +72,14 @@
                                             </button>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <button type="button" class="btn-primary"
-                                                onclick="openModal('{{ asset('storage/' . $item->familyCard->family_card_url) }}', 'Certificate')">
-                                                View Certificate
-                                            </button>
+                                            @if (!empty($item->familyCard) && !empty($item->familyCard->family_card_url))
+                                                <button type="button" class="btn-primary"
+                                                    onclick="openModal('{{ asset('storage/' . $item->familyCard->family_card_url) }}', 'Family Card')">
+                                                    View Family Card
+                                                </button>
+                                            @else
+                                                <span class="text-gray-400">Data not available</span>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4">
                                             <button type="button" class="btn-primary"
