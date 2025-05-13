@@ -46,4 +46,9 @@ class KhitanRegistration extends Model
     {
         return $this->belongsTo(User::class, 'pic_id');
     }
+
+    public function familyCard()
+    {
+        return $this->hasOne(KhitanFamilyCard::class);
+    }
 }

@@ -8,6 +8,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode as QRCode;
 
 // Models
 use App\Models\KhitanRegistration;
+use App\Models\KhitanFamilyCard;
 
 class KhitanDashboardController extends Controller
 {
@@ -51,6 +52,7 @@ class KhitanDashboardController extends Controller
             'is_sanur' => 'required|boolean',
             'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif',
             'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'family_card_url' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
         // Create registration number
         $registrationNumber = 'AIIF-KHITAN-' . now()->format('dmY') . '-' . Str::random(6);
@@ -69,7 +71,18 @@ class KhitanDashboardController extends Controller
                 $validatedData['certificate_url'] = $request->file('certificate_url')->store('khitan-certificates', 'public');
             }
 
-            KhitanRegistration::create($validatedData);
+            // Handle file upload for family_card_url
+            if ($request->hasFile('family_card_url')) {
+                $validatedData['family_card_url'] = $request->file('family_card_url')->store('khitan-family-cards', 'public');
+            }
+
+            $khitanRegistration = KhitanRegistration::create($validatedData);
+
+            // Create family card record
+            KhitanFamilyCard::create([
+                'khitan_registration_id' => $khitanRegistration->id,
+                'family_card_url' => $validatedData['family_card_url'],
+            ]);
 
             if (auth()->user()->role == 'khitan') {
                 return redirect()->route('khitan.dashboard')->with('success', 'Registration successful!');
