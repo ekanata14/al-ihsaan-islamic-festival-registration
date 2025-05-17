@@ -163,7 +163,7 @@
     </div>
     {{-- sponsorship-section-end --}}
     {{-- contact-us-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4 mt-20" style="height: calc(100vh - 200px);"
+    <div class="flex flex-col justify-start items-center gap-4 px-4 my-20 h-full"
         data-aos="fade-up" data-aos-duration="1000" id="contact-us">
         <h2 class="text-3xl font-bold text-center md:text-right">Contact Us
         </h2>
@@ -197,27 +197,26 @@
     </div>
     {{-- contact-us-section-end --}}
     {{-- khitanan-massal-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);"
+    <div class="flex flex-col justify-start items-center gap-4 px-4 h-full"
         data-aos="fade-up" data-aos-duration="1000" id="khitanan-massal">
-        <h2 class="text-3xl font-bold text-center md:text-right">Khitanan Massal
+        <h2 class="text-3xl font-bold text-center md:text-right">Khitanan Massal & Donor Darah
         </h2>
         <div class="flex justify-center items-center h-full">
-            <h3 class="text-xl font-bold text-center md:text-right">Informasi segera menyusul, tunggu yak!
-            </h3>
+            <img src="{{ asset('assets/images/donor_khitan.jpg') }}" alt="donor-khitan" class="w-full md:w-96">
         </div>
     </div>
     {{-- khitanan-massal-section-end --}}
     {{-- donor-darah-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);"
+    {{-- <div class="flex flex-col justify-start items-center gap-4 px-4" style="height: calc(100vh - 200px);"
         data-aos="fade-up" data-aos-duration="1000" id="donor-darah">
         <h2 class="text-3xl font-bold text-center md:text-right">Donor Darah
         </h2>
-        {{-- <div class="grid grid-cols-4 gap-3 text-right">
-        </div> --}}
+        <div class="grid grid-cols-4 gap-3 text-right">
+        </div>
         <div class="flex justify-center items-center h-full">
             <h3 class="text-xl font-bold text-center md:text-right">Informasi segera menyusul, tunggu yak!
             </h3>
         </div>
-    </div>
+    </div> --}}
     {{-- donor-darah-section-end --}}
 @endsection
