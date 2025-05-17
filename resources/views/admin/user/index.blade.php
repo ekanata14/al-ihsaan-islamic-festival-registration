@@ -42,7 +42,7 @@
                                             {{ $item->email }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $item->group->name }}
+                                            {{ $item->group->name ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <button type="button" class="btn-yellow">Edit</button>
