@@ -4,21 +4,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <a href="{{ route('admin.dashboard.competition.create') }}" class="btn-primary">Add Competition</a>
-                    </div>
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">No</th>
-                                    <th scope="col" class="px-6 py-3">Name</th>
-                                    <th scope="col" class="px-6 py-3">Type</th>
-                                    <th scope="col" class="px-6 py-3">Category</th>
-                                    <th scope="col" class="px-6 py-3">Registration Start</th>
-                                    <th scope="col" class="px-6 py-3">Registration End</th>
+                                    <th scope="col" class="px-6 py-3">Registration Number</th>
+                                    <th scope="col" class="px-6 py-3">PIC</th>
+                                    <th scope="col" class="px-6 py-3">Competition</th>
+                                    <th scope="col" class="px-6 py-3">Group</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
-                                    <th scope="col" class="px-6 py-3">Total Registration</th>
                                     <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
                             </thead>
@@ -29,28 +24,32 @@
                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $loop->iteration }}
                                         </th>
-                                        <td class="px-6 py-4">{{ $item->name }}</td>
-                                        <td class="px-6 py-4 capitalize">{{ $item->type }}</td>
-                                        <td class="px-6 py-4">{{ $item->category->name ?? '-' }}</td>
-                                        <td class="px-6 py-4">
-                                            {{ \Carbon\Carbon::parse($item->registration_start)->format('d M Y') }}</td>
-                                        <td class="px-6 py-4">
-                                            {{ \Carbon\Carbon::parse($item->registration_end)->format('d M Y') }}</td>
+                                        <td class="px-6 py-4">{{ $item->registration_number }}</td>
+                                        <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <span
-                                                class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'Open' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                                {{ $item->status }}
+                                                class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'checkin' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
+                                                {{ strtoupper($item->status) }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4">{{ $item->registrations->count() ?? '-' }}</td>
                                         <td class="px-6 py-4 flex gap-2">
-                                            <a href="{{ route('admin.dashboard.registration.detail', $item->id) }}"
+                                            <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
                                                 class="btn-primary">Detail</a>
+
+                                            {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
+                                                method="POST" class="inline-block" onsubmit="return confirmDelete(event)">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                                <button type="submit" class="btn-red">Delete</button>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @empty
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                        <td class="px-6 py-4 text-center" colspan="9">
+                                        <td class="px-6 py-4 text-center" colspan="7">
                                             No data available
                                         </td>
                                     </tr>
