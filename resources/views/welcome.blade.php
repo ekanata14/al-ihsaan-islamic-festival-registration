@@ -202,7 +202,7 @@
         <h2 class="text-3xl font-bold text-center md:text-right">Khitanan Massal & Donor Darah
         </h2>
         <div class="flex justify-center items-center h-full">
-            <img src="{{ asset('assets/images/donor_khitan.jpg') }}" alt="donor-khitan" class="w-full md:w-96">
+            <img src="{{ asset('assets/images/donor_khitan_compressed.jpg') }}" alt="donor-khitan" class="w-full md:w-96">
         </div>
     </div>
     {{-- khitanan-massal-section-end --}}
