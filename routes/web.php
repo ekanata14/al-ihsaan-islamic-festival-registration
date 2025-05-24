@@ -79,6 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin Registration Route
     Route::get('/admin-dashboard/registration', [AdminRegistrationController::class, 'index'])->name('admin.dashboard.registration');
+    Route::get('/admin-dashboard/registration/{id}', [AdminRegistrationController::class, 'detail'])->name('admin.dashboard.registration.detail');
     Route::get('/admin-dashboard/registration/edit/{id}', [AdminRegistrationController::class, 'edit'])->name('admin.dashboard.registration.edit');
     Route::put('/admin-dashboard/registration/update', [AdminRegistrationController::class, 'update'])->name('admin.dashboard.registration.update');
 

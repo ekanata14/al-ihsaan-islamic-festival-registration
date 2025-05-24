@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 
 // Models
 use App\Models\Registration;
 use App\Models\Participant;
+use App\Models\Competition;
 
 class RegistrationController extends Controller
 {
@@ -19,11 +20,21 @@ class RegistrationController extends Controller
     public function index()
     {
         $viewData = [
-            'title' => 'Khitan Registrations',
-            'datas' => Registration::paginate(10)
+            'title' => 'Competitions',
+            'datas' => Competition::latest()->paginate(10)
         ];
 
         return view('admin.registration.index', $viewData);
+    }
+
+    public function detail(string $id)
+    {
+        $viewData = [
+            'title' => 'Khitan Registrations',
+            'datas' => Registration::where('competition_id', $id)->paginate(10)
+        ];
+
+        return view('admin.registration.detail', $viewData);
     }
 
     /**
