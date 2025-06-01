@@ -11,6 +11,8 @@
                                     <th scope="col" class="px-6 py-3">No</th>
                                     <th scope="col" class="px-6 py-3">Registration Number</th>
                                     <th scope="col" class="px-6 py-3">PIC</th>
+                                    <th scope="col" class="px-6 py-3">PIC Phone Number</th>
+                                    <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Competition</th>
                                     <th scope="col" class="px-6 py-3">Group</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
@@ -27,6 +29,7 @@
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->phone_number ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
