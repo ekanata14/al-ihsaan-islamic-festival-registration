@@ -28,7 +28,11 @@
                                         </th>
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
-                                        <td class="px-6 py-4">{{ $item->pic->phone_number ?? '-' }}</td>
+                                        <td class="px-6 py-4">
+                                            <a href="https://wa.me/{{ $item->pic->phone_number ?? '-' }}"
+                                                class="btn-green"><img src="{{ asset('assets/icons/whatsapp.png') }}"
+                                                    alt=""></a>
+                                        </td>
                                         <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
