@@ -19,7 +19,8 @@
                 massal, dan
                 donor darah penuh berkah!
                 Gabung sekarang dan jadi bagian dari generasi muda yang berprestasi, berakhlak, dan peduli sesama! 🌟</p>
-            <p class="text-center text-red-500 md:text-justify font-bold">*Peserta khusus TPQ Domisili Denpasar</p>
+            <p class="text-center text-red-500 md:text-justify font-bold">*"Peserta lomba dibatasi hanya untuk TPQ
+                se-Denpasar. Sementara itu, kegiatan sunat massal dan donor darah dapat diikuti oleh masyarakat umum."</p>
             <div class="grid grid-cols-2 justify-center md:justify-start gap-2">
                 @if (auth()->check())
                     @if (auth()->user()->role == 'admin')
@@ -163,8 +164,8 @@
     </div>
     {{-- sponsorship-section-end --}}
     {{-- contact-us-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4 my-20 h-full"
-        data-aos="fade-up" data-aos-duration="1000" id="contact-us">
+    <div class="flex flex-col justify-start items-center gap-4 px-4 my-20 h-full" data-aos="fade-up"
+        data-aos-duration="1000" id="contact-us">
         <h2 class="text-3xl font-bold text-center md:text-right">Contact Us
         </h2>
         {{-- <div class="flex justify-center items-center h-full">
@@ -197,12 +198,13 @@
     </div>
     {{-- contact-us-section-end --}}
     {{-- khitanan-massal-section-start --}}
-    <div class="flex flex-col justify-start items-center gap-4 px-4 h-full"
-        data-aos="fade-up" data-aos-duration="1000" id="khitanan-massal">
+    <div class="flex flex-col justify-start items-center gap-4 px-4 h-full" data-aos="fade-up" data-aos-duration="1000"
+        id="khitanan-massal">
         <h2 class="text-3xl font-bold text-center md:text-right">Khitanan Massal & Donor Darah
         </h2>
         <div class="flex justify-center items-center h-full">
-            <img src="{{ asset('assets/images/donor_khitan_compressed.jpg') }}" alt="donor-khitan" class="w-full md:w-96">
+            <img src="{{ asset('assets/images/donor_khitan_compressed.jpg') }}" alt="donor-khitan"
+                class="w-full md:w-96">
         </div>
     </div>
     {{-- khitanan-massal-section-end --}}
