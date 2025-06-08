@@ -37,14 +37,14 @@
                 <!-- Suggestions will be dynamically added here -->
             </ul>
             <span class="text-red-500 text-xs">*Jika nama TPQ tidak ada, maka TPQ akan terdaftar secara otomatis</span>
-            <div id="loading-spinner" class="hidden mt-2 text-center">
+            {{-- <div id="loading-spinner" class="hidden mt-2 text-center">
                 <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                         stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                 </svg>
-            </div>
+            </div> --}}
         </div>
 
         <input type="hidden" id="group_id" name="group_id" />
