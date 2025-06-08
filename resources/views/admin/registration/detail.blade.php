@@ -39,7 +39,7 @@
                                         <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
-                                        @if ($data->competition->name === 'Hadrah')
+                                        @if ($item->competition->name === 'Hadrah')
                                             <td class="px-6 py-4">{{ $item->total_participants ?? '-' }}</td>
                                         @endif
                                         <td class="px-6 py-4">
