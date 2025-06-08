@@ -15,7 +15,7 @@
                                     <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Competition</th>
                                     <th scope="col" class="px-6 py-3">Group</th>
-                                    @if ($data->competition->name === 'Hadrah')
+                                    @if ($datas->competition->name === 'Hadrah')
                                         <th scope="col" class="px-6 py-3">Jumlah Peserta</th>
                                     @endif
                                     <th scope="col" class="px-6 py-3">Status</th>
