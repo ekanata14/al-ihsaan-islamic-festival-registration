@@ -15,6 +15,9 @@
                                     <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Competition</th>
                                     <th scope="col" class="px-6 py-3">Group</th>
+                                    @if ($data->competition->name === 'Hadrah')
+                                        <th scope="col" class="px-6 py-3">Jumlah Peserta</th>
+                                    @endif
                                     <th scope="col" class="px-6 py-3">Status</th>
                                     <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
@@ -30,11 +33,15 @@
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <a href="https://wa.me/{{ $item->pic->phone_number ?? '-' }}"><img
-                                                    src="{{ asset('assets/icons/whatsapp.png') }}" alt="whatsapp" width="40">
+                                                    src="{{ asset('assets/icons/whatsapp.png') }}" alt="whatsapp"
+                                                    width="40">
                                         </td>
                                         <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
+                                        @if ($data->competition->name === 'Hadrah')
+                                            <td class="px-6 py-4">{{ $item->total_participants ?? '-' }}</td>
+                                        @endif
                                         <td class="px-6 py-4">
                                             <span
                                                 class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'checkin' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
