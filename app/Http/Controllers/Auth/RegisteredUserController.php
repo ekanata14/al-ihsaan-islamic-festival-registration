@@ -51,14 +51,11 @@ class RegisteredUserController extends Controller
             }
 
             if ($role != 'khitan') {
-                // Check if group exists with the similar name
-                if (!$request->group_id) {
-                    $createdGroup = Group::create([
-                        'name' => $request->group,
-                    ]);
+                $createdGroup = Group::create([
+                    'name' => $request->group,
+                ]);
 
-                    $group = $createdGroup->id;
-                }
+                $group = $createdGroup->id;
             }
 
             $user = User::create([
