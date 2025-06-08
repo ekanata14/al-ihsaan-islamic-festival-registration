@@ -31,7 +31,8 @@ class RegistrationController extends Controller
     {
         $viewData = [
             'title' => 'Khitan Registrations',
-            'datas' => Registration::where('competition_id', $id)->paginate(10)
+            'datas' => Registration::where('competition_id', $id)->paginate(10),
+            'competition' => Competition::findOrFail($id),
         ];
 
         return view('admin.registration.detail', $viewData);

@@ -15,7 +15,7 @@
                                     <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Competition</th>
                                     <th scope="col" class="px-6 py-3">Group</th>
-                                    @if ($datas->competition->name === 'Hadrah')
+                                    @if ($competition->name === 'Hadrah')
                                         <th scope="col" class="px-6 py-3">Jumlah Peserta</th>
                                     @endif
                                     <th scope="col" class="px-6 py-3">Status</th>
@@ -39,7 +39,7 @@
                                         <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
-                                        @if ($item->competition->name === 'Hadrah')
+                                        @if ($competition->name === 'Hadrah')
                                             <td class="px-6 py-4">{{ $item->total_participants ?? '-' }}</td>
                                         @endif
                                         <td class="px-6 py-4">
