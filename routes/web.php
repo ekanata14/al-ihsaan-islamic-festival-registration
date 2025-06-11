@@ -28,6 +28,9 @@ use App\Http\Controllers\HelperController;
 use App\Models\Competition;
 use App\Models\Sponsor;
 
+use App\Exports\KhitanRegistrationExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 Route::get('/', function () {
     $viewData = [
@@ -124,5 +127,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/export/khitan-registrations', function () {
+    return Excel::download(new KhitanRegistrationExport, 'khitan_registrations.xlsx');
+})->name('khitan-registrations.export');
 
 require __DIR__ . '/auth.php';
