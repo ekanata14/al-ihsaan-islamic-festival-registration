@@ -25,7 +25,7 @@ class KhitanRegistrationExport implements FromCollection, WithHeadings
                 'is_sanur' => $item->is_sanur ? 'Yes' : 'No',
                 'photo_url' => "https://festival.alihsaan-sanur.org/storage/" . $item->photo_url,
                 'certificate_url' => "https://festival.alihsaan-sanur.org/storage/" . $item->certificate_url,
-                'family_card_url' => "https://festival.alihsaan-sanur.org/storage/" . $item->familyCard->family_card_url ?? '-',
+                'family_card_url' => $item->familyCard ? "https://festival.alihsaan-sanur.org/storage/" . $item->familyCard->family_card_url : '-',
                 'status' => $item->status,
             ];
         });
