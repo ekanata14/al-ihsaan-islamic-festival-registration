@@ -44,10 +44,13 @@ class CheckInController extends Controller
             $registration = Registration::where('registration_number', $request->registration_number)->first();
 
             if (!$registration) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Registration not found',
-                ], 404);
+                return back()->with('error', 'Registration not found');
+            }
+
+            // Check if participant already checked in
+            $alreadyCheckedIn = CheckIn::where('registration_id', $registration->id)->exists();
+            if ($alreadyCheckedIn) {
+                return redirect()->back()->with('error', 'Participant has already been checked in.');
             }
 
             $registration->status = 'checkin';

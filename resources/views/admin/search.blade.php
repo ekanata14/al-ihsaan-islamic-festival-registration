@@ -45,47 +45,50 @@
                                         <td class="px-6 py-4 flex gap-2">
                                             <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
                                                 class="btn-primary">Detail</a>
-                                            <form action="{{ route('admin.dashboard.check-in.store') }}" method="POST"
-                                                class="checkin-form inline-block">
-                                                @csrf
-                                                <input type="hidden" name="registration_number"
-                                                    value="{{ $item->registration_number }}">
-                                                <button type="submit" class="btn-green sweet-checkin-btn"
-                                                    data-registration="{{ $item->participants[0]->name }}">
-                                                    CheckIn
-                                                </button>
-                                            </form>
-                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                                            <script>
-                                                document.addEventListener('DOMContentLoaded', function() {
-                                                    const checkinButtons = document.querySelectorAll('.sweet-checkin-btn');
+                                            @if ($item->status !== 'checkin')
+                                                <form action="{{ route('admin.dashboard.check-in.store') }}" method="POST"
+                                                    class="checkin-form inline-block">
+                                                    @csrf
+                                                    <input type="hidden" name="registration_number"
+                                                        value="{{ $item->registration_number }}">
+                                                    <button type="submit" class="btn-green sweet-checkin-btn"
+                                                        data-registration="{{ $item->participants[0]->name }}">
+                                                        CheckIn
+                                                    </button>
+                                                </form>
+                                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        const checkinButtons = document.querySelectorAll('.sweet-checkin-btn');
 
-                                                    checkinButtons.forEach(button => {
-                                                        button.addEventListener('click', function(e) {
-                                                            e.preventDefault(); // cegah submit langsung
+                                                        checkinButtons.forEach(button => {
+                                                            button.addEventListener('click', function(e) {
+                                                                e.preventDefault(); // cegah submit langsung
 
-                                                            const form = this.closest('form');
-                                                            const regNumber = this.dataset.registration;
+                                                                const form = this.closest('form');
+                                                                const regNumber = this.dataset.registration;
 
-                                                            Swal.fire({
-                                                                title: 'Konfirmasi Check-In',
-                                                                text: `Apakah kamu yakin ingin check-in ${regNumber}?`,
-                                                                icon: 'question',
-                                                                showCancelButton: true,
-                                                                confirmButtonColor: '#3085d6',
-                                                                cancelButtonColor: '#d33',
-                                                                confirmButtonText: 'Ya, Check-In!',
-                                                                cancelButtonText: 'Batal'
-                                                            }).then((result) => {
-                                                                if (result.isConfirmed) {
-                                                                    form.submit(); // submit jika user konfirmasi
-                                                                }
+                                                                Swal.fire({
+                                                                    title: 'Konfirmasi Check-In',
+                                                                    text: `Apakah kamu yakin ingin check-in ${regNumber}?`,
+                                                                    icon: 'question',
+                                                                    showCancelButton: true,
+                                                                    confirmButtonColor: '#3085d6',
+                                                                    cancelButtonColor: '#d33',
+                                                                    confirmButtonText: 'Ya, Check-In!',
+                                                                    cancelButtonText: 'Batal'
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        form.submit(); // submit jika user konfirmasi
+                                                                    }
+                                                                });
                                                             });
                                                         });
                                                     });
-                                                });
-                                            </script>
-
+                                                </script>
+                                            @else
+                                                <span class="text-green-600 font-semibold">Already Checked In</span>
+                                            @endif
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
                                                 method="POST" class="inline-block" onsubmit="return confirmDelete(event)">
                                                 @csrf
