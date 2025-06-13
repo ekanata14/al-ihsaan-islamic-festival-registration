@@ -46,11 +46,11 @@
                                             <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
                                                 class="btn-primary">Detail</a>
                                             <form action="{{ route('admin.dashboard.check-in.store') }}" method="POST"
-                                                class="inline-block" onsubmit="return confirmDelete(event)">
+                                                class="checkin-form inline-block">
                                                 @csrf
                                                 <input type="hidden" name="registration_number"
                                                     value="{{ $item->registration_number }}">
-                                                <button type="button" class="btn-green">CheckIn</button>
+                                                <button type="submit" class="btn-green">CheckIn</button>
                                             </form>
 
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
