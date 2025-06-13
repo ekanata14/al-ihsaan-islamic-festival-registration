@@ -44,13 +44,10 @@ class CheckInController extends Controller
             $registration = Registration::where('registration_number', $request->registration_number)->first();
 
             if (!$registration) {
-                return back()->with('error', 'Registration not found');
-            }
-
-            // Check if participant already checked in
-            $alreadyCheckedIn = CheckIn::where('registration_id', $registration->id)->exists();
-            if ($alreadyCheckedIn) {
-                return redirect()->back()->with('error', 'Participant has already been checked in.');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Registration not found',
+                ], 404);
             }
 
             $registration->status = 'checkin';
@@ -61,7 +58,7 @@ class CheckInController extends Controller
                 'competition_id' => $registration->competition_id,
                 'participant_number' => $participantNumber,
                 'pic_id' => $registration->pic_id,
-                'participant_id' => $registration->participant->id,
+                'participant_id' => $registration->participant_id,
             ]);
 
             DB::commit();
@@ -70,6 +67,46 @@ class CheckInController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function checkinQR(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $registration = Registration::where('registration_number', $request->registration_number)->first();
+
+            if (!$registration) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Registration not found',
+                ], 404);
+            }
+
+            $registration->status = 'checkin';
+            $registration->save();
+            $participantNumber = Checkin::where('competition_id', $registration->competition_id)->count() + 1;
+            $checkIn = CheckIn::create([
+                'registration_id' => $registration->id,
+                'competition_id' => $registration->competition_id,
+                'participant_number' => $participantNumber,
+                'pic_id' => $registration->pic_id,
+                'participant_id' => $registration->participant_id,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Check In Berhasil',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred: ' . $e->getMessage(),
+            ], 500);
         }
     }
 }

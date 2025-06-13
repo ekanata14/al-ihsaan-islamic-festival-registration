@@ -175,7 +175,7 @@
 
                                             try {
                                                 const response = await fetch(
-                                                    '{{ route('admin.dashboard.check-in.store') }}', {
+                                                    '{{ route('admin.dashboard.check-in.store.qr') }}', {
                                                         method: 'POST',
                                                         headers: {
                                                             'Content-Type': 'application/json',

@@ -100,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin-dashboard/check-in', [AdminCheckInController::class, 'index'])->name('admin.dashboard.check-in');
     Route::get('/admin-dashboard/check-in/{id}', [AdminCheckInController::class, 'detail'])->name('admin.dashboard.check-in.detail');
     Route::post('/admin-dashboard/check-in/store', [AdminCheckInController::class, 'checkin'])->name('admin.dashboard.check-in.store');
+    Route::post('/admin-dashboard/check-in/store/qr', [AdminCheckInController::class, 'checkinQR'])->name('admin.dashboard.check-in.store.qr');
     // Admin Sponsor Route
     Route::get('/admin-dashboard/sponsor', [AdminSponsorController::class, 'index'])->name('admin.dashboard.sponsor');
     Route::get('/admin-dashboard/sponsor/create', [AdminSponsorController::class, 'create'])->name('admin.dashboard.sponsor.create');

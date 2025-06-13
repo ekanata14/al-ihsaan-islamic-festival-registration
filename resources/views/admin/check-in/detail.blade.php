@@ -33,7 +33,7 @@
                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $loop->iteration }}
                                         </th>
-                                        <td class="px-6 py-4">{{ $item->registration->registration_number }}</td>
+                                        <td class="px-6 py-4">{{ $item->participant_number }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <a href="https://wa.me/{{ $item->pic->phone_number ?? '-' }}"><img
