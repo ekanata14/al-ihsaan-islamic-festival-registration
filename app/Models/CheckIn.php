@@ -31,6 +31,6 @@ class CheckIn extends Model
 
     public function pic()
     {
-        return $this->belongsTo(Pic::class);
+        return $this->belongsTo(User::class, 'pic_id');
     }
 }
