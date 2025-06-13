@@ -100,6 +100,7 @@ class CheckInController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Check In Berhasil',
+                'redirect' => route('admin.dashboard.check-in.detail', $registration->competition_id),
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
