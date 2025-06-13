@@ -58,7 +58,7 @@ class CheckInController extends Controller
                 'competition_id' => $registration->competition_id,
                 'participant_number' => $participantNumber,
                 'pic_id' => $registration->pic_id,
-                'participant_id' => $registration->participant->participant_id,
+                'participant_id' => $registration->participant->id,
             ]);
 
             DB::commit();
