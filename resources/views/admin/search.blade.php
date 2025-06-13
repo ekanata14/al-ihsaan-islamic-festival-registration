@@ -69,7 +69,7 @@
 
                                                             Swal.fire({
                                                                 title: 'Konfirmasi Check-In',
-                                                                text: `Apakah kamu yakin ingin check-in dengan nomor ${regNumber}?`,
+                                                                text: `Apakah kamu yakin ingin check-in ${regNumber}?`,
                                                                 icon: 'question',
                                                                 showCancelButton: true,
                                                                 confirmButtonColor: '#3085d6',
