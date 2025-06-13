@@ -10,9 +10,9 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">No</th>
                                     <th scope="col" class="px-6 py-3">Registration Number</th>
+                                    <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">PIC</th>
                                     <th scope="col" class="px-6 py-3">PIC Phone Number</th>
-                                    <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Competition</th>
                                     <th scope="col" class="px-6 py-3">Group</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
@@ -27,13 +27,13 @@
                                             {{ $loop->iteration }}
                                         </th>
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
+                                        <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <a href="https://wa.me/{{ $item->pic->phone_number ?? '-' }}"><img
                                                     src="{{ asset('assets/icons/whatsapp.png') }}" alt="whatsapp"
                                                     width="40">
                                         </td>
-                                        <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
@@ -46,7 +46,7 @@
                                             <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
                                                 class="btn-primary">Detail</a>
                                             <form action="{{ route('admin.dashboard.check-in.store') }}" method="POST"
-                                                class="inline-block">
+                                                class="inline-block checkin-form">
                                                 @csrf
                                                 <input type="hidden" name="registration_number"
                                                     value="{{ $item->registration_number }}">
