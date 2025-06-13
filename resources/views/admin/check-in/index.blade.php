@@ -14,7 +14,6 @@
                                     <th scope="col" class="px-6 py-3">Category</th>
                                     <th scope="col" class="px-6 py-3">Registration Start</th>
                                     <th scope="col" class="px-6 py-3">Registration End</th>
-                                    <th scope="col" class="px-6 py-3">Status</th>
                                     <th scope="col" class="px-6 py-3">Total Checkin</th>
                                     <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
@@ -33,12 +32,6 @@
                                             {{ \Carbon\Carbon::parse($item->registration_start)->format('d M Y') }}</td>
                                         <td class="px-6 py-4">
                                             {{ \Carbon\Carbon::parse($item->registration_end)->format('d M Y') }}</td>
-                                        <td class="px-6 py-4">
-                                            <span
-                                                class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'Open' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                                {{ $item->status }}
-                                            </span>
-                                        </td>
                                         <td class="px-6 py-4">{{ $item->checkins->count() ?? '-' }}</td>
                                         <td class="px-6 py-4 flex gap-2">
                                             <a href="{{ route('admin.dashboard.check-in.detail', $item->id) }}"
