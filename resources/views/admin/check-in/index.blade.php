@@ -50,7 +50,7 @@
                                                     <input type="hidden" name="registration_number"
                                                         value="{{ $item->registration_number }}">
                                                     <button type="submit" class="btn-green sweet-checkin-btn"
-                                                        data-registration="{{ $item->participants[0]->name }}">
+                                                        data-registration="{{ $item->participant->name }}">
                                                         CheckIn
                                                     </button>
                                                 </form>
