@@ -50,8 +50,41 @@
                                                 @csrf
                                                 <input type="hidden" name="registration_number"
                                                     value="{{ $item->registration_number }}">
-                                                <button type="submit" class="btn-green">CheckIn</button>
+                                                <button type="submit" class="btn-green sweet-checkin-btn"
+                                                    data-registration="{{ $item->registration_number }}">
+                                                    CheckIn
+                                                </button>
                                             </form>
+                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    const checkinButtons = document.querySelectorAll('.sweet-checkin-btn');
+
+                                                    checkinButtons.forEach(button => {
+                                                        button.addEventListener('click', function(e) {
+                                                            e.preventDefault(); // cegah submit langsung
+
+                                                            const form = this.closest('form');
+                                                            const regNumber = this.dataset.registration;
+
+                                                            Swal.fire({
+                                                                title: 'Konfirmasi Check-In',
+                                                                text: `Apakah kamu yakin ingin check-in dengan nomor ${regNumber}?`,
+                                                                icon: 'question',
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: '#3085d6',
+                                                                cancelButtonColor: '#d33',
+                                                                confirmButtonText: 'Ya, Check-In!',
+                                                                cancelButtonText: 'Batal'
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+                                                                    form.submit(); // submit jika user konfirmasi
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            </script>
 
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
                                                 method="POST" class="inline-block" onsubmit="return confirmDelete(event)">
@@ -92,29 +125,6 @@
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
                     confirmButtonText: 'Yes, delete it!',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit(); // Lanjut submit
-                    }
-                });
-            });
-        });
-    </script>
-    <script>
-        // Seleksi semua form delete
-        document.querySelectorAll('.checkin-form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Stop form submit
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This action cannot be undone!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#28a745',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, check in!',
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
