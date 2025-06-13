@@ -46,11 +46,11 @@
                                             <a href="{{ route('admin.dashboard.registration.edit', $item->id) }}"
                                                 class="btn-primary">Detail</a>
                                             <form action="{{ route('admin.dashboard.check-in.store') }}" method="POST"
-                                                class="inline-block checkin-form">
+                                                class="inline-block" onsubmit="return confirmDelete(event)">
                                                 @csrf
                                                 <input type="hidden" name="registration_number"
                                                     value="{{ $item->registration_number }}">
-                                                <button type="submit" class="btn-green">CheckIn</button>
+                                                <button type="button" class="btn-green">CheckIn</button>
                                             </form>
 
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
@@ -92,6 +92,29 @@
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
                     confirmButtonText: 'Yes, delete it!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Lanjut submit
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        // Seleksi semua form delete
+        document.querySelectorAll('.checkin-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Stop form submit
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This action cannot be undone!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, check in!',
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
