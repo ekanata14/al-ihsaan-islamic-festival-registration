@@ -51,6 +51,7 @@ Route::get('/register/khitan/person', [KhitanUserDashboardController::class, 're
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin-dashboard/search', [AdminDashboardController::class, 'search'])->name('admin.dashboard.search');
 
     // Admin User Route
     Route::get('/admin-dashboard/user', [AdminUserController::class, 'index'])->name('admin.dashboard.user');
