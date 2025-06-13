@@ -10,14 +10,11 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">No</th>
                                     <th scope="col" class="px-6 py-3">Registration Number</th>
+                                    <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">PIC</th>
                                     <th scope="col" class="px-6 py-3">PIC Phone Number</th>
-                                    <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Competition</th>
                                     <th scope="col" class="px-6 py-3">Group</th>
-                                    @if ($competition->name === 'Hadrah')
-                                        <th scope="col" class="px-6 py-3">Jumlah Peserta</th>
-                                    @endif
                                     <th scope="col" class="px-6 py-3">Status</th>
                                     <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
@@ -30,18 +27,15 @@
                                             {{ $loop->iteration }}
                                         </th>
                                         <td class="px-6 py-4">{{ $item->registration_number }}</td>
+                                        <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->pic->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <a href="https://wa.me/{{ $item->pic->phone_number ?? '-' }}"><img
                                                     src="{{ asset('assets/icons/whatsapp.png') }}" alt="whatsapp"
                                                     width="40">
                                         </td>
-                                        <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
-                                        @if ($competition->name === 'Hadrah')
-                                            <td class="px-6 py-4">{{ $item->total_participants ?? '-' }}</td>
-                                        @endif
                                         <td class="px-6 py-4">
                                             <span
                                                 class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'checkin' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
@@ -95,7 +89,6 @@
                                             @else
                                                 <span class="text-green-600 font-semibold">Already Checked In</span>
                                             @endif
-
                                             {{-- <form action="{{ route('admin.dashboard.registration.destroy') }}"
                                                 method="POST" class="inline-block" onsubmit="return confirmDelete(event)">
                                                 @csrf
@@ -114,9 +107,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="mt-4">
-                            {{ $datas->links('pagination::tailwind') }}
-                        </div>
                     </div>
                 </div>
             </div>

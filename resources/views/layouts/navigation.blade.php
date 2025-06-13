@@ -175,7 +175,7 @@
 
                                             try {
                                                 const response = await fetch(
-                                                    '{{ route('admin.dashboard.check-in.store') }}', {
+                                                    '{{ route('admin.dashboard.check-in.store.qr') }}', {
                                                         method: 'POST',
                                                         headers: {
                                                             'Content-Type': 'application/json',
@@ -193,10 +193,14 @@
                                                         icon: 'success',
                                                         title: 'Success',
                                                         text: data.message,
-                                                        showConfirmButton: true
-                                                    }).then(() => {
-                                                        location.reload();
+                                                        showConfirmButton: false,
+                                                        timer: 2000,
+                                                        timerProgressBar: true,
                                                     });
+                                                    setTimeout(() => {
+                                                        window.location.href = data.redirect;
+                                                    }, 2000);
+                                                }
                                                 } else {
                                                     Swal.fire({
                                                         icon: 'error',

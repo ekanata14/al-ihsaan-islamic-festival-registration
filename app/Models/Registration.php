@@ -32,4 +32,9 @@ class Registration extends Model
     {
         return $this->hasMany(Participant::class);
     }
+
+    public function participant()
+    {
+        return $this->hasOne(Participant::class);
+    }
 }

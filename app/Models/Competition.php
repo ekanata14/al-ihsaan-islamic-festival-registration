@@ -26,4 +26,9 @@ class Competition extends Model
     {
         return $this->hasMany(Registration::class, 'competition_id');
     }
+
+    public function checkins()
+    {
+        return $this->hasMany(CheckIn::class, 'competition_id');
+    }
 }

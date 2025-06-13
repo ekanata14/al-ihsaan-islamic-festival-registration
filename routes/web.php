@@ -51,6 +51,7 @@ Route::get('/register/khitan/person', [KhitanUserDashboardController::class, 're
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin-dashboard/search', [AdminDashboardController::class, 'search'])->name('admin.dashboard.search');
 
     // Admin User Route
     Route::get('/admin-dashboard/user', [AdminUserController::class, 'index'])->name('admin.dashboard.user');
@@ -97,7 +98,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin Check In Route
     Route::get('/admin-dashboard/check-in', [AdminCheckInController::class, 'index'])->name('admin.dashboard.check-in');
+    Route::get('/admin-dashboard/check-in/{id}', [AdminCheckInController::class, 'detail'])->name('admin.dashboard.check-in.detail');
     Route::post('/admin-dashboard/check-in/store', [AdminCheckInController::class, 'checkin'])->name('admin.dashboard.check-in.store');
+    Route::post('/admin-dashboard/check-in/store/qr', [AdminCheckInController::class, 'checkinQR'])->name('admin.dashboard.check-in.store.qr');
     // Admin Sponsor Route
     Route::get('/admin-dashboard/sponsor', [AdminSponsorController::class, 'index'])->name('admin.dashboard.sponsor');
     Route::get('/admin-dashboard/sponsor/create', [AdminSponsorController::class, 'create'])->name('admin.dashboard.sponsor.create');
