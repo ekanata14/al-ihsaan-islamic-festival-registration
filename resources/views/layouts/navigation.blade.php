@@ -200,7 +200,6 @@
                                                     setTimeout(() => {
                                                         window.location.href = data.redirect;
                                                     }, 2000);
-                                                }
                                                 } else {
                                                     Swal.fire({
                                                         icon: 'error',
