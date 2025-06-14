@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $search = request('search');
 
         // search registrations by registration_number, status, or related pic's name, or participant's name/nik/phone
-        $registrations = KhitanRegistration::where('registration_number', 'like', '%' . $search . '%')
+        $registrations = Registration::where('registration_number', 'like', '%' . $search . '%')
             ->orWhere('status', 'like', '%' . $search . '%')
             ->orWhereHas('pic', function ($query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%');
@@ -50,5 +50,28 @@ class DashboardController extends Controller
         ];
 
         return view('admin.search', $viewData);
+    }
+
+    public function searchKhitan()
+    {
+        $search = request('search');
+
+        // search registrations by registration_number, status, or related pic's name, or participant's name/nik/phone
+        $registrations = KhitanRegistration::where('registration_number', 'like', '%' . $search . '%')
+            ->orWhere('status', 'like', '%' . $search . '%')
+            ->orWhereHas('pic', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('participants', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        $viewData = [
+            "title" => "Admin Dashboard | Search: {$search}",
+            "datas" => $registrations,
+        ];
+
+        return view('admin.search-khitan', $viewData);
     }
 }
