@@ -29,7 +29,7 @@
                     {{ $title }}
                 </h2>
                 @if (auth()->user()->role == 'admin')
-                    <form class="w-full md:w-96" method="GET" action="{{ route('admin.dashboard.search') }}">
+                    {{-- <form class="w-full md:w-96" method="GET" action="{{ route('admin.dashboard.search') }}">
                         <label for="default-search"
                             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search Khitan</label>
                         <div class="relative">
@@ -46,7 +46,7 @@
                                 value="{{ old('search', request('search')) }}" />
                             <button type="submit"
                                 class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> </div>
-                    </form>
+                    </form> --}}
                     <form class="w-full md:w-96" method="GET" action="{{ route('admin.dashboard.search-khitan') }}">
                         <label for="default-search"
                             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search Khitan</label>
