@@ -130,9 +130,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="mt-4">
-                            {{ $datas->links('pagination::tailwind') }}
-                        </div>
                     </div>
                 </div>
             </div>
