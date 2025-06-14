@@ -58,6 +58,7 @@ class DashboardController extends Controller
 
         // search registrations by registration_number, status, or related pic's name, or participant's name/nik/phone
         $registrations = KhitanRegistration::where('registration_number', 'like', '%' . $search . '%')
+            ->orWhere('name', 'like', '%' . $search . '%')
             ->orWhere('status', 'like', '%' . $search . '%')
             ->orWhereHas('pic', function ($query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%');
