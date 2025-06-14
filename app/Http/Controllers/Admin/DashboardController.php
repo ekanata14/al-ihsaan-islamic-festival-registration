@@ -62,9 +62,6 @@ class DashboardController extends Controller
             ->orWhereHas('pic', function ($query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%');
             })
-            ->orWhereHas('participants', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
-            })
             ->get();
 
         $viewData = [

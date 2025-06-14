@@ -51,14 +51,4 @@ class KhitanRegistration extends Model
     {
         return $this->hasOne(KhitanFamilyCard::class);
     }
-
-    public function participants()
-    {
-        return $this->hasMany(Participant::class);
-    }
-
-    public function participant()
-    {
-        return $this->hasOne(Participant::class);
-    }
 }
