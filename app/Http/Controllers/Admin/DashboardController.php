@@ -69,6 +69,5 @@ class DashboardController extends Controller
             "datas" => $registrations,
         ];
 
-        return view('admin.search-khitan', $viewData);
     }
 }
