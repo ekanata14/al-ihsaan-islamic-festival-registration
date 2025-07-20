@@ -194,8 +194,7 @@
                                                         title: 'Success',
                                                         text: data.message,
                                                         showConfirmButton: false,
-                                                        timer: 2000,
-                                                        timerProgressBar: true,
+                                                        timer: 2000,,
                                                     });
                                                     setTimeout(() => {
                                                         window.location.href = data.redirect;

@@ -54,7 +54,6 @@ class DashboardController extends Controller
 
     public function searchKhitan()
     {
-        $search = request('search');
 
         // search registrations by registration_number, status, or related pic's name, or participant's name/nik/phone
         $registrations = KhitanRegistration::where('registration_number', 'like', '%' . $search . '%')
