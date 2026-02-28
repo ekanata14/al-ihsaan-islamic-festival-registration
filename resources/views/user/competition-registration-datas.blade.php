@@ -54,7 +54,16 @@
                                                 <div>{{ $loop->iteration }}. {{ $participant->name }}</div>
                                             @endforeach
                                         </td>
-                                        <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="font-semibold text-gray-900 dark:text-white">
+                                                    {{ $item->competition->name ?? '-' }}
+                                                </span>
+                                                <span class="text-xs text-gray-600 dark:text-gray-400">
+                                                    {{ $item->competition->category->name ?? '-' }}
+                                                </span>
+                                            </div>
+                                        </td>
                                         <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
                                         <td class="px-6 py-4">
                                             <span

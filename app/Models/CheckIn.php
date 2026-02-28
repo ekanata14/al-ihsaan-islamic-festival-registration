@@ -26,7 +26,7 @@ class CheckIn extends Model
 
     public function participant()
     {
-        return $this->hasOne(Participant::class, 'participant_id', 'id');
+        return $this->hasOne(Participant::class, 'id', 'participant_id');
     }
 
     public function pic()

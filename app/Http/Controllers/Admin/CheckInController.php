@@ -28,7 +28,7 @@ class CheckInController extends Controller
     {
         $competition = Competition::findOrFail($id);
         $viewData = [
-            'title' => 'Registrations | ' . $competition->name . ' ' .  $competition->category->name,
+            'title' => 'Registrations | ' . $competition->name . ' ' . $competition->category->name,
             'datas' => Checkin::where('competition_id', $id)->latest()->get(),
             'competition' => $competition,
         ];
@@ -75,38 +75,52 @@ class CheckInController extends Controller
         try {
             DB::beginTransaction();
 
+            // Cari data pendaftaran berdasarkan nomor registrasi dari QR Code
             $registration = Registration::where('registration_number', $request->registration_number)->first();
 
+            // 1. Cek apakah peserta terdaftar di kompetisi
             if (!$registration) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Registration not found',
+                    'message' => 'QR Code tidak valid! Peserta tidak terdaftar dalam perlombaan.',
                 ], 404);
             }
 
+            // 2. Cek apakah peserta SUDAH pernah melakukan check-in sebelumnya
+            if ($registration->status === 'checkin' || CheckIn::where('registration_id', $registration->id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal! Peserta ini sudah melakukan Check-In sebelumnya.',
+                ], 400); // 400 Bad Request
+            }
+
+            // Lanjut proses Check-In jika semua validasi aman
             $registration->status = 'checkin';
             $registration->save();
+
             $participantNumber = Checkin::where('competition_id', $registration->competition_id)->count() + 1;
+
             $checkIn = CheckIn::create([
                 'registration_id' => $registration->id,
                 'competition_id' => $registration->competition_id,
                 'participant_number' => $participantNumber,
                 'pic_id' => $registration->pic_id,
-                'participant_id' => $registration->participant->id,
+                'participant_id' => $registration->participant->id, // Catatan: pastikan relasi ini tidak error untuk lomba tipe Grup
             ]);
 
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Check In Berhasil',
+                'message' => 'Check-In Berhasil!',
                 'redirect' => route('admin.dashboard.check-in.detail', $registration->competition_id),
             ], 200);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred: ' . $e->getMessage(),
+                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage(),
             ], 500);
         }
     }

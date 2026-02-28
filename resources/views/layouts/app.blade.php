@@ -63,7 +63,8 @@
                                 placeholder="Cari Peserta Khitan atau registration number" required name="search"
                                 value="{{ old('search', request('search')) }}" />
                             <button type="submit"
-                                class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> </div>
+                                class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                        </div>
                     </form>
                 @endif
             </div>
@@ -247,6 +248,8 @@
                 </script>
             @endif
         </main>
+
+        @stack('scripts')
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @if (session('success'))

@@ -40,16 +40,26 @@
                                                     src="{{ asset('assets/icons/whatsapp.png') }}" alt="whatsapp"
                                                     width="40">
                                         </td>
-                                        <td class="px-6 py-4">{{ $item->participants[0]->name ?? '-' }}</td>
-                                        <td class="px-6 py-4">{{ $item->competition->name ?? '-' }}</td>
-                                        <td class="px-6 py-4">{{ $item->group->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->pic->phone_number ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ $item->participant->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="font-semibold text-gray-900 dark:text-white">
+                                                    {{ $item->competition->name ?? '-' }}
+                                                </span>
+                                                <span class="text-xs text-gray-600 dark:text-gray-400">
+                                                    {{ $item->competition->category->name ?? '-' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">{{ $item->pic->group->name ?? '-' }}</td>
                                         @if ($competition->name === 'Hadrah')
                                             <td class="px-6 py-4">{{ $item->total_participants ?? '-' }}</td>
                                         @endif
                                         <td class="px-6 py-4">
                                             <span
                                                 class="px-2 py-1 text-xs font-semibold rounded {{ $item->status == 'checkin' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' }}">
-                                                {{ strtoupper($item->status) }}
+                                                {{ strtoupper($item->registration->status) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 flex gap-2">

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pic_id');
             $table->foreign('pic_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('participant_id'); // Foreign key referencing registrations.id
-            $table->foreign('participant_id')->references('id')->on('participants')->onDelete('cascade'); 
+            $table->foreign('participant_id')->references('id')->on('participants')->onDelete('cascade');
             $table->unsignedBigInteger('registration_id'); // Foreign key referencing registrations.id
             $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
             $table->unsignedBigInteger('competition_id'); // Foreign key referencing registrations.id
