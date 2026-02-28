@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Al Ihsaan Islamic Festival</title>
+    <title>{{ env('APP_NAME') ?? 'Al Ihsaan Islamic Festival' }}</title>
 
     <!-- Fonts -->
     <link rel="icon" href="{{ asset('assets/images/logo_only.png') }}">
