@@ -48,7 +48,7 @@ Route::get('/register/khitan', [KhitanUserDashboardController::class, 'registrat
 Route::get('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPerson'])->name('khitan.registration.person');
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin-dashboard/search', [AdminDashboardController::class, 'search'])->name('admin.dashboard.search');
@@ -113,7 +113,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin-dashboard/sponsor/edit/{id}', [AdminSponsorController::class, 'edit'])->name('admin.dashboard.sponsor.edit');
     Route::put('/admin-dashboard/sponsor/update', [AdminSponsorController::class, 'update'])->name('admin.dashboard.sponsor.update');
     Route::delete('/admin-dashboard/sponsor/delete', [AdminSponsorController::class, 'destroy'])->name('admin.dashboard.sponsor.destroy');
+});
 
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/user-dashboard/registration', [UserDashboardController::class, 'index'])->name('user.dashboard.registration');
