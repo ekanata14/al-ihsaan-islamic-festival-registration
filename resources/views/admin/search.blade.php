@@ -3,7 +3,7 @@
 @section('content')
     <div class="py-8 max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
 
-        <x-breadcrumb :links="['Hasil Pencarian' => '#']" />
+        <x-breadcrumb :links="['Hasil Pencarian Secara Global' => '#']" />
 
         <div
             class="bg-gradient-to-r from-[#1D6594] to-[#154d73] rounded-3xl p-6 sm:p-8 mb-8 text-white shadow-md relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -11,12 +11,14 @@
             <div class="relative z-10">
                 <h2 class="text-2xl font-extrabold">Hasil Pencarian: <span class="text-[#E9AA14]">"{{ $search }}"</span>
                 </h2>
-                <p class="text-blue-100 mt-1 text-sm">
-                    Sistem menemukan
-                    <strong class="text-white bg-white/20 px-2 py-0.5 rounded-md">{{ $lombaDatas->count() }} Pendaftar
-                        Lomba</strong> dan
-                    <strong class="text-white bg-white/20 px-2 py-0.5 rounded-md">{{ $khitanDatas->count() }} Pendaftar
-                        Khitan</strong>.
+                <p class="text-blue-100 mt-2 text-sm leading-relaxed">
+                    Sistem menemukan:
+                    <strong class="text-white bg-white/20 px-2 py-0.5 rounded-md mx-0.5">{{ $lombaDatas->count() }} Pendaftar
+                        Lomba</strong>,
+                    <strong class="text-white bg-white/20 px-2 py-0.5 rounded-md mx-0.5">{{ $khitanDatas->count() }}
+                        Pendaftar Khitan</strong>, dan
+                    <strong class="text-white bg-white/20 px-2 py-0.5 rounded-md mx-0.5">{{ $userDatas->count() }} Akun
+                        User</strong>.
                 </p>
             </div>
             <a href="{{ url()->previous() }}"
@@ -28,12 +30,13 @@
             </a>
         </div>
 
-        <div class="mb-8">
+        <div class="mb-10">
             <h3 class="text-lg font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                <svg class="w-5 h-5 text-[#1D6594]" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
+                <span class="p-1.5 bg-blue-100 text-[#1D6594] rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </span>
                 Data Pendaftaran Lomba ({{ $lombaDatas->count() }})
             </h3>
 
@@ -57,7 +60,6 @@
                                     <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ $loop->iteration }}</td>
                                     <td class="px-6 py-4 font-extrabold text-[#1D6594]">{{ $item->registration_number }}
                                     </td>
-
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="flex flex-col">
@@ -78,10 +80,8 @@
                                             @endif
                                         </div>
                                     </td>
-
                                     <td class="px-6 py-4 font-bold text-gray-900">{{ $item->participants[0]->name ?? '-' }}
                                     </td>
-
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col gap-1">
                                             <span
@@ -90,21 +90,15 @@
                                                 class="text-xs font-semibold text-gray-500">{{ $item->group->name ?? '-' }}</span>
                                         </div>
                                     </td>
-
                                     <td class="px-6 py-4 text-center">
                                         @if (strtolower($item->status) == 'checkin')
                                             <span
-                                                class="inline-flex items-center px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                CHECK-IN
-                                            </span>
+                                                class="inline-flex items-center px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">CHECK-IN</span>
                                         @else
                                             <span
-                                                class="inline-flex items-center px-2.5 py-1 text-xs font-bold rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-                                                {{ strtoupper($item->status) }}
-                                            </span>
+                                                class="inline-flex items-center px-2.5 py-1 text-xs font-bold rounded-full bg-amber-50 text-amber-700 border border-amber-200">{{ strtoupper($item->status) }}</span>
                                         @endif
                                     </td>
-
                                     <td class="px-6 py-4 text-center">
                                         <a href="{{ route('admin.dashboard.registration.detail.person', $item->id) }}"
                                             class="inline-block p-2 text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white rounded-lg transition-colors tooltip"
@@ -122,10 +116,8 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="px-6 py-12 text-center text-gray-400" colspan="7">
-                                        <p class="font-medium text-gray-500">Tidak ada pendaftaran lomba untuk kata kunci
-                                            "{{ $search }}".</p>
-                                    </td>
+                                    <td class="px-6 py-12 text-center text-gray-400" colspan="7">Tidak ada pendaftaran
+                                        lomba yang cocok dengan pencarian.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -134,12 +126,13 @@
             </div>
         </div>
 
-        <div>
+        <div class="mb-10">
             <h3 class="text-lg font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                </svg>
+                <span class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </span>
                 Data Pendaftaran Khitan ({{ $khitanDatas->count() }})
             </h3>
 
@@ -150,8 +143,8 @@
                             <tr>
                                 <th scope="col" class="px-6 py-4 font-bold text-center w-16">No</th>
                                 <th scope="col" class="px-6 py-4 font-bold">No. Reg</th>
-                                <th scope="col" class="px-6 py-4 font-bold">Nama Anak</th>
                                 <th scope="col" class="px-6 py-4 font-bold">Info Wali / Ortu</th>
+                                <th scope="col" class="px-6 py-4 font-bold">Nama Anak</th>
                                 <th scope="col" class="px-6 py-4 font-bold">Domisili</th>
                                 <th scope="col" class="px-6 py-4 font-bold text-center">Cek Berkas</th>
                                 <th scope="col" class="px-6 py-4 font-bold text-center">Status</th>
@@ -165,8 +158,6 @@
                                     </td>
                                     <td class="px-6 py-4 font-extrabold text-emerald-700">{{ $item->registration_number }}
                                     </td>
-                                    <td class="px-6 py-4 font-bold text-gray-900">{{ $item->name ?? '-' }}</td>
-
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="flex flex-col">
@@ -187,7 +178,7 @@
                                             @endif
                                         </div>
                                     </td>
-
+                                    <td class="px-6 py-4 font-bold text-gray-900">{{ $item->name ?? '-' }}</td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col items-start gap-1">
                                             <span class="text-sm text-gray-700">{{ $item->domicile }}</span>
@@ -198,13 +189,12 @@
                                             @endif
                                         </div>
                                     </td>
-
                                     <td class="px-6 py-4">
                                         <div class="flex items-center justify-center gap-1.5">
                                             @if (!empty($item->familyCard) && !empty($item->familyCard->family_card_url))
                                                 <button type="button"
                                                     onclick="openModal('{{ asset('storage/' . $item->familyCard->family_card_url) }}', 'Kartu Keluarga - {{ $item->name }}')"
-                                                    class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-colors tooltip"
+                                                    class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-[#1D6594] hover:text-white transition-colors tooltip"
                                                     title="Lihat KK">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         stroke-width="2" viewBox="0 0 24 24">
@@ -217,7 +207,7 @@
                                             @if ($item->certificate_url)
                                                 <button type="button"
                                                     onclick="openModal('{{ asset('storage/' . $item->certificate_url) }}', 'Akta Kelahiran - {{ $item->name }}')"
-                                                    class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-colors tooltip"
+                                                    class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-[#1D6594] hover:text-white transition-colors tooltip"
                                                     title="Lihat Akta">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         stroke-width="2" viewBox="0 0 24 24">
@@ -230,7 +220,7 @@
                                             @if ($item->photo_url)
                                                 <button type="button"
                                                     onclick="openModal('{{ asset('storage/' . $item->photo_url) }}', 'Foto Anak - {{ $item->name }}')"
-                                                    class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-colors tooltip"
+                                                    class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-[#1D6594] hover:text-white transition-colors tooltip"
                                                     title="Lihat Foto">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         stroke-width="2" viewBox="0 0 24 24">
@@ -242,7 +232,6 @@
                                             @endif
                                         </div>
                                     </td>
-
                                     <td class="px-6 py-4 text-center">
                                         @if (strtolower($item->status) == 'checkin')
                                             <span
@@ -252,7 +241,6 @@
                                                 class="inline-flex items-center px-2.5 py-1 text-xs font-bold rounded-full bg-blue-50 text-blue-700 border border-blue-200">REGISTERED</span>
                                         @endif
                                     </td>
-
                                     <td class="px-6 py-4">
                                         <div class="flex items-center justify-center gap-2">
                                             <a href="{{ route('admin.dashboard.khitan-registration.edit', $item->id) }}"
@@ -286,10 +274,95 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="px-6 py-12 text-center text-gray-400" colspan="8">
-                                        <p class="font-medium text-gray-500">Tidak ada pendaftaran khitan untuk kata kunci
-                                            "{{ $search }}".</p>
+                                    <td class="px-6 py-12 text-center text-gray-400" colspan="8">Tidak ada pendaftaran
+                                        khitan yang cocok dengan pencarian.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-extrabold text-gray-800 mb-4 flex items-center gap-2">
+                <span class="p-1.5 bg-amber-100 text-amber-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                </span>
+                Data Pengguna / Akun ({{ $userDatas->count() }})
+            </h3>
+
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-600 whitespace-nowrap">
+                        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 font-bold text-center w-16">No</th>
+                                <th scope="col" class="px-6 py-4 font-bold">Nama Lengkap</th>
+                                <th scope="col" class="px-6 py-4 font-bold">Kontak Info</th>
+                                <th scope="col" class="px-6 py-4 font-bold">Asal TPQ / Grup</th>
+                                <th scope="col" class="px-6 py-4 font-bold">Role</th>
+                                <th scope="col" class="px-6 py-4 font-bold text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @forelse ($userDatas as $item)
+                                <tr class="bg-white hover:bg-amber-50/30 transition-colors">
+                                    <td class="px-6 py-4 font-medium text-gray-900 text-center">{{ $loop->iteration }}
                                     </td>
+                                    <td class="px-6 py-4 font-bold text-gray-800">{{ $item->name }}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1">
+                                            <span class="text-gray-900 font-medium">{{ $item->email }}</span>
+                                            <span class="text-xs text-gray-500">{{ $item->phone_number ?? '-' }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-[#1D6594]">{{ $item->group->name ?? '-' }}</td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2.5 py-1 text-xs font-bold rounded-full border whitespace-nowrap {{ strtolower($item->role) == 'khitan' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200' }}">
+                                            {{ strtoupper($item->role) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <a href="{{ route('admin.dashboard.user.edit', $item->id) }}"
+                                                class="inline-block p-2 text-amber-500 bg-amber-50 hover:bg-amber-500 hover:text-white rounded-lg transition-colors tooltip"
+                                                title="Edit User">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                            <form action="{{ route('admin.dashboard.user.destroy') }}" method="POST"
+                                                class="delete-form m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                                <button type="submit"
+                                                    class="p-2 text-rose-500 bg-rose-50 hover:bg-rose-500 hover:text-white rounded-lg transition-colors tooltip"
+                                                    title="Hapus User">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        stroke-width="2" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="px-6 py-12 text-center text-gray-400" colspan="6">Tidak ada data akun
+                                        user yang cocok dengan pencarian.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -322,13 +395,11 @@
     </div>
 
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            // Logic Animasi Modal Gambar
+            // Modal Preview Gambar Logic
             function openModal(imageUrl, title) {
                 const modal = document.getElementById('imageModal');
                 const content = document.getElementById('imageModalContent');
-
                 document.getElementById('modalImage').src = imageUrl;
                 document.getElementById('modalTitle').textContent = title;
 
@@ -342,7 +413,6 @@
             function closeModal() {
                 const modal = document.getElementById('imageModal');
                 const content = document.getElementById('imageModalContent');
-
                 modal.classList.add('opacity-0');
                 content.classList.add('scale-95');
 
@@ -352,13 +422,13 @@
                 }, 300);
             }
 
-            // Logic SweetAlert untuk Hapus Data (Digunakan di Tabel Khitan)
+            // SweetAlert Delete Logic
             document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('.delete-form').forEach(form => {
                     form.addEventListener('submit', function(e) {
                         e.preventDefault();
                         Swal.fire({
-                            title: 'Hapus Data Pendaftar?',
+                            title: 'Hapus Data?',
                             text: "Data ini akan dihapus secara permanen dari sistem!",
                             icon: 'warning',
                             showCancelButton: true,

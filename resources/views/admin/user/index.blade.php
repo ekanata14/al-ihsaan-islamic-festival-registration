@@ -11,13 +11,27 @@
                 <p class="text-sm text-gray-500 mt-1">Kelola data akun PIC Lomba dan pendaftar Khitan.</p>
             </div>
 
-            <a href="{{ route('admin.dashboard.user.create') }}"
-                class="inline-flex items-center justify-center px-5 py-2.5 bg-[#1D6594] text-white font-bold rounded-xl hover:bg-[#154d73] transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                </svg>
-                Tambah User
-            </a>
+            <div class="flex items-center gap-3">
+                <form action="{{ route('admin.dashboard.user') }}" method="GET" class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="search" name="search" value="{{ request('search') }}"
+                        class="block w-full pl-10 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-[#1D6594] focus:border-[#1D6594] shadow-sm transition-all"
+                        placeholder="Cari user, TPQ, email...">
+                </form>
+
+                <a href="{{ route('admin.dashboard.user.create') }}"
+                    class="inline-flex items-center justify-center px-5 py-2.5 bg-[#1D6594] text-white font-bold rounded-xl hover:bg-[#154d73] transition-all shadow-sm hover:-translate-y-0.5 gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah User
+                </a>
+            </div>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -76,8 +90,8 @@
                                             </svg>
                                         </a>
 
-                                        <form action="{{ route('admin.dashboard.user.destroy', $item->id) }}" method="POST"
-                                            class="delete-form m-0">
+                                        <form action="{{ route('admin.dashboard.user.destroy', $item->id) }}"
+                                            method="POST" class="delete-form m-0">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id" value="{{ $item->id }}">

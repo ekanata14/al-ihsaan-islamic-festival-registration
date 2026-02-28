@@ -15,11 +15,32 @@ class CompetitionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // 1. Ambil keyword pencarian
+        $search = $request->input('search');
+
+        // 2. Buat query builder
+        $query = Competition::query();
+
+        // 3. Jika ada input pencarian, tambahkan kondisi filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%")
+                    // Mencari berdasarkan nama kategori di tabel relasi
+                    ->orWhereHas('category', function ($catQuery) use ($search) {
+                        $catQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // 4. Ambil data dengan pagination, tetap bawa parameter search di URL pagination
         $viewData = [
             'title' => 'Competitions',
-            'datas' => Competition::latest()->paginate(10)
+            'datas' => $query->latest()->paginate(10)->appends(['search' => $search]),
+            'search' => $search // Kirim keyword kembali ke view
         ];
 
         return view('admin.competition.index', $viewData);

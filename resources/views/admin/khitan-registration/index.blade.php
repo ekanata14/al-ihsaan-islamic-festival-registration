@@ -5,21 +5,37 @@
 
         <x-breadcrumb :links="['Pendaftaran Khitan' => '#']" />
 
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div>
                 <h2 class="text-2xl font-extrabold text-gray-900">Data Pendaftar Khitan</h2>
                 <p class="text-sm text-gray-500 mt-1">Kelola data, verifikasi berkas, dan status peserta khitanan massal.</p>
             </div>
 
-            <a href="{{ route('khitan-registrations.export') }}"
-                class="inline-flex items-center justify-center px-5 py-2.5 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z">
-                    </path>
-                </svg>
-                Export Excel
-            </a>
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <form action="{{ route('admin.dashboard.khitan-registration') }}" method="GET"
+                    class="relative group w-full sm:w-80">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-[#1D6594]" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="search" name="search" value="{{ request('search') }}"
+                        class="block w-full pl-10 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-[#1D6594] focus:border-[#1D6594] transition-all shadow-sm"
+                        placeholder="Cari no reg, anak, wali, domisili...">
+                </form>
+
+                <a href="{{ route('khitan-registrations.export') }}"
+                    class="inline-flex w-full sm:w-auto items-center justify-center px-5 py-2.5 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 gap-2 whitespace-nowrap">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z">
+                        </path>
+                    </svg>
+                    Export Excel
+                </a>
+            </div>
         </div>
 
         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
@@ -119,8 +135,8 @@
                                                 onclick="openModal('{{ asset('storage/' . $item->photo_url) }}', 'Foto Anak - {{ $item->name }}')"
                                                 class="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-[#1D6594] hover:text-white transition-colors tooltip"
                                                 title="Lihat Foto">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                    viewBox="0 0 24 24">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    stroke-width="2" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                     </path>
@@ -180,13 +196,18 @@
                             <tr>
                                 <td class="px-6 py-12 text-center text-gray-400" colspan="8">
                                     <div class="flex flex-col items-center justify-center">
-                                        <svg class="w-12 h-12 mb-3 text-gray-300" fill="none" stroke="currentColor"
+                                        <svg class="w-16 h-16 mb-4 text-gray-200" fill="none" stroke="currentColor"
                                             stroke-width="1.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                            </path>
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                         </svg>
-                                        <p class="font-medium text-gray-500">Belum ada data pendaftar khitan.</p>
+                                        @if (request('search'))
+                                            <p class="text-lg font-medium text-gray-500">Pencarian
+                                                "{{ request('search') }}" tidak ditemukan.</p>
+                                        @else
+                                            <p class="text-lg font-medium text-gray-500">Belum ada data pendaftar khitan.
+                                            </p>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

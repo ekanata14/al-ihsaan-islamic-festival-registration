@@ -84,7 +84,7 @@ class DashboardController extends Controller
             return back()->with('error', 'Masukkan kata kunci pencarian.');
         }
 
-        // 1. Pencarian Data Lomba (Registrations) yang lebih detail
+        // 1. Pencarian Data Lomba (Registrations)
         $lombaResults = Registration::with(['pic', 'participants', 'competition', 'group'])
             ->where(function ($query) use ($search) {
                 $query->where('registration_number', 'like', "%{$search}%")
@@ -107,7 +107,7 @@ class DashboardController extends Controller
             ->latest()
             ->get();
 
-        // 2. Pencarian Data Khitan (KhitanRegistrations) yang lebih detail
+        // 2. Pencarian Data Khitan (KhitanRegistrations)
         $khitanResults = KhitanRegistration::with(['pic', 'familyCard'])
             ->where(function ($query) use ($search) {
                 $query->where('registration_number', 'like', "%{$search}%")
@@ -122,14 +122,28 @@ class DashboardController extends Controller
             ->latest()
             ->get();
 
+        // 3. Pencarian Data User (Kecuali Admin)
+        $userResults = User::with(['group'])
+            ->where('role', '!=', 'admin') // Kecualikan admin
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%")
+                    ->orWhereHas('group', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->get();
+
         $viewData = [
             "title" => "Hasil Pencarian: {$search}",
             "search" => $search,
             "lombaDatas" => $lombaResults,
             "khitanDatas" => $khitanResults,
+            "userDatas" => $userResults, // Kirim data user ke view
         ];
 
-        // Buat file view baru bernama 'admin.search-unified'
         return view('admin.search', $viewData);
     }
 

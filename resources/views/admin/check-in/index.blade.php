@@ -5,13 +5,24 @@
 
         <x-breadcrumb :links="['Menu Check-In' => '#']" />
 
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
                 <h2 class="text-2xl font-extrabold text-gray-900">Validasi Kehadiran (Check-In)</h2>
-                <p class="text-sm text-gray-500 mt-1">Pilih perlombaan di bawah ini untuk melihat daftar peserta yang sudah
-                    hadir.</p>
+                <p class="text-sm text-gray-500 mt-1">Pilih perlombaan di bawah ini untuk mengelola daftar hadir.</p>
             </div>
 
+            <form action="{{ route('admin.dashboard.check-in') }}" method="GET" class="relative group w-full md:w-80">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-400 group-focus-within:text-[#1D6594]" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="search" name="search" value="{{ request('search') }}"
+                    class="block w-full pl-10 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-[#1D6594] focus:border-[#1D6594] transition-all shadow-sm"
+                    placeholder="Cari nama lomba atau kategori...">
+            </form>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -49,13 +60,12 @@
                     </div>
 
                     <div class="p-6 flex flex-col flex-grow justify-between gap-6 bg-white">
-
                         <div
                             class="bg-emerald-50/50 rounded-2xl p-4 border border-emerald-100 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">Sudah Hadir</p>
                                 <p class="text-3xl font-black text-emerald-600">
-                                    {{ $item->checkins->count() ?? '0' }} <span
+                                    {{ $item->checkins_count ?? '0' }} <span
                                         class="text-sm font-medium text-emerald-600/70">Peserta</span>
                                 </p>
                             </div>
@@ -85,12 +95,12 @@
                         <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
-                            </path>
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <h5 class="text-2xl font-bold text-gray-800 mb-2">Data Lomba Kosong</h5>
-                    <p class="text-gray-500 max-w-md">Data perlombaan untuk melakukan check-in belum tersedia.</p>
+                    <h5 class="text-2xl font-bold text-gray-800 mb-2">Tidak Ditemukan</h5>
+                    <p class="text-gray-500 max-w-md">Lomba atau kategori dengan nama "{{ request('search') }}" tidak
+                        ditemukan.</p>
                 </div>
             @endforelse
         </div>
@@ -100,6 +110,5 @@
                 {{ $datas->links('pagination::tailwind') }}
             </div>
         @endif
-
     </div>
 @endsection

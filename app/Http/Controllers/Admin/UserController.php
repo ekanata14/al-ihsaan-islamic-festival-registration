@@ -16,11 +16,33 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // 1. Ambil keyword pencarian dari request
+        $search = $request->input('search');
+
+        // 2. Buat query dasar: hanya ambil role 'user' atau 'khitan'
+        // Gunakan whereIn agar lebih aman saat digabungkan dengan kondisi OR pada pencarian
+        $query = User::whereIn('role', ['user', 'khitan']);
+
+        // 3. Jika ada input pencarian, tambahkan filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%")
+                    // Mencari berdasarkan nama grup/TPQ di tabel relasi
+                    ->orWhereHas('group', function ($groupQuery) use ($search) {
+                        $groupQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // 4. Eksekusi query dengan pagination dan sertakan keyword search di link pagination
         $viewData = [
             "title" => "User Datas",
-            "datas" => User::where('role', 'user')->orWhere('role', 'khitan')->latest()->paginate(10)
+            "datas" => $query->latest()->paginate(10)->appends(['search' => $search]),
+            "search" => $search // Kirim keyword ke view untuk ditampilkan kembali di input box
         ];
 
         return view('admin.user.index', $viewData);
@@ -56,6 +78,8 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $user = User::create($validatedData);
+            DB::commit();
+            return redirect()->route('admin.dashboard.user')->with('success', 'User created successfully.');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to create user: ' . $e->getMessage());
@@ -105,15 +129,17 @@ class UserController extends Controller
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
             $user->phone_number = $validatedData['phone_number'];
+
             if (!empty($validatedData['password'])) {
                 $user->password = bcrypt($validatedData['password']);
             }
+
             $user->group_id = $validatedData['group_id'];
             $user->role = $validatedData['role'];
             $user->save();
 
             DB::commit();
-            return redirect()->route('admin.user.index')->with('success', 'User updated successfully.');
+            return redirect()->route('admin.dashboard.user')->with('success', 'User updated successfully.');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to update user: ' . $e->getMessage());
@@ -132,7 +158,7 @@ class UserController extends Controller
             $user->delete();
 
             DB::commit();
-            return redirect()->route('admin.user.index')->with('success', 'User deleted successfully.');
+            return redirect()->route('admin.dashboard.user')->with('success', 'User deleted successfully.');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to delete user: ' . $e->getMessage());

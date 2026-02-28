@@ -14,11 +14,24 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // 1. Ambil keyword dari input pencarian
+        $search = $request->input('search');
+
+        // 2. Buat query builder
+        $query = Category::query();
+
+        // 3. Jika ada input pencarian, filter berdasarkan nama
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // 4. Eksekusi query dengan pagination dan sertakan keyword di URL pagination
         $viewData = [
-            'title' => 'Categories',
-            'datas' => Category::latest()->paginate(10)
+            'title' => 'Manajemen Kategori',
+            'datas' => $query->latest()->paginate(10)->appends(['search' => $search]),
+            'search' => $search
         ];
 
         return view('admin.category.index', $viewData);
@@ -42,15 +55,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
         ]);
 
         try {
             DB::beginTransaction();
-
             Category::create($validatedData);
-
             DB::commit();
+
             return redirect()->route('admin.dashboard.category')->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -59,23 +71,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $category = Category::findOrFail($id);
-
-        if (!$category) {
-            return redirect()->back()->with('error', 'Category not found.');
-        }
 
         $viewData = [
             'title' => 'Edit Category',
@@ -91,15 +91,15 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id' => 'required',
-            'name' => 'required|string',
+            'id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
         ]);
 
         try {
             DB::beginTransaction();
 
             $category = Category::findOrFail($validatedData['id']);
-            $category->update($validatedData);
+            $category->update(['name' => $validatedData['name']]);
 
             DB::commit();
             return redirect()->route('admin.dashboard.category')->with('success', 'Category updated successfully.');
@@ -114,14 +114,10 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|integer',
-        ]);
-
         try {
             DB::beginTransaction();
 
-            $category = Category::findOrFail($validatedData['id']);
+            $category = Category::findOrFail($request->id);
             $category->delete();
 
             DB::commit();

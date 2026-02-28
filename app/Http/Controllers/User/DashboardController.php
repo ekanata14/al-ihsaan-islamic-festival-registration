@@ -37,12 +37,38 @@ class DashboardController extends Controller
         return view("user.dashboard", $viewData);
     }
 
-    public function registeredParticipants()
+
+    public function registeredParticipants(Request $request)
     {
-        $registrations = Registration::where('pic_id', auth()->user()->id)->latest()->paginate(10);
+        $search = $request->input('search');
+
+        // Pastikan hanya mengambil data milik user yang sedang login
+        $query = Registration::where('pic_id', auth()->user()->id);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                // Cari dari Nomor Registrasi
+                $q->where('registration_number', 'like', "%{$search}%")
+                    // Cari dari Nama Peserta
+                    ->orWhereHas('participants', function ($partQuery) use ($search) {
+                        $partQuery->where('name', 'like', "%{$search}%");
+                    })
+                    // Cari dari Nama Lomba / Kategori
+                    ->orWhereHas('competition', function ($compQuery) use ($search) {
+                        $compQuery->where('name', 'like', "%{$search}%")
+                            ->orWhereHas('category', function ($catQuery) use ($search) {
+                                $catQuery->where('name', 'like', "%{$search}%");
+                            });
+                    });
+            });
+        }
+
+        $registrations = $query->latest()->paginate(10)->appends(['search' => $search]);
+
         $viewData = [
             "title" => "My Registrations",
             "datas" => $registrations,
+            "search" => $search // Kirim keyword search ke view
         ];
 
         return view("user.competition-registration-datas", $viewData);

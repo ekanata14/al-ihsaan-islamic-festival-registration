@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,11 +14,24 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // 1. Ambil keyword pencarian
+        $search = $request->input('search');
+
+        // 2. Buat query dasar
+        $query = Group::query();
+
+        // 3. Jika ada pencarian, tambahkan filter WHERE
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // 4. Eksekusi query dengan pagination dan simpan keyword di URL
         $viewData = [
-            'title' => 'Groups',
-            'datas' => Group::latest()->paginate(10)
+            'title' => 'Manajemen Grup / TPQ',
+            'datas' => $query->latest()->paginate(10)->appends(['search' => $search]),
+            'search' => $search // Kirim keyword ke view
         ];
 
         return view('admin.group.index', $viewData);
@@ -28,7 +40,6 @@ class GroupController extends Controller
     public function getAllGroups()
     {
         $groups = Group::latest()->get();
-
         return response()->json($groups);
     }
 
@@ -90,7 +101,7 @@ class GroupController extends Controller
     public function edit(string $id)
     {
         $viewData = [
-            'title' => 'Edit User',
+            'title' => 'Edit Grup',
             'data' => Group::findOrFail($id)
         ];
 
@@ -110,7 +121,7 @@ class GroupController extends Controller
         DB::beginTransaction();
 
         try {
-            $group = Group::findOrFail($request->id); // pastikan $id sudah tersedia
+            $group = Group::findOrFail($request->id);
             $group->update($validatedData);
             DB::commit();
 
@@ -129,7 +140,7 @@ class GroupController extends Controller
         DB::beginTransaction();
 
         try {
-            $group = Group::findOrFail($request->id); // pastikan $id sudah tersedia
+            $group = Group::findOrFail($request->id);
             $group->delete();
             DB::commit();
             return redirect()->route('admin.dashboard.group')->with('success', 'Group deleted successfully');

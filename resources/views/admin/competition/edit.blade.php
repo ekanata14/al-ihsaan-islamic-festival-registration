@@ -106,4 +106,61 @@
                         <x-input-label for="status" :value="__('Status Pendaftaran')" class="font-bold text-gray-700 mb-1.5 block" />
                         <select name="status" id="status" required
                             class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 bg-gray-50 focus:bg-white transition-colors">
-                            <option value="Open"
+                            <option value="Open" {{ old('status', $data->status) == 'Open' ? 'selected' : '' }}>Open
+                                (Buka)</option>
+                            <option value="Close" {{ old('status', $data->status) == 'Close' ? 'selected' : '' }}>Close
+                                (Tutup)</option>
+                        </select>
+                        @error('status')
+                            <p class="text-rose-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <x-input-label for="description" :value="__('Deskripsi Singkat')" class="font-bold text-gray-700 mb-1.5 block" />
+                        <textarea id="description" name="description"
+                            class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 bg-gray-50 focus:bg-white transition-colors form-textarea h-24 resize-none">{{ old('description', $data->description) }}</textarea>
+                        @error('description')
+                            <p class="text-rose-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="md:col-span-2 p-5 bg-amber-50/50 border border-amber-200 border-dashed rounded-xl">
+                        <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                            @if ($data->image_url)
+                                <div class="shrink-0 relative group">
+                                    <img src="{{ asset('storage/' . $data->image_url) }}" alt="Poster"
+                                        class="h-24 w-24 object-cover rounded-xl shadow-sm border border-white">
+                                    <div
+                                        class="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-[10px] font-bold text-center p-2">
+                                        Gambar Saat Ini
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="flex-1 w-full">
+                                <x-input-label for="image_url" :value="__('Ganti Gambar Poster (Biarkan kosong jika tidak ingin ganti)')"
+                                    class="font-bold text-gray-700 mb-2 block" />
+                                <input type="file" id="image_url" name="image_url" accept="image/*"
+                                    class="block w-full text-sm text-gray-600 cursor-pointer">
+                                @error('image_url')
+                                    <p class="text-rose-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
+                    <a href="{{ route('admin.dashboard.competition') }}"
+                        class="px-6 py-3 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors">Batal</a>
+                    <button type="submit"
+                        class="px-8 py-3 bg-amber-500 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:bg-amber-600 hover:-translate-y-0.5 transition-all">
+                        Perbarui Lomba
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+@endsection

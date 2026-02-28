@@ -27,10 +27,29 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <h3 class="text-xl font-bold text-gray-800">Daftar Peserta Khitan Anda</h3>
-                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-semibold">Total:
-                        {{ $datas->total() }} Peserta</span>
+
+                <div
+                    class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800">Daftar Peserta Khitan Anda</h3>
+                        <span
+                            class="inline-block mt-2 bg-emerald-50 text-emerald-700 border border-emerald-100 px-3 py-1 rounded-full text-xs font-bold tracking-wide">
+                            Total: {{ $datas->total() }} Peserta
+                        </span>
+                    </div>
+
+                    <form action="{{ route('khitan.dashboard') }}" method="GET" class="relative w-full md:w-80 group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400 group-focus-within:text-emerald-600 transition-colors"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input type="search" name="search" value="{{ request('search') }}"
+                            class="block w-full pl-10 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 transition-all shadow-sm"
+                            placeholder="Cari nama, no reg, domisili...">
+                    </form>
                 </div>
 
                 <div class="overflow-x-auto custom-scrollbar">
@@ -92,19 +111,19 @@
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col gap-2">
                                             <button type="button"
-                                                onclick="openModal('{{ asset('storage/' . $item->photo_url) }}', 'Foto Anak')"
-                                                class="text-xs font-semibold text-blue-600 hover:underline text-left">📸
+                                                onclick="openModal('{{ asset('storage/' . $item->photo_url) }}', 'Foto Anak - {{ $item->name }}')"
+                                                class="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left transition-colors">📸
                                                 Foto Anak</button>
 
                                             <button type="button"
-                                                onclick="openModal('{{ asset('storage/' . $item->certificate_url) }}', 'Akta Kelahiran')"
-                                                class="text-xs font-semibold text-blue-600 hover:underline text-left">📄
+                                                onclick="openModal('{{ asset('storage/' . $item->certificate_url) }}', 'Akta Kelahiran - {{ $item->name }}')"
+                                                class="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left transition-colors">📄
                                                 Akta Kelahiran</button>
 
                                             @if (!empty($item->familyCard) && !empty($item->familyCard->family_card_url))
                                                 <button type="button"
-                                                    onclick="openModal('{{ asset('storage/' . $item->familyCard->family_card_url) }}', 'Kartu Keluarga')"
-                                                    class="text-xs font-semibold text-blue-600 hover:underline text-left">👥
+                                                    onclick="openModal('{{ asset('storage/' . $item->familyCard->family_card_url) }}', 'Kartu Keluarga - {{ $item->name }}')"
+                                                    class="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left transition-colors">👥
                                                     Kartu Keluarga</button>
                                             @else
                                                 <span class="text-xs text-rose-500 italic">⚠️ KK Kosong</span>
@@ -117,7 +136,8 @@
                                             class="inline-flex items-center px-2.5 py-1 text-xs font-bold rounded-full border whitespace-nowrap
                                             {{ strtolower($item->status) == 'checkin' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200' }}">
                                             @if (strtolower($item->status) == 'checkin')
-                                                <span class="w-1.5 h-1.5 me-1.5 bg-emerald-500 rounded-full"></span>
+                                                <span
+                                                    class="w-1.5 h-1.5 me-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
                                             @else
                                                 <span class="w-1.5 h-1.5 me-1.5 bg-amber-500 rounded-full"></span>
                                             @endif
@@ -132,10 +152,15 @@
                                             <svg class="w-12 h-12 mb-3 text-gray-300" fill="none" stroke="currentColor"
                                                 stroke-width="1.5" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                                </path>
+                                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                             </svg>
-                                            <p class="font-medium text-gray-500">Anda belum mendaftarkan peserta khitan.</p>
+                                            @if (request('search'))
+                                                <p class="font-medium text-gray-500">Pencarian "{{ request('search') }}"
+                                                    tidak ditemukan.</p>
+                                            @else
+                                                <p class="font-medium text-gray-500">Anda belum mendaftarkan peserta
+                                                    khitan.</p>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -205,7 +230,6 @@
     </style>
 
     <script>
-        // Fungsi Buka Modal Animasi Halus
         function openModal(imageUrl, title) {
             const modal = document.getElementById('photoModal');
             const modalContent = document.getElementById('photoModalContent');
@@ -213,10 +237,7 @@
             document.getElementById('modalImage').src = imageUrl;
             document.getElementById('modalTitle').textContent = title;
 
-            // Remove hidden
             modal.classList.remove('hidden');
-
-            // Trigger animation next frame
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 modal.classList.add('opacity-100');
@@ -225,22 +246,19 @@
             }, 10);
         }
 
-        // Fungsi Tutup Modal Animasi Halus
         function closeModal() {
             const modal = document.getElementById('photoModal');
             const modalContent = document.getElementById('photoModalContent');
 
-            // Start reverse animation
             modal.classList.remove('opacity-100');
             modal.classList.add('opacity-0');
             modalContent.classList.remove('scale-100');
             modalContent.classList.add('scale-95');
 
-            // Hide after animation finishes
             setTimeout(() => {
                 modal.classList.add('hidden');
-                document.getElementById('modalImage').src = ''; // reset image
-            }, 300); // 300ms matches Tailwind duration-300
+                document.getElementById('modalImage').src = '';
+            }, 300);
         }
     </script>
 @endsection

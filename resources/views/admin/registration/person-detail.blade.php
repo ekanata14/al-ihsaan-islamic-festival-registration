@@ -24,24 +24,13 @@
                         </p>
                     </div>
 
-                    @if (strtolower($data->status) == 'checkin')
-                        <span
-                            class="bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            Checked In
-                        </span>
-                    @else
-                        <span
-                            class="bg-amber-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Menunggu / Pending
-                        </span>
-                    @endif
+
+                    <div
+                        class="shrink-0 bg-white p-4 rounded-2xl shadow-2xl flex flex-col items-center gap-2 border-4 border-white/20">
+                        <div id="qrcode" class="p-1 bg-white rounded-lg"></div>
+                        <span class="text-[10px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Scan to
+                            Check-In</span>
+                    </div>
                 </div>
             </div>
 
@@ -150,8 +139,8 @@
                                         @if ($participant->photo_url)
                                             <div class="shrink-0 group relative overflow-hidden rounded-lg border border-gray-200 w-24 h-24 bg-gray-50 cursor-pointer"
                                                 onclick="openPhotoModal('{{ asset('storage/' . $participant->photo_url) }}', 'Foto Peserta - {{ $participant->name }}')">
-                                                <img src="{{ asset('storage/' . $participant->photo_url) }}"
-                                                    alt="Foto" class="w-full h-full object-cover">
+                                                <img src="{{ asset('storage/' . $participant->photo_url) }}" alt="Foto"
+                                                    class="w-full h-full object-cover">
                                                 <div
                                                     class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex justify-center items-center transition-opacity text-white text-[10px] font-bold">
                                                     Perbesar</div>
@@ -317,6 +306,45 @@
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     document.getElementById('previewImage').src = '';
+                }, 300);
+            }
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+        <script>
+            // Generate QR Code on Page Load
+            document.addEventListener('DOMContentLoaded', function() {
+                new QRCode(document.getElementById("qrcode"), {
+                    text: "{{ $data->registration_number }}",
+                    width: 120,
+                    height: 120,
+                    colorDark: "#1D6594",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            });
+
+            // Image Modal Logic
+            function openPhotoModal(imageUrl, title) {
+                const modal = document.getElementById('imagePreviewModal');
+                const content = document.getElementById('imagePreviewContent');
+                document.getElementById('previewImage').src = imageUrl;
+                document.getElementById('previewTitle').textContent = title;
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                }, 10);
+            }
+
+            function closePhotoModal() {
+                const modal = document.getElementById('imagePreviewModal');
+                const content = document.getElementById('imagePreviewContent');
+                modal.classList.add('opacity-0');
+                content.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
                 }, 300);
             }
         </script>

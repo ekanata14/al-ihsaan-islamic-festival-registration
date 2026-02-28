@@ -1,11 +1,11 @@
 <?php
 
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 // Models
 use App\Models\Registration;
@@ -15,57 +15,78 @@ use App\Models\Competition;
 class RegistrationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the competitions (Index Registrasi).
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+        $query = Competition::query();
+
+        // Fitur Pencarian untuk Lomba
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('type', 'like', "%{$search}%")
+                  ->orWhereHas('category', function($catQuery) use ($search) {
+                      $catQuery->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
         $viewData = [
-            'title' => 'Competitions',
-            'datas' => Competition::latest()->paginate(10)
+            'title' => 'Data Registrasi Lomba',
+            'datas' => $query->latest()->paginate(10)->appends(['search' => $search]),
+            'search' => $search
         ];
 
         return view('admin.registration.index', $viewData);
     }
 
-    public function detail(string $id)
+    /**
+     * Display registrations for a specific competition.
+     */
+    public function detail(Request $request, string $id)
     {
+        $search = $request->input('search');
         $competition = Competition::findOrFail($id);
+
+        $query = Registration::where('competition_id', $id);
+
+        // Fitur Pencarian untuk Detail Peserta
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                // Cari berdasarkan No Registrasi
+                $q->where('registration_number', 'like', "%{$search}%")
+                  // Cari berdasarkan Nama PIC (Wali) atau Grup/TPQ
+                  ->orWhereHas('pic', function($picQuery) use ($search) {
+                      $picQuery->where('name', 'like', "%{$search}%")
+                               ->orWhere('phone_number', 'like', "%{$search}%")
+                               ->orWhereHas('group', function($groupQuery) use ($search) {
+                                   $groupQuery->where('name', 'like', "%{$search}%");
+                               });
+                  })
+                  // Cari berdasarkan Nama Peserta (Anak)
+                  ->orWhereHas('participants', function($partQuery) use ($search) {
+                      $partQuery->where('name', 'like', "%{$search}%")
+                                ->orWhere('nik', 'like', "%{$search}%");
+                  });
+            });
+        }
+
         $viewData = [
-            'title' => 'Detail Registrations - ' . $competition->name . ' ' . $competition->category->name,
-            'datas' => Registration::where('competition_id', $id)->paginate(10),
+            'title' => 'Detail Registrasi - ' . $competition->name . ' ' . ($competition->category->name ?? ''),
+            'datas' => $query->latest()->paginate(10)->appends(['search' => $search]),
             'competition' => $competition,
+            'search' => $search
         ];
 
         return view('admin.registration.detail', $viewData);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    public function create() { /* ... */ }
+    public function store(Request $request) { /* ... */ }
+    public function show(string $id) { /* ... */ }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $registration = Registration::findOrFail($id);
@@ -77,9 +98,6 @@ class RegistrationController extends Controller
         return view('admin.registration.person-detail', $viewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         $validatedData = $request->validate([
@@ -91,51 +109,39 @@ class RegistrationController extends Controller
         ]);
 
         try {
+            DB::beginTransaction();
             $registration = Registration::findOrFail($request->id);
 
             foreach ($validatedData['participants'] as $participantData) {
                 $participant = $registration->participants()->where('nik', $participantData['nik'])->first();
 
                 if ($participant) {
-                    // Update existing participant
                     if (isset($participantData['certificate_url'])) {
-                        // Remove old file if a new one is uploaded
                         if ($participant->certificate_url && Storage::disk('public')->exists($participant->certificate_url)) {
                             Storage::disk('public')->delete($participant->certificate_url);
                         }
-
-                        // Store new file
                         $certificatePath = $participantData['certificate_url']->store('certificates', 'public');
                         $participantData['certificate_url'] = $certificatePath;
                     } else {
-                        // Keep the old certificate_url if not changed
                         $participantData['certificate_url'] = $participant->certificate_url;
                     }
-
                     $participant->update($participantData);
                 } else {
-                    // Create new participant if not exists
                     if (isset($participantData['certificate_url'])) {
                         $certificatePath = $participantData['certificate_url']->store('certificates', 'public');
                         $participantData['certificate_url'] = $certificatePath;
                     }
-
                     $registration->participants()->create($participantData);
                 }
             }
 
+            DB::commit();
             return redirect()->route('admin.dashboard.registration.detail.person', ['id' => $registration->id])->with('success', 'Registration and participants updated successfully.');
         } catch (\Exception $e) {
-            return $e->getMessage();
+            DB::rollBack();
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Registration $registration)
-    {
-        //
-    }
+    public function destroy(Registration $registration) { /* ... */ }
 }

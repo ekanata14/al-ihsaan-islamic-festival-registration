@@ -11,6 +11,19 @@
                 <p class="text-sm text-gray-500 mt-1">Kelola data seluruh perlombaan yang ada di festival ini.</p>
             </div>
 
+            <form action="{{ route('admin.dashboard.competition') }}" method="GET" class="relative group w-full sm:w-64">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-400 group-focus-within:text-[#1D6594]" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="search" name="search" value="{{ request('search') }}"
+                    class="block w-full pl-10 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-[#1D6594] focus:border-[#1D6594] transition-all shadow-sm"
+                    placeholder="Cari nama lomba/kategori...">
+            </form>
+
             <a href="{{ route('admin.dashboard.competition.create') }}"
                 class="inline-flex items-center justify-center px-5 py-2.5 bg-[#1D6594] text-white font-bold rounded-xl hover:bg-[#154d73] transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

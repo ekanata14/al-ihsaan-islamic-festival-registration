@@ -5,7 +5,7 @@
 
         <x-breadcrumb :links="['Menu Check-In' => route('admin.dashboard.check-in'), 'Daftar Hadir Lomba' => '#']" />
 
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div>
                 <h2 class="text-2xl font-extrabold text-gray-900">Daftar Kehadiran Peserta</h2>
                 <p class="text-sm text-gray-500 mt-1">Daftar peserta yang sudah berstatus <span
@@ -13,13 +13,29 @@
                         class="text-[#1D6594]">{{ $competition->name ?? 'Terpilih' }}</strong>.</p>
             </div>
 
-            <a href="{{ route('admin.dashboard.check-in') }}"
-                class="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all shadow-sm gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                Kembali
-            </a>
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <form action="{{ route('admin.dashboard.check-in.detail', $competition->id) }}" method="GET"
+                    class="relative group w-full sm:w-80">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-[#1D6594]" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="search" name="search" value="{{ request('search') }}"
+                        class="block w-full pl-10 py-2.5 text-sm text-gray-900 bg-white border border-gray-200 rounded-xl focus:ring-[#1D6594] focus:border-[#1D6594] transition-all shadow-sm"
+                        placeholder="Cari nama, wali, no reg, TPQ...">
+                </form>
+
+                <a href="{{ route('admin.dashboard.check-in') }}"
+                    class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all shadow-sm gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
         </div>
 
         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
@@ -54,7 +70,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 font-bold text-gray-600">
-                                    {{ $item->registration_number }}
+                                    {{ $item->registration_number ?? ($item->registration->registration_number ?? '-') }}
                                 </td>
 
                                 <td class="px-6 py-4">
@@ -74,7 +90,8 @@
                                     <div class="flex items-center gap-3">
                                         <div class="flex flex-col">
                                             <span class="font-bold text-gray-800">{{ $item->pic->name ?? '-' }}</span>
-                                            <span class="text-xs text-gray-500">{{ $item->pic->phone_number ?? '-' }}</span>
+                                            <span
+                                                class="text-xs text-gray-500 font-medium">{{ $item->pic->phone_number ?? '-' }}</span>
                                         </div>
                                         @if (!empty($item->pic->phone_number))
                                             <a href="https://wa.me/{{ $item->pic->phone_number }}" target="_blank"
@@ -94,7 +111,7 @@
                                     <td class="px-6 py-4 text-center">
                                         <span
                                             class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-md border border-amber-100">
-                                            {{ $item->total_participants ?? '-' }} Org
+                                            {{ $item->registration->total_participants ?? '-' }} Org
                                         </span>
                                     </td>
                                 @endif
@@ -106,7 +123,7 @@
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                                         </svg>
-                                        {{ strtoupper($item->registration->status ?? 'CHECKIN') }}
+                                        CHECK-IN
                                     </span>
                                 </td>
 
@@ -117,16 +134,22 @@
                                     colspan="{{ ($competition->name ?? '') === 'Hadrah' ? '8' : '7' }}">
                                     <div class="flex flex-col items-center justify-center">
                                         <div
-                                            class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                                            class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
                                             <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor"
                                                 stroke-width="1.5" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                             </svg>
                                         </div>
-                                        <p class="font-bold text-gray-600 text-lg">Belum Ada Kehadiran</p>
-                                        <p class="text-sm text-gray-400 mt-1">Belum ada peserta yang melakukan check-in pada
-                                            lomba ini.</p>
+                                        @if (request('search'))
+                                            <p class="font-bold text-gray-600 text-lg">Pencarian Tidak Ditemukan</p>
+                                            <p class="text-sm text-gray-400 mt-1">Tidak ada peserta yang cocok dengan kata
+                                                kunci "{{ request('search') }}".</p>
+                                        @else
+                                            <p class="font-bold text-gray-600 text-lg">Belum Ada Kehadiran</p>
+                                            <p class="text-sm text-gray-400 mt-1">Belum ada peserta yang melakukan check-in
+                                                pada lomba ini.</p>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
