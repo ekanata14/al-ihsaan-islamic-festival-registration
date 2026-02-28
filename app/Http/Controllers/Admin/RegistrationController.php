@@ -29,10 +29,11 @@ class RegistrationController extends Controller
 
     public function detail(string $id)
     {
+        $competition = Competition::findOrFail($id);
         $viewData = [
-            'title' => 'Khitan Registrations',
+            'title' => 'Detail Registrations - ' . $competition->name . ' ' . $competition->category->name,
             'datas' => Registration::where('competition_id', $id)->paginate(10),
-            'competition' => Competition::findOrFail($id),
+            'competition' => $competition,
         ];
 
         return view('admin.registration.detail', $viewData);
@@ -57,7 +58,7 @@ class RegistrationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Registration $registration)
+    public function show(string $id)
     {
         //
     }
@@ -73,7 +74,7 @@ class RegistrationController extends Controller
             'data' => $registration,
         ];
 
-        return view('admin.registration.edit', $viewData);
+        return view('admin.registration.person-detail', $viewData);
     }
 
     /**
@@ -123,7 +124,7 @@ class RegistrationController extends Controller
                 }
             }
 
-            return redirect()->route('admin.registration.index')->with('success', 'Registration and participants updated successfully.');
+            return redirect()->route('admin.dashboard.registration.detail.person', ['id' => $registration->id])->with('success', 'Registration and participants updated successfully.');
         } catch (\Exception $e) {
             return $e->getMessage();
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());

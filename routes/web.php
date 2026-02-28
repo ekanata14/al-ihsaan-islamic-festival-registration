@@ -57,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin User Route
     Route::get('/admin-dashboard/user', [AdminUserController::class, 'index'])->name('admin.dashboard.user');
     Route::get('/admin-dashboard/user/create', [AdminUserController::class, 'create'])->name('admin.dashboard.user.create');
+    Route::post('/admin-dashboard/user/store', [AdminUserController::class, 'store'])->name('admin.dashboard.user.store');
+    Route::get('/admin-dashboard/user/edit/{id}', [AdminUserController::class, 'edit'])->name('admin.dashboard.user.edit');
+    Route::put('/admin-dashboard/user/update', [AdminUserController::class, 'update'])->name('admin.dashboard.user.update');
+    Route::delete('/admin-dashboard/user/delete', [AdminUserController::class, 'destroy'])->name('admin.dashboard.user.destroy');
 
     // Admin Group Route
     Route::get('/admin-dashboard/group', [AdminGroupController::class, 'index'])->name('admin.dashboard.group');
@@ -85,7 +89,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Registration Route
     Route::get('/admin-dashboard/registration', [AdminRegistrationController::class, 'index'])->name('admin.dashboard.registration');
     Route::get('/admin-dashboard/registration/{id}', [AdminRegistrationController::class, 'detail'])->name('admin.dashboard.registration.detail');
-    Route::get('/admin-dashboard/registration/edit/{id}', [AdminRegistrationController::class, 'edit'])->name('admin.dashboard.registration.edit');
+    Route::get('/admin-dashboard/registration/detail/{id}', [AdminRegistrationController::class, 'edit'])->name('admin.dashboard.registration.detail.person');
     Route::put('/admin-dashboard/registration/update', [AdminRegistrationController::class, 'update'])->name('admin.dashboard.registration.update');
 
     // Admin Khitanan Registration Route

@@ -19,7 +19,7 @@ class KhitanDashboardController extends Controller
             'datas' => KhitanRegistration::where('pic_id', auth()->user()->id)->latest()->paginate(10)
         ];
 
-        return view('khitan.dashboard', $viewData);
+        return view('user.khitan.dashboard', $viewData);
     }
 
     public function registration()
@@ -37,7 +37,7 @@ class KhitanDashboardController extends Controller
             'title' => 'Khitan Registration Person',
         ];
 
-        return view('auth.khitan-register-person', $viewData);
+        return view('user.khitan.registration', $viewData);
     }
 
     public function registerPersonStore(Request $request)
@@ -107,6 +107,6 @@ class KhitanDashboardController extends Controller
             'qrCode' => $qrCode,
         ];
 
-        return view('khitan.khitan-registration-qr', $viewData);
+        return view('user.khitan.khitan-registration-qr', $viewData);
     }
 }

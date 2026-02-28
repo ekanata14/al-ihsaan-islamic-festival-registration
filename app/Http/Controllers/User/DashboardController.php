@@ -17,11 +17,19 @@ use App\Models\Participant;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Mulai query dasar (hanya ambil yang open)
+        $query = Competition::where('status', 'open')->latest();
+
+        // Jika ada input pencarian, filter berdasarkan nama lomba
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
         $viewData = [
             "title" => "User Dashboard",
-            "competitions" => Competition::where('status', 'open')->latest()->get(),
+            "competitions" => $query->get(), // Eksekusi query
             'category_id' => '0',
             'categories' => Category::latest()->get(),
         ];

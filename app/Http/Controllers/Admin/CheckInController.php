@@ -29,7 +29,7 @@ class CheckInController extends Controller
         $competition = Competition::findOrFail($id);
         $viewData = [
             'title' => 'Registrations | ' . $competition->name . ' ' . $competition->category->name,
-            'datas' => Checkin::where('competition_id', $id)->latest()->get(),
+            'datas' => Checkin::where('competition_id', $id)->latest()->paginate(10),
             'competition' => $competition,
         ];
 

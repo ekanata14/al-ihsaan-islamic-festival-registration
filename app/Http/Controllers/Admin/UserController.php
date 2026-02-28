@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 // Models
 use App\Models\User;
+use App\Models\Group;
 
 class UserController extends Controller
 {
@@ -31,7 +32,8 @@ class UserController extends Controller
     public function create()
     {
         $viewData = [
-            'title' => 'Create User',
+            'title' => 'Tambah Data User',
+            'groups' => Group::orderBy('name', 'asc')->get(), // Ambil data group untuk opsi dropdown
         ];
 
         return view('admin.user.create', $viewData);
@@ -74,7 +76,9 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $viewData = [
-            'title' => 'Edit User',
+            'title' => 'Edit Data User',
+            'user' => User::findOrFail($id), // Ambil data user spesifik
+            'groups' => Group::orderBy('name', 'asc')->get(),
         ];
 
         return view('admin.user.edit', $viewData);
