@@ -3,7 +3,7 @@
 
         <div class="hidden lg:flex lg:w-5/12 xl:w-1/2 relative bg-[#1D6594] items-center justify-center overflow-hidden">
             <div class="absolute inset-0">
-                <img src="https://images.unsplash.com/photo-1519818178122-1d579241517a?q=80&w=2070&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1712249237537-8c5a0420653b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDE5fHxtdXNsaW0lMjBraWRzfGVufDB8fHx8MTc1NzgzODYyM3ww&ixlib=rb-4.1.0&q=80&w=1200"
                     class="w-full h-full object-cover object-center opacity-30" alt="Islamic Festival">
                 <div class="absolute inset-0 bg-gradient-to-t from-[#1D6594] via-[#1D6594]/80 to-transparent opacity-90">
                 </div>

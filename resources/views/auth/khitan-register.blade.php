@@ -23,7 +23,7 @@
         <div
             class="hidden lg:flex lg:w-5/12 xl:w-1/2 relative bg-emerald-800 items-center justify-center overflow-hidden">
             <div class="absolute inset-0">
-                <img src="https://images.unsplash.com/photo-1519818178122-1d579241517a?q=80&w=2070&auto=format&fit=crop"
+                <img src="{{ asset('assets/images/khitanan_massal.png') }}"
                     class="w-full h-full object-cover object-center opacity-30" alt="Islamic Festival">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-emerald-900 via-emerald-800/90 to-transparent opacity-90">

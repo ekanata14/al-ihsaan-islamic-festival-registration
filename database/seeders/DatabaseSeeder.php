@@ -50,19 +50,19 @@ class DatabaseSeeder extends Seeder
 
         // 4. Create Competitions
         $competitions = [
-            Competition::create(['name' => 'Adzan', 'description' => 'Adzan', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 3, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Adzan', 'description' => 'Adzan', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 4, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Hafalan Juz 30', 'description' => 'Hafalan Juz 30', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 2, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Hafalan Juz 30', 'description' => 'Hafalan Juz 30', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 3, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Hafalan Juz 30', 'description' => 'Hafalan Juz 30', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 4, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Fashion Show', 'description' => 'Fashion Show', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 1, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Fashion Show', 'description' => 'Fashion Show', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 2, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Story Telling', 'description' => 'Story Telling', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 3, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Story Telling', 'description' => 'Story Telling', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 4, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Hadrah', 'description' => 'Hadrah', 'image_url' => 'images/logo_only.png', 'type' => 'Group', 'category_id' => 6, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Doa Harian', 'description' => 'Doa Harian', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 1, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Cerdas Cermat', 'description' => 'Cerdas Cermat', 'image_url' => 'images/logo_only.png', 'type' => 'Group', 'category_id' => 5, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
-            Competition::create(['name' => 'Mewarnai', 'description' => 'Mewarnai', 'image_url' => 'images/logo_only.png', 'type' => 'Individual', 'category_id' => 1, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Adzan', 'description' => 'Adzan', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 3, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Adzan', 'description' => 'Adzan', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 4, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Hafalan Juz 30', 'description' => 'Hafalan Juz 30', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 2, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Hafalan Juz 30', 'description' => 'Hafalan Juz 30', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 3, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Hafalan Juz 30', 'description' => 'Hafalan Juz 30', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 4, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Fashion Show', 'description' => 'Fashion Show', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 1, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Fashion Show', 'description' => 'Fashion Show', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 2, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Story Telling', 'description' => 'Story Telling', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 3, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Story Telling', 'description' => 'Story Telling', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 4, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Hadrah', 'description' => 'Hadrah', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Group', 'category_id' => 6, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Doa Harian', 'description' => 'Doa Harian', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 1, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Cerdas Cermat', 'description' => 'Cerdas Cermat', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Group', 'category_id' => 5, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
+            Competition::create(['name' => 'Mewarnai', 'description' => 'Mewarnai', 'image_url' => 'assets/images/khitanan_massal.png', 'type' => 'Individual', 'category_id' => 1, 'registration_start' => '2025-05-05', 'registration_end' => '2025-06-07', 'status' => 'Open']),
         ];
 
         // 5. Create PICs (Users) for Registrations
@@ -117,5 +117,19 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+    // 7. Create Sponsors
+    $sponsors = [
+        Sponsor::create(['name' => 'PT Maju Jaya', 'img_url' => 'assets/images/sponsors/sponsor1.png', 'nominal' => 5000000]),
+        Sponsor::create(['name' => 'CV Berkah Abadi', 'img_url' => 'assets/images/sponsors/sponsor2.png', 'nominal' => 3000000]),
+        Sponsor::create(['name' => 'Toko Elektronik Prima', 'img_url' => 'assets/images/sponsors/sponsor3.png', 'nominal' => 2500000]),
+        Sponsor::create(['name' => 'Klinik Sehat Bersama', 'img_url' => 'assets/images/sponsors/sponsor4.png', 'nominal' => 2000000]),
+        Sponsor::create(['name' => 'Restoran Makanan Halal', 'img_url' => 'assets/images/sponsors/sponsor5.png', 'nominal' => 1500000]),
+        Sponsor::create(['name' => 'Toko Pakaian Muslim', 'img_url' => 'assets/images/sponsors/sponsor6.png', 'nominal' => 1000000]),
+        Sponsor::create(['name' => 'Apotek Sehat', 'img_url' => 'assets/images/sponsors/sponsor7.png', 'nominal' => 1000000]),
+        Sponsor::create(['name' => 'Percetakan Suryatama', 'img_url' => 'assets/images/sponsors/sponsor8.png', 'nominal' => 750000]),
+        Sponsor::create(['name' => 'Bengkel Motor Jaya', 'img_url' => 'assets/images/sponsors/sponsor9.png', 'nominal' => 500000]),
+        Sponsor::create(['name' => 'Toko Alat Tulis', 'img_url' => 'assets/images/sponsors/sponsor10.png', 'nominal' => 500000]),
+    ];
     }
 }
