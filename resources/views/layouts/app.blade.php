@@ -285,6 +285,12 @@
 
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.__realtime = {
+            admin: @json(auth()->check() && auth()->user()->role === 'admin'),
+            userId: @json(auth()->id()),
+        };
+    </script>
 
     @if (auth()->check() && auth()->user()->role == 'user')
         <script>

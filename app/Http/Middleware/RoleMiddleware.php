@@ -15,16 +15,16 @@ class RoleMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      * @param  string  $role (Parameter peran yang dikirim dari route)
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         // 1. Cek apakah pengguna sudah login
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        // 2. Cek apakah role pengguna sesuai dengan parameter
-        // Asumsi: Anda memiliki kolom 'role' di tabel users (e.g., 'admin' atau 'user')
-        if ($request->user()->role !== $role) {
+        // 2. Cek apakah role pengguna termasuk salah satu role yang diizinkan
+        // Role dapat dikirim lebih dari satu, dipisah koma (e.g. role:user,khitan)
+        if (!in_array($request->user()->role, $roles, true)) {
             // Jika tidak sesuai, lempar error 403 atau redirect
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }

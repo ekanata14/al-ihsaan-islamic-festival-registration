@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -60,9 +62,13 @@ class SponsorController extends Controller
             }
 
             // Create the sponsor
-            Sponsor::create($validatedData);
+            $sponsor = Sponsor::create($validatedData);
 
             DB::commit();
+
+            ActivityLogger::log('admin.sponsor.created', 'Menambah sponsor: ' . $sponsor->name, $sponsor);
+            event(new AdminDataChanged('sponsor', 'created', $sponsor->id));
+
             return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -132,6 +138,10 @@ class SponsorController extends Controller
             $sponsor->update($validatedData);
 
             DB::commit();
+
+            ActivityLogger::log('admin.sponsor.updated', 'Mengubah sponsor: ' . $sponsor->name, $sponsor);
+            event(new AdminDataChanged('sponsor', 'updated', $sponsor->id));
+
             return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -158,9 +168,15 @@ class SponsorController extends Controller
             }
 
             // Delete the sponsor
+            $sponsorId = $sponsor->id;
+            $sponsorName = $sponsor->name;
             $sponsor->delete();
 
             DB::commit();
+
+            ActivityLogger::log('admin.sponsor.deleted', 'Menghapus sponsor: ' . $sponsorName);
+            event(new AdminDataChanged('sponsor', 'deleted', $sponsorId));
+
             return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();

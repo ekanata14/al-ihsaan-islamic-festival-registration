@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +81,10 @@ class UserController extends Controller
             DB::beginTransaction();
             $user = User::create($validatedData);
             DB::commit();
+
+            ActivityLogger::log('admin.user.created', 'Menambah user: ' . $user->name . ' (' . $user->role . ')', $user);
+            event(new AdminDataChanged('user', 'created', $user->id));
+
             return redirect()->route('admin.dashboard.user')->with('success', 'User created successfully.');
         } catch (Exception $e) {
             DB::rollBack();
@@ -139,6 +145,10 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
+
+            ActivityLogger::log('admin.user.updated', 'Mengubah user: ' . $user->name . ' (' . $user->role . ')', $user);
+            event(new AdminDataChanged('user', 'updated', $user->id));
+
             return redirect()->route('admin.dashboard.user')->with('success', 'User updated successfully.');
         } catch (Exception $e) {
             DB::rollBack();
@@ -155,9 +165,15 @@ class UserController extends Controller
             DB::beginTransaction();
 
             $user = User::findOrFail($request->id);
+            $userId = $user->id;
+            $userName = $user->name;
             $user->delete();
 
             DB::commit();
+
+            ActivityLogger::log('admin.user.deleted', 'Menghapus user: ' . $userName);
+            event(new AdminDataChanged('user', 'deleted', $userId));
+
             return redirect()->route('admin.dashboard.user')->with('success', 'User deleted successfully.');
         } catch (Exception $e) {
             DB::rollBack();

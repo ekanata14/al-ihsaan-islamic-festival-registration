@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\ActivityLogger;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -70,6 +71,8 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
 
             Auth::login($user);
+
+            ActivityLogger::log('auth.register', 'Pendaftaran akun baru sebagai ' . $role . ': ' . $user->name, $user);
 
             if ($role == 'khitan') {
                 return redirect(route('khitan.registration.person', absolute: false))->with('success', 'Pendaftaran berhasil, silahkan isi data anak Anda');

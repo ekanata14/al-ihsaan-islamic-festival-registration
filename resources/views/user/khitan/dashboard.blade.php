@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div id="realtime-user-khitan" data-realtime="user-khitan" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-colors duration-500">
 
                 <div
                     class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

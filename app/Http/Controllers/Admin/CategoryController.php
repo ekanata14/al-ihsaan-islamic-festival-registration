@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -60,8 +62,11 @@ class CategoryController extends Controller
 
         try {
             DB::beginTransaction();
-            Category::create($validatedData);
+            $category = Category::create($validatedData);
             DB::commit();
+
+            ActivityLogger::log('admin.category.created', 'Menambah kategori: ' . $category->name, $category);
+            event(new AdminDataChanged('category', 'created', $category->id));
 
             return redirect()->route('admin.dashboard.category')->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
@@ -102,6 +107,10 @@ class CategoryController extends Controller
             $category->update(['name' => $validatedData['name']]);
 
             DB::commit();
+
+            ActivityLogger::log('admin.category.updated', 'Mengubah kategori: ' . $category->name, $category);
+            event(new AdminDataChanged('category', 'updated', $category->id));
+
             return redirect()->route('admin.dashboard.category')->with('success', 'Category updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -118,9 +127,15 @@ class CategoryController extends Controller
             DB::beginTransaction();
 
             $category = Category::findOrFail($request->id);
+            $categoryId = $category->id;
+            $categoryName = $category->name;
             $category->delete();
 
             DB::commit();
+
+            ActivityLogger::log('admin.category.deleted', 'Menghapus kategori: ' . $categoryName);
+            event(new AdminDataChanged('category', 'deleted', $categoryId));
+
             return redirect()->route('admin.dashboard.category')->with('success', 'Category deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();

@@ -9,13 +9,14 @@ class HelperController extends Controller
 {
     public function getImage($path)
     {
-        return $path;
-        if (!Storage::exists($path)) {
+        $path = ltrim($path, '/');
+
+        if (!Storage::disk('public')->exists($path)) {
             abort(404, 'Image not found.');
         }
 
-        $file = Storage::get($path);
-        $mimeType = Storage::mimeType($path);
+        $file = Storage::disk('public')->get($path);
+        $mimeType = Storage::disk('public')->mimeType($path);
 
         return response($file, 200)->header('Content-Type', $mimeType);
     }

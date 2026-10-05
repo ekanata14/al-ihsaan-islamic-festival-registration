@@ -41,7 +41,8 @@
                 </form>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div id="realtime-dashboard-stats" data-realtime="*"
+                class="grid grid-cols-2 md:grid-cols-5 gap-4 transition-colors duration-500">
                 @php
                     $statCards = [
                         [
@@ -116,7 +117,8 @@
                         <canvas id="daftarLombaChart"></canvas>
                     </div>
 
-                    <div class="relative overflow-x-auto">
+                    <div id="realtime-dashboard-table" data-realtime="competition registration"
+                        class="relative overflow-x-auto transition-colors duration-500">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>

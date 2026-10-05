@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AdminDataChanged;
+use App\Events\KhitanRegistrationCreated;
+use App\Events\UserDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -95,6 +99,20 @@ class KhitanDashboardController extends Controller
                 'khitan_registration_id' => $khitanRegistration->id,
                 'family_card_url' => $validatedData['family_card_url'],
             ]);
+
+            ActivityLogger::log(
+                'khitan.registration.created',
+                'Pendaftaran khitan baru: ' . $khitanRegistration->name . ' (' . $khitanRegistration->domicile . ')',
+                $khitanRegistration
+            );
+
+            event(new KhitanRegistrationCreated(
+                $khitanRegistration->registration_number,
+                $khitanRegistration->name,
+                $khitanRegistration->domicile
+            ));
+            event(new AdminDataChanged('khitan-registration', 'created', $khitanRegistration->id));
+            event(new UserDataChanged(auth()->user()->id, 'khitan-registration', 'created', $khitanRegistration->id));
 
             return redirect()->route('khitan.dashboard')->with('success', 'Pendaftaran Khitan Berhasil!');
 

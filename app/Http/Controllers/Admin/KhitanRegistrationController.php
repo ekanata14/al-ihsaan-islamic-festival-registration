@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Events\UserDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as QRCode;
 
 // Models
 use App\Models\KhitanRegistration;
+use App\Models\KhitanFamilyCard;
 class KhitanRegistrationController extends Controller
 {
     /**
@@ -41,32 +46,56 @@ class KhitanRegistrationController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
+            'age' => 'required|integer',
             'nik' => 'required|string',
             'birth_date' => 'required|date',
             'birth_place' => 'required|string',
             'domicile' => 'required|string',
             'is_sanur' => 'required|boolean',
-            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'family_card_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
             DB::beginTransaction();
+
+            $validatedData['registration_number'] = 'AIIF-KHITAN-' . now()->format('dmY') . '-' . strtoupper(Str::random(6));
+            $validatedData['pic_id'] = auth()->id();
+            $validatedData['status'] = 'registered';
+
             // Handle file upload for photo_url
             if ($request->hasFile('photo_url')) {
-                $validatedData['photo_url'] = $request->file('photo_url')->store('khitan-photos');
+                $validatedData['photo_url'] = $request->file('photo_url')->store('khitan-photos', 'public');
             }
 
             // Handle file upload for certificate_url
             if ($request->hasFile('certificate_url')) {
-                $validatedData['certificate_url'] = $request->file('certificate_url')->store('khitan-certificates');
+                $validatedData['certificate_url'] = $request->file('certificate_url')->store('khitan-certificates', 'public');
+            }
+
+            // Handle optional family card upload
+            $familyCardPath = null;
+            if ($request->hasFile('family_card_url')) {
+                $familyCardPath = $request->file('family_card_url')->store('khitan-family-cards', 'public');
             }
 
             // Create a new registration
-            KhitanRegistration::create($validatedData);
+            $khitanRegistration = KhitanRegistration::create($validatedData);
+
+            if ($familyCardPath) {
+                KhitanFamilyCard::create([
+                    'khitan_registration_id' => $khitanRegistration->id,
+                    'family_card_url' => $familyCardPath,
+                ]);
+            }
+
             DB::commit();
 
-            return redirect()->route('khitan-registration.index')->with('success', 'Registration created successfully.');
+            ActivityLogger::log('admin.khitan-registration.created', 'Menambah pendaftaran khitan: ' . $khitanRegistration->name, $khitanRegistration);
+            event(new AdminDataChanged('khitan-registration', 'created', $khitanRegistration->id));
+
+            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Failed to create registration: ' . $e->getMessage()]);
@@ -100,40 +129,61 @@ class KhitanRegistrationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, string $id)
     {
+        $khitanRegistration = KhitanRegistration::findOrFail($id);
 
         $validatedData = $request->validate([
             'name' => 'required|string',
+            'age' => 'required|integer',
             'nik' => 'required|string',
             'birth_date' => 'required|date',
             'birth_place' => 'required|string',
             'domicile' => 'required|string',
             'is_sanur' => 'required|boolean',
-            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'status' => 'required|string',
+            'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'certificate_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'family_card_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        unset($validatedData['family_card_url']);
 
         try {
             DB::beginTransaction();
+
             // Handle file upload for photo_url
             if ($request->hasFile('photo_url')) {
-                $validatedData['photo_url'] = $request->file('photo_url')->store('khitan-photos');
+                $validatedData['photo_url'] = $request->file('photo_url')->store('khitan-photos', 'public');
             }
 
             // Handle file upload for certificate_url
             if ($request->hasFile('certificate_url')) {
-                $validatedData['certificate_url'] = $request->file('certificate_url')->store('khitan-certificates');
+                $validatedData['certificate_url'] = $request->file('certificate_url')->store('khitan-certificates', 'public');
             }
 
-            // Create a new registration
-            KhitanRegistration::create($validatedData);
+            // Update the existing registration
+            $khitanRegistration->update($validatedData);
+
+            // Handle optional family card upload
+            if ($request->hasFile('family_card_url')) {
+                $familyCardPath = $request->file('family_card_url')->store('khitan-family-cards', 'public');
+                $khitanRegistration->familyCard()->updateOrCreate(
+                    ['khitan_registration_id' => $khitanRegistration->id],
+                    ['family_card_url' => $familyCardPath]
+                );
+            }
+
             DB::commit();
 
-            return redirect()->route('khitan-registration.index')->with('success', 'Registration created successfully.');
+            ActivityLogger::log('admin.khitan-registration.updated', 'Mengubah pendaftaran khitan: ' . $khitanRegistration->name, $khitanRegistration);
+            event(new AdminDataChanged('khitan-registration', 'updated', $khitanRegistration->id));
+            event(new UserDataChanged($khitanRegistration->pic_id, 'khitan-registration', 'updated', $khitanRegistration->id));
+
+            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to create registration: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Failed to update registration: ' . $e->getMessage()]);
         }
     }
 
@@ -145,12 +195,16 @@ class KhitanRegistrationController extends Controller
         try {
             DB::beginTransaction();
             $khitanRegistration = KhitanRegistration::findOrFail($request->id);
+            $khitanId = $khitanRegistration->id;
+            $khitanName = $khitanRegistration->name;
             $khitanRegistration->delete();
             DB::commit();
 
+            ActivityLogger::log('admin.khitan-registration.deleted', 'Menghapus pendaftaran khitan: ' . $khitanName);
+            event(new AdminDataChanged('khitan-registration', 'deleted', $khitanId));
+
             return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration deleted successfully.');
         } catch (\Exception $e) {
-            return $e->getMessage();
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Failed to delete registration: ' . $e->getMessage()]);
         }

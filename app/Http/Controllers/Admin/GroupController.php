@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -78,8 +80,12 @@ class GroupController extends Controller
         DB::beginTransaction();
 
         try {
-            Group::create($validatedData);
+            $group = Group::create($validatedData);
             DB::commit();
+
+            ActivityLogger::log('admin.group.created', 'Menambah grup/TPQ: ' . $group->name, $group);
+            event(new AdminDataChanged('group', 'created', $group->id));
+
             return redirect()->route('admin.dashboard.group')->with('success', 'Group created successfully');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -125,6 +131,9 @@ class GroupController extends Controller
             $group->update($validatedData);
             DB::commit();
 
+            ActivityLogger::log('admin.group.updated', 'Mengubah grup/TPQ: ' . $group->name, $group);
+            event(new AdminDataChanged('group', 'updated', $group->id));
+
             return redirect()->route('admin.dashboard.group')->with('success', 'Group updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -141,8 +150,14 @@ class GroupController extends Controller
 
         try {
             $group = Group::findOrFail($request->id);
+            $groupId = $group->id;
+            $groupName = $group->name;
             $group->delete();
             DB::commit();
+
+            ActivityLogger::log('admin.group.deleted', 'Menghapus grup/TPQ: ' . $groupName);
+            event(new AdminDataChanged('group', 'deleted', $groupId));
+
             return redirect()->route('admin.dashboard.group')->with('success', 'Group deleted successfully');
         } catch (\Exception $e) {
             DB::rollBack();

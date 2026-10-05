@@ -178,12 +178,12 @@
                                     Tidak Ada KK</div>
                             @endif
                             <div class="flex-1 w-full">
-                                <x-input-label for="certificate_url" :value="__('Update Kartu Keluarga (KK)')"
+                                <x-input-label for="family_card_url" :value="__('Update Kartu Keluarga (KK)')"
                                     class="font-bold text-gray-800 mb-1 block" />
-                                <input type="file" name="certificate_url"
+                                <input type="file" name="family_card_url"
                                     class="block w-full text-sm text-gray-600 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                                     accept="image/*">
-                                @error('certificate_url')
+                                @error('family_card_url')
                                     <p class="text-rose-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>

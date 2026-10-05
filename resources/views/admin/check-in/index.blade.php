@@ -25,6 +25,7 @@
             </form>
         </div>
 
+        <div id="realtime-checkin-list" data-realtime="check-in" class="transition-colors duration-500">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             @forelse ($datas as $item)
                 <div
@@ -110,5 +111,6 @@
                 {{ $datas->links('pagination::tailwind') }}
             </div>
         @endif
+        </div>
     </div>
 @endsection

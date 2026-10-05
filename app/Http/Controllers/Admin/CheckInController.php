@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Events\CheckInRecorded;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +16,26 @@ use App\Models\CheckIn;
 
 class CheckInController extends Controller
 {
+    private function broadcastCheckIn(Registration $registration, int $participantNumber): void
+    {
+        $competitionName = $registration->competition->name ?? '-';
+        $participantName = $registration->participants[0]->name ?? '-';
+
+        ActivityLogger::log(
+            'checkin.recorded',
+            'Check-in: ' . $participantName . ' (' . $competitionName . ') no. urut ' . $participantNumber,
+            $registration
+        );
+
+        event(new CheckInRecorded(
+            $registration->competition_id,
+            $competitionName,
+            $participantName,
+            $participantNumber
+        ));
+        event(new AdminDataChanged('check-in', 'created', $registration->id));
+    }
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -104,6 +127,8 @@ class CheckInController extends Controller
 
             DB::commit();
 
+            $this->broadcastCheckIn($registration, $participantNumber);
+
             return redirect()->route('admin.dashboard.check-in.detail', $registration->competition_id)
                 ->with('success', 'Check-in berhasil! Nomor Urut: ' . $participantNumber);
         } catch (\Exception $e) {
@@ -147,6 +172,8 @@ class CheckInController extends Controller
             ]);
 
             DB::commit();
+
+            $this->broadcastCheckIn($registration, $participantNumber);
 
             return response()->json([
                 'success' => true,

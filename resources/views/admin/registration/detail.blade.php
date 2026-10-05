@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div id="realtime-registration-detail" data-realtime="registration" class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-colors duration-500">
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-sm text-left text-gray-600 whitespace-nowrap">
                     <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
