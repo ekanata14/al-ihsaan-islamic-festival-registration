@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Group::class);
     }
+
+    public function children()
+    {
+        return $this->hasMany(Child::class, 'pic_id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'pic_id');
+    }
 }

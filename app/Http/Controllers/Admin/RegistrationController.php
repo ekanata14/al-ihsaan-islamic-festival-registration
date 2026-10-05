@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Events\UserDataChanged;
+use App\Support\ActivityLogger;
+use App\Support\RegistrationRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +102,7 @@ class RegistrationController extends Controller
         return view('admin.registration.person-detail', $viewData);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, RegistrationRules $rules)
     {
         $validatedData = $request->validate([
             'participants' => 'required|array',
@@ -111,6 +115,7 @@ class RegistrationController extends Controller
         try {
             DB::beginTransaction();
             $registration = Registration::findOrFail($request->id);
+            $pic = $registration->pic;
 
             foreach ($validatedData['participants'] as $participantData) {
                 $participant = $registration->participants()->where('nik', $participantData['nik'])->first();
@@ -131,11 +136,17 @@ class RegistrationController extends Controller
                         $certificatePath = $participantData['certificate_url']->store('certificates', 'public');
                         $participantData['certificate_url'] = $certificatePath;
                     }
-                    $registration->participants()->create($participantData);
+                    $child = $pic ? $rules->resolveChild($pic, $participantData) : null;
+                    $registration->participants()->create($participantData + ['child_id' => $child?->id]);
                 }
             }
 
             DB::commit();
+
+            ActivityLogger::log('admin.registration.updated', 'Memperbarui peserta registrasi: ' . $registration->registration_number, $registration);
+            event(new AdminDataChanged('registration', 'updated', $registration->id));
+            event(new UserDataChanged($registration->pic_id, 'registration', 'updated', $registration->id));
+
             return redirect()->route('admin.dashboard.registration.detail.person', ['id' => $registration->id])->with('success', 'Registration and participants updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();

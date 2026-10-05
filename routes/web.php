@@ -13,10 +13,13 @@ use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationContro
 use App\Http\Controllers\Admin\CheckInController as AdminCheckInController;
 use App\Http\Controllers\Admin\SponsorController as AdminSponsorController;
 use App\Http\Controllers\Admin\KhitanRegistrationController as AdminKhitanRegistrationController;
+use App\Http\Controllers\Admin\ActivityLogController as AdminActivityLogController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 
 
 // User Controller
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\PaymentController as UserPaymentController;
 
 // Khitan User Controller
 use App\Http\Controllers\KhitanDashboardController as KhitanUserDashboardController;
@@ -29,6 +32,7 @@ use App\Models\Competition;
 use App\Models\Sponsor;
 
 use App\Exports\KhitanRegistrationExport;
+use App\Exports\VerifiedParticipantsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -41,7 +45,7 @@ Route::get('/', function () {
     ];
     return view('welcome', $viewData);
 });
-Route::get('/image/{path}', [HelperController::class, 'getImage'])->name('get.image');
+Route::get('/image/{path}', [HelperController::class, 'getImage'])->where('path', '.*')->name('get.image');
 Route::get('/group/getAllGroups', [AdminGroupController::class, 'getAllGroups'])->name('group.getAllGroups');
 Route::get('/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('group.getGroupByName');
 Route::get('/register/khitan', [KhitanUserDashboardController::class, 'registration'])->name('khitan.registration');
@@ -49,7 +53,6 @@ Route::get('/register/khitan/person', [KhitanUserDashboardController::class, 're
 
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin-dashboard/search', [AdminDashboardController::class, 'search'])->name('admin.dashboard.search');
     Route::get('/admin-dashboard/search/khitan', [AdminDashboardController::class, 'searchKhitan'])->name('admin.dashboard.search-khitan');
@@ -113,9 +116,30 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard/sponsor/edit/{id}', [AdminSponsorController::class, 'edit'])->name('admin.dashboard.sponsor.edit');
     Route::put('/admin-dashboard/sponsor/update', [AdminSponsorController::class, 'update'])->name('admin.dashboard.sponsor.update');
     Route::delete('/admin-dashboard/sponsor/delete', [AdminSponsorController::class, 'destroy'])->name('admin.dashboard.sponsor.destroy');
+
+    // Admin Activity Log Route
+    Route::get('/admin-dashboard/activity-log', [AdminActivityLogController::class, 'index'])->name('admin.dashboard.activity-log');
+
+    // Admin Payment Route
+    Route::get('/admin-dashboard/payment', [AdminPaymentController::class, 'index'])->name('admin.dashboard.payment');
+    Route::post('/admin-dashboard/payment/bulk-verify', [AdminPaymentController::class, 'bulkVerify'])->name('admin.dashboard.payment.bulk-verify');
+    Route::get('/admin-dashboard/payment/{id}', [AdminPaymentController::class, 'detail'])->name('admin.dashboard.payment.detail');
+    Route::get('/admin-dashboard/payment/{id}/proof', [AdminPaymentController::class, 'proof'])->name('admin.dashboard.payment.proof');
+    Route::post('/admin-dashboard/payment/{id}/verify', [AdminPaymentController::class, 'verify'])->name('admin.dashboard.payment.verify');
+    Route::post('/admin-dashboard/payment/{id}/reject', [AdminPaymentController::class, 'reject'])->name('admin.dashboard.payment.reject');
+
+    // Export Khitan Registrations
+    Route::get('/export/khitan-registrations', function () {
+        return Excel::download(new KhitanRegistrationExport, 'khitan_registrations.xlsx');
+    })->name('khitan-registrations.export');
+
+    // Export Peserta Terverifikasi
+    Route::get('/export/verified-participants', function () {
+        return Excel::download(new VerifiedParticipantsExport, 'peserta_terverifikasi.xlsx');
+    })->name('verified-participants.export');
 });
 
-Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:user,khitan'])->group(function () {
     // User Route
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/user-dashboard/registration', [UserDashboardController::class, 'index'])->name('user.dashboard.registration');
@@ -127,7 +151,14 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/user-dashboard/registrations/qr/{id}', [UserDashboardController::class, 'competitionRegistrationQR'])->name('user.participants.qr-code');
     Route::post('/user-dashboard/competitions/registration/store', [UserDashboardController::class, 'competitionRegistrationStore'])->name('user.dashboard.competitions.registration.store');
 
+    // User Payment Route
+    Route::get('/user-dashboard/payment', [UserPaymentController::class, 'show'])->name('user.payment');
+    Route::post('/user-dashboard/payment/proof', [UserPaymentController::class, 'uploadProof'])->middleware('throttle:6,1')->name('user.payment.proof.store');
+    Route::get('/user-dashboard/payment/proof', [UserPaymentController::class, 'proof'])->name('user.payment.proof.show');
+    Route::get('/user-dashboard/payment/receipt', [UserPaymentController::class, 'receipt'])->name('user.payment.receipt');
+
     // Khitan User Route
+    Route::post('/register/khitan/person', [KhitanUserDashboardController::class, 'registerPersonStore'])->name('khitan.registration.person.store');
     Route::get('/khitan-dashboard', [KhitanUserDashboardController::class, 'index'])->name('khitan.dashboard');
     Route::get('/khitan-dashboard/qr/{id}', [KhitanUserDashboardController::class, 'khitanRegistrationQR'])->name('khitan.registration.qr-code');
 });
@@ -137,9 +168,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-Route::get('/export/khitan-registrations', function () {
-    return Excel::download(new KhitanRegistrationExport, 'khitan_registrations.xlsx');
-})->name('khitan-registrations.export');
 
 require __DIR__ . '/auth.php';

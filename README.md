@@ -64,3 +64,71 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
+## Fitur Biaya Pendaftaran & Pembayaran Transfer Bank (AIIF)
+
+Pendaftaran lomba berbayar dengan pembayaran via transfer bank dan unggah bukti bayar.
+Satu **wali/koordinator (PIC)** menghasilkan **satu tagihan**; bukti bayar diunggah sekali
+untuk semua anak di dalamnya.
+
+### Konfigurasi (`.env`)
+
+Semua parameter bisnis diatur lewat environment / `config/festival.php` (bukan hard-code):
+
+| Variabel | Default | Keterangan |
+|---|---|---|
+| `APP_TIMEZONE` | `Asia/Makassar` | Zona waktu WITA untuk semua tanggal |
+| `FESTIVAL_FEE_ENABLED` | `true` | Aktif/nonaktif fitur biaya |
+| `FESTIVAL_FEE_AMOUNT` | `10000` | Nominal biaya per unit (Rp) |
+| `FESTIVAL_FEE_MODE` | `per_anak` | `per_anak` atau `per_lomba` |
+| `FESTIVAL_BANK_NAME` | - | Nama bank tujuan |
+| `FESTIVAL_BANK_NUMBER` | - | Nomor rekening tujuan |
+| `FESTIVAL_BANK_HOLDER` | - | Nama pemilik rekening |
+| `FESTIVAL_PROOF_MAX_KB` | `3072` | Batas ukuran bukti bayar (KB, ~3 MB) |
+| `FESTIVAL_MAX_LOMBA_PER_ANAK` | `2` | Maksimal lomba per anak |
+| `FESTIVAL_COUPON_PER_CHILD` | `1` | Jumlah kupon makan per anak |
+| `FESTIVAL_PAYMENT_NOTIFY` | `false` | Notifikasi email saat status berubah (opsional) |
+
+Perhitungan: `total = jumlah unit × FESTIVAL_FEE_AMOUNT`, di mana unit = jumlah **anak unik**
+(`per_anak`) atau jumlah **pendaftaran lomba** (`per_lomba`). Total **selalu dihitung ulang di
+server**.
+
+### Migrasi
+
+```bash
+php artisan migrate
+php artisan config:clear
+```
+
+Migrasi bersifat aditif dan menyertakan *backfill* untuk data lama:
+- Membuat tabel `children` dan menautkan `participants.child_id` dari data lama (per PIC + NIK).
+- Membuat satu tagihan berstatus `belum_bayar` untuk setiap PIC yang sudah punya pendaftaran.
+
+Aman dijalankan pada database yang sudah berisi data pendaftar.
+
+### Alur status
+
+`belum_bayar` → `menunggu_verifikasi` → `terverifikasi` / `ditolak` (dengan alasan).
+Jika `ditolak`, wali dapat mengunggah ulang. Riwayat perubahan dicatat di
+`payment_status_histories`. Jika jumlah anak berubah setelah verifikasi, selisih
+(kurang/lebih bayar) ditampilkan tanpa menimpa nominal terverifikasi.
+
+### Halaman & endpoint
+
+- Wali/koordinator: `/user-dashboard/payment` (ringkasan, rekening, unggah bukti, status, cetak bukti).
+- Admin/panitia: `/admin-dashboard/payment` (filter, pencarian, verifikasi, verifikasi massal, ekspor Excel).
+- Bukti bayar disimpan **privat** di `storage/app/private/payment-proofs` dengan nama file UUID,
+  hanya diakses lewat endpoint ber-otorisasi (bukan `storage:link`).
+
+### Menjalankan tes
+
+```bash
+php artisan test
+```
+
+Tes menggunakan **SQLite in-memory** (`phpunit.xml`). Jangan arahkan tes ke database MySQL —
+`RefreshDatabase` akan menghapus data. `tests/TestCase.php` memasang pengaman yang menolak
+berjalan bila `DB_CONNECTION` bukan `sqlite`.
+

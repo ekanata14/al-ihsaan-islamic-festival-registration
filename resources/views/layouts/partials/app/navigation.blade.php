@@ -43,6 +43,10 @@
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.registration*') ? 'bg-blue-50 text-[#1D6594]' : 'text-gray-600 hover:bg-gray-50' }}">
                 <span class="font-medium text-sm">Registration</span>
             </x-nav-link>
+            <x-nav-link :href="route('admin.dashboard.payment')" :active="request()->routeIs('admin.dashboard.payment*')"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.payment*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                <span class="font-medium text-sm">Pembayaran</span>
+            </x-nav-link>
             <x-nav-link :href="route('admin.dashboard.check-in')" :active="request()->routeIs('admin.dashboard.check-in*')"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.check-in*') ? 'bg-blue-50 text-[#1D6594]' : 'text-gray-600 hover:bg-gray-50' }}">
                 <span class="font-medium text-sm">Check In</span>
@@ -55,6 +59,10 @@
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.khitan-registration*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-50' }}">
                 <span class="font-medium text-sm">Data Khitan</span>
             </x-nav-link>
+            <x-nav-link :href="route('admin.dashboard.activity-log')" :active="request()->routeIs('admin.dashboard.activity-log*')"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.activity-log*') ? 'bg-purple-50 text-purple-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                <span class="font-medium text-sm">Activity Log</span>
+            </x-nav-link>
         @else
             <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('user.dashboard*') ? 'bg-blue-50 text-[#1D6594]' : 'text-gray-600 hover:bg-gray-50' }}">
@@ -63,6 +71,10 @@
             <x-nav-link :href="route('user.participants')" :active="request()->routeIs('user.participants*')"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('user.participants*') ? 'bg-amber-50 text-amber-700' : 'text-gray-600 hover:bg-gray-50' }}">
                 <span class="font-medium text-sm">Peserta Saya</span>
+            </x-nav-link>
+            <x-nav-link :href="route('user.payment')" :active="request()->routeIs('user.payment*')"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('user.payment*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                <span class="font-medium text-sm">Pembayaran</span>
             </x-nav-link>
             <x-nav-link :href="route('khitan.dashboard')" :active="request()->routeIs('khitan.dashboard*')"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('khitan.dashboard*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-50' }}">

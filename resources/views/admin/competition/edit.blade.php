@@ -81,6 +81,31 @@
                     </div>
 
                     <div>
+                        <x-input-label for="min_age" :value="__('Umur Minimal (tahun)')" class="font-bold text-gray-700 mb-1.5 block" />
+                        <x-text-input type="number" id="min_age" name="min_age" value="{{ old('min_age', $data->min_age) }}" min="0"
+                            class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 bg-gray-50 focus:bg-white transition-colors"
+                            placeholder="Kosongkan jika tanpa batas" />
+                        @error('min_age') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <x-input-label for="max_age" :value="__('Umur Maksimal (tahun)')" class="font-bold text-gray-700 mb-1.5 block" />
+                        <x-text-input type="number" id="max_age" name="max_age" value="{{ old('max_age', $data->max_age) }}" min="0"
+                            class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 bg-gray-50 focus:bg-white transition-colors"
+                            placeholder="Kosongkan jika tanpa batas" />
+                        @error('max_age') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <x-input-label for="time_slot" :value="__('Slot Jadwal (untuk cek bentrok)')" class="font-bold text-gray-700 mb-1.5 block" />
+                        <x-text-input type="text" id="time_slot" name="time_slot" value="{{ old('time_slot', $data->time_slot) }}"
+                            class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 bg-gray-50 focus:bg-white transition-colors"
+                            placeholder="Contoh: Hari 1 - Sesi Pagi" />
+                        <p class="text-xs text-gray-500 mt-1">*Peserta tidak boleh mengikuti dua lomba dengan slot jadwal yang sama.</p>
+                        @error('time_slot') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
                         <x-input-label for="registration_start" :value="__('Tanggal Mulai Pendaftaran')"
                             class="font-bold text-gray-700 mb-1.5 block" />
                         <x-text-input type="date" id="registration_start" name="registration_start"

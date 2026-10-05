@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Events\AdminDataChanged;
+use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -70,6 +72,9 @@ class CompetitionController extends Controller
             'image_url' => 'required|image|mimes:jpeg,png,jpg,gif', // Validate image file
             'type' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
+            'min_age' => 'nullable|integer|min:0',
+            'max_age' => 'nullable|integer|min:0|gte:min_age',
+            'time_slot' => 'nullable|string|max:255',
             'registration_start' => 'required|date',
             'registration_end' => 'required|date|after_or_equal:registration_start',
             'status' => 'required|string',
@@ -91,7 +96,11 @@ class CompetitionController extends Controller
             // }
             $validatedData['image_url'] = $validatedData['image_url']->store('competitions', 'public');
 
-            Competition::create($validatedData);
+            $competition = Competition::create($validatedData);
+
+            ActivityLogger::log('admin.competition.created', 'Menambah lomba: ' . $competition->name, $competition);
+            event(new AdminDataChanged('competition', 'created', $competition->id));
+
             return redirect()->route('admin.dashboard.competition')->with('success', 'Competition created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to create competition: ' . $e->getMessage());
@@ -133,6 +142,9 @@ class CompetitionController extends Controller
             'description' => 'required|string',
             'type' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
+            'min_age' => 'nullable|integer|min:0',
+            'max_age' => 'nullable|integer|min:0|gte:min_age',
+            'time_slot' => 'nullable|string|max:255',
             'registration_start' => 'required|date',
             'registration_end' => 'required|date|after_or_equal:registration_start',
             'status' => 'required|string',
@@ -173,6 +185,9 @@ class CompetitionController extends Controller
             // Update the competition record
             $competition->update($validatedData);
 
+            ActivityLogger::log('admin.competition.updated', 'Mengubah lomba: ' . $competition->name, $competition);
+            event(new AdminDataChanged('competition', 'updated', $competition->id));
+
             return redirect()->route('admin.dashboard.competition')->with('success', 'Competition updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update competition: ' . $e->getMessage());
@@ -198,7 +213,12 @@ class CompetitionController extends Controller
             }
 
             // Delete the competition record
+            $competitionId = $competition->id;
+            $competitionName = $competition->name;
             $competition->delete();
+
+            ActivityLogger::log('admin.competition.deleted', 'Menghapus lomba: ' . $competitionName);
+            event(new AdminDataChanged('competition', 'deleted', $competitionId));
 
             return redirect()->route('admin.dashboard.competition')->with('success', 'Competition deleted successfully.');
         } catch (\Exception $e) {

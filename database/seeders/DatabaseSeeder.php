@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Competition;
 use App\Models\Registration;
 use App\Models\Participant;
+use App\Models\Sponsor;
 
 class DatabaseSeeder extends Seeder
 {
