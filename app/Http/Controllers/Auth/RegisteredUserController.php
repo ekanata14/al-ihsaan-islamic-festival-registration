@@ -80,7 +80,7 @@ class RegisteredUserController extends Controller
                 return redirect(route('user.dashboard', absolute: false))->with('success', 'Pendaftaran berhasil, silahkan pilih lomba');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Registration failed: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Pendaftaran gagal: ' . $e->getMessage()]);
         }
     }
 }

@@ -109,7 +109,7 @@ class RegistrationController extends Controller
             'participants.*.name' => 'required|string',
             'participants.*.age' => 'required|integer|min:1',
             'participants.*.nik' => 'required|string',
-            'participants.*.certificate_url' => 'nullable|file|mimes:jpeg,png,pdf',
+            'participants.*.certificate_url' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:20480',
         ]);
 
         try {
@@ -147,10 +147,10 @@ class RegistrationController extends Controller
             event(new AdminDataChanged('registration', 'updated', $registration->id));
             event(new UserDataChanged($registration->pic_id, 'registration', 'updated', $registration->id));
 
-            return redirect()->route('admin.dashboard.registration.detail.person', ['id' => $registration->id])->with('success', 'Registration and participants updated successfully.');
+            return redirect()->route('admin.dashboard.registration.detail.person', ['id' => $registration->id])->with('success', 'Pendaftaran dan data peserta berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Events\AdminDataChanged;
 use App\Events\CheckInRecorded;
+use App\Events\UserDataChanged;
 use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,17 @@ class CheckInController extends Controller
             $participantNumber
         ));
         event(new AdminDataChanged('check-in', 'created', $registration->id));
+
+        $pic = $registration->pic;
+        if ($pic) {
+            event(new UserDataChanged($registration->pic_id, 'check-in', 'created', $registration->id));
+
+            try {
+                $pic->notify(new \App\Notifications\CheckInNotification($registration, $participantNumber));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
     }
 
     public function index(Request $request)

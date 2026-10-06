@@ -45,7 +45,7 @@ return [
     'proof' => [
         'disk' => 'local',
         'dir' => 'payment-proofs',
-        'max_kb' => (int) env('FESTIVAL_PROOF_MAX_KB', 3072),
+        'max_kb' => (int) env('FESTIVAL_PROOF_MAX_KB', 20480),
         'mimes' => ['jpg', 'jpeg', 'png', 'pdf'],
     ],
 

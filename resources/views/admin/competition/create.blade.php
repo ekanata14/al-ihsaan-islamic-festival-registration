@@ -118,7 +118,7 @@
                     <div class="md:col-span-2 p-5 bg-gray-50 border border-gray-200 border-dashed rounded-xl">
                         <x-input-label for="image_url" :value="__('Gambar / Poster Lomba (Opsional)')" class="font-bold text-gray-700 mb-1.5 block" />
                         <input type="file" id="image_url" name="image_url" accept="image/*" class="block w-full text-sm text-gray-600 cursor-pointer">
-                        <p class="text-xs text-gray-500 mt-2">Disarankan ukuran persegi (1:1) maksimal 2MB.</p>
+                        <p class="text-xs text-gray-500 mt-2">Disarankan ukuran persegi (1:1) maksimal 20MB.</p>
                         @error('image_url') <p class="text-rose-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
 

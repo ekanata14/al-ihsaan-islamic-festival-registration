@@ -149,7 +149,7 @@
                                 </svg>
                                 Unggah Berkas Persyaratan
                             </h3>
-                            <p class="text-sm text-gray-500 mt-1">Pastikan foto jelas terbaca. Maksimal 2MB per file
+                            <p class="text-sm text-gray-500 mt-1">Pastikan foto jelas terbaca. Maksimal 20MB per file
                                 (JPG/PNG).</p>
                         </div>
 

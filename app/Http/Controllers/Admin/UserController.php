@@ -85,10 +85,10 @@ class UserController extends Controller
             ActivityLogger::log('admin.user.created', 'Menambah user: ' . $user->name . ' (' . $user->role . ')', $user);
             event(new AdminDataChanged('user', 'created', $user->id));
 
-            return redirect()->route('admin.dashboard.user')->with('success', 'User created successfully.');
+            return redirect()->route('admin.dashboard.user')->with('success', 'Pengguna berhasil ditambahkan.');
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to create user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan pengguna: ' . $e->getMessage());
         }
     }
 
@@ -149,10 +149,10 @@ class UserController extends Controller
             ActivityLogger::log('admin.user.updated', 'Mengubah user: ' . $user->name . ' (' . $user->role . ')', $user);
             event(new AdminDataChanged('user', 'updated', $user->id));
 
-            return redirect()->route('admin.dashboard.user')->with('success', 'User updated successfully.');
+            return redirect()->route('admin.dashboard.user')->with('success', 'Pengguna berhasil diperbarui.');
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to update user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui pengguna: ' . $e->getMessage());
         }
     }
 
@@ -174,10 +174,10 @@ class UserController extends Controller
             ActivityLogger::log('admin.user.deleted', 'Menghapus user: ' . $userName);
             event(new AdminDataChanged('user', 'deleted', $userId));
 
-            return redirect()->route('admin.dashboard.user')->with('success', 'User deleted successfully.');
+            return redirect()->route('admin.dashboard.user')->with('success', 'Pengguna berhasil dihapus.');
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to delete user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus pengguna: ' . $e->getMessage());
         }
     }
 }

@@ -63,6 +63,26 @@
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.activity-log*') ? 'bg-purple-50 text-purple-700' : 'text-gray-600 hover:bg-gray-50' }}">
                 <span class="font-medium text-sm">Activity Log</span>
             </x-nav-link>
+            <x-nav-link :href="route('admin.dashboard.announcement')" :active="request()->routeIs('admin.dashboard.announcement*')"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.announcement*') ? 'bg-rose-50 text-rose-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                <span class="font-medium text-sm">Pengumuman</span>
+            </x-nav-link>
+
+            <div class="pt-6">
+                <p class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Landing Page</p>
+                <x-nav-link :href="route('admin.dashboard.landing.content')" :active="request()->routeIs('admin.dashboard.landing.content*')"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.landing.content*') ? 'bg-sky-50 text-sky-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <span class="font-medium text-sm">Konten & Layout</span>
+                </x-nav-link>
+                <x-nav-link :href="route('admin.dashboard.landing.settings')" :active="request()->routeIs('admin.dashboard.landing.settings*')"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.landing.settings*') ? 'bg-sky-50 text-sky-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <span class="font-medium text-sm">Pengaturan</span>
+                </x-nav-link>
+                <x-nav-link :href="route('admin.dashboard.landing.contact')" :active="request()->routeIs('admin.dashboard.landing.contact*')"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('admin.dashboard.landing.contact*') ? 'bg-sky-50 text-sky-700' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <span class="font-medium text-sm">Kontak Person</span>
+                </x-nav-link>
+            </div>
         @else
             <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors w-full {{ request()->routeIs('user.dashboard*') ? 'bg-blue-50 text-[#1D6594]' : 'text-gray-600 hover:bg-gray-50' }}">

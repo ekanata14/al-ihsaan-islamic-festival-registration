@@ -133,7 +133,7 @@
                     <div class="space-y-5 pt-6 border-t border-gray-100 mt-2">
                         <div class="mb-2">
                             <h3 class="font-bold text-gray-800">Unggah Berkas Persyaratan</h3>
-                            <p class="text-xs text-gray-500">Maks. 2MB per file (Format: JPG/PNG/JPEG)</p>
+                            <p class="text-xs text-gray-500">Maks. 20MB per file (Format: JPG/PNG/JPEG)</p>
                         </div>
 
                         <div>

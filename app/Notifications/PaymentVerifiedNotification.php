@@ -17,7 +17,23 @@ class PaymentVerifiedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        $channels = ['database'];
+
+        if (config('festival.notify.enabled')) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
+    }
+
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'title' => 'Pembayaran Terverifikasi',
+            'message' => 'Pembayaran tagihan ' . $this->payment->invoice_number . ' telah diverifikasi panitia. Pendaftaran Anda berstatus LUNAS.',
+            'url' => route('user.payment'),
+            'icon' => 'check',
+        ];
     }
 
     public function toMail(object $notifiable): MailMessage

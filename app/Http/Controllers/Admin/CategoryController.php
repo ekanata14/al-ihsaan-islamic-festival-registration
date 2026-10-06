@@ -68,10 +68,10 @@ class CategoryController extends Controller
             ActivityLogger::log('admin.category.created', 'Menambah kategori: ' . $category->name, $category);
             event(new AdminDataChanged('category', 'created', $category->id));
 
-            return redirect()->route('admin.dashboard.category')->with('success', 'Category created successfully.');
+            return redirect()->route('admin.dashboard.category')->with('success', 'Kategori berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to create category: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan kategori: ' . $e->getMessage());
         }
     }
 
@@ -111,10 +111,10 @@ class CategoryController extends Controller
             ActivityLogger::log('admin.category.updated', 'Mengubah kategori: ' . $category->name, $category);
             event(new AdminDataChanged('category', 'updated', $category->id));
 
-            return redirect()->route('admin.dashboard.category')->with('success', 'Category updated successfully.');
+            return redirect()->route('admin.dashboard.category')->with('success', 'Kategori berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to update category: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui kategori: ' . $e->getMessage());
         }
     }
 
@@ -136,10 +136,10 @@ class CategoryController extends Controller
             ActivityLogger::log('admin.category.deleted', 'Menghapus kategori: ' . $categoryName);
             event(new AdminDataChanged('category', 'deleted', $categoryId));
 
-            return redirect()->route('admin.dashboard.category')->with('success', 'Category deleted successfully.');
+            return redirect()->route('admin.dashboard.category')->with('success', 'Kategori berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to delete category: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus kategori: ' . $e->getMessage());
         }
     }
 }

@@ -55,6 +55,8 @@
             </div>
 
             <div class="flex items-center gap-3">
+                <x-notification-bell />
+
                 @if (auth()->user()->role == 'admin')
                     <form class="hidden sm:block relative group w-64 md:w-80" method="GET" action="{{ route('admin.dashboard.search') }}">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -76,7 +78,7 @@
             </div>
         </header>
 
-        <main class="flex-1 w-full bg-gray-50">
+        <main class="flex-1 w-full bg-gray-50 pb-20 lg:pb-0">
             @yield('content')
         </main>
     </div>
@@ -282,6 +284,9 @@
             });
         </script>
     @endif
+
+    <x-payment-cart />
+    @include('layouts.partials.app.bottom-nav')
 
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -86,10 +86,10 @@ class GroupController extends Controller
             ActivityLogger::log('admin.group.created', 'Menambah grup/TPQ: ' . $group->name, $group);
             event(new AdminDataChanged('group', 'created', $group->id));
 
-            return redirect()->route('admin.dashboard.group')->with('success', 'Group created successfully');
+            return redirect()->route('admin.dashboard.group')->with('success', 'Kelompok berhasil ditambahkan');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -134,10 +134,10 @@ class GroupController extends Controller
             ActivityLogger::log('admin.group.updated', 'Mengubah grup/TPQ: ' . $group->name, $group);
             event(new AdminDataChanged('group', 'updated', $group->id));
 
-            return redirect()->route('admin.dashboard.group')->with('success', 'Group updated successfully');
+            return redirect()->route('admin.dashboard.group')->with('success', 'Kelompok berhasil diperbarui');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -158,10 +158,10 @@ class GroupController extends Controller
             ActivityLogger::log('admin.group.deleted', 'Menghapus grup/TPQ: ' . $groupName);
             event(new AdminDataChanged('group', 'deleted', $groupId));
 
-            return redirect()->route('admin.dashboard.group')->with('success', 'Group deleted successfully');
+            return redirect()->route('admin.dashboard.group')->with('success', 'Kelompok berhasil dihapus');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }

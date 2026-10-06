@@ -107,14 +107,14 @@
                                     <div class="sm:col-span-2 pt-2 border-t border-gray-100 mt-2">
                                         <x-input-label for="participants[{{ $i }}][photo_url]" :value="__('Foto Peserta')" class="text-gray-700 font-semibold mb-1 block" />
                                         <input type="file" name="participants[{{ $i }}][photo_url]" class="block w-full text-sm text-gray-500 border border-gray-300 rounded-xl cursor-pointer bg-gray-50" accept="image/*" required>
-                                        <p class="text-gray-400 text-xs mt-1">*Maks. ukuran 2 MB</p>
+                                        <p class="text-gray-400 text-xs mt-1">*Maks. ukuran 20 MB</p>
                                         @error("participants.{$i}.photo_url") <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                                     </div>
 
                                     <div class="sm:col-span-2">
                                         <x-input-label for="participants[{{ $i }}][certificate_url]" :value="__('Akta Kelahiran / KTP / KTA')" class="text-gray-700 font-semibold mb-1 block" />
                                         <input type="file" name="participants[{{ $i }}][certificate_url]" class="block w-full text-sm text-gray-500 border border-gray-300 rounded-xl cursor-pointer bg-gray-50" accept="image/*,application/pdf" required>
-                                        <p class="text-gray-400 text-xs mt-1">*Maks. ukuran 2 MB</p>
+                                        <p class="text-gray-400 text-xs mt-1">*Maks. ukuran 20 MB</p>
                                         @error("participants.{$i}.certificate_url") <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                                     </div>
 

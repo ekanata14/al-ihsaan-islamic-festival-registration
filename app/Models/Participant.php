@@ -31,4 +31,9 @@ class Participant extends Model
     {
         return $this->belongsTo(Child::class);
     }
+
+    public function checkIn()
+    {
+        return $this->hasOne(CheckIn::class, 'participant_id');
+    }
 }

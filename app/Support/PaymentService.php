@@ -47,6 +47,27 @@ class PaymentService
     }
 
     /**
+     * Ringkasan tagihan belum dibayar milik PIC (dipakai dashboard & keranjang).
+     */
+    public function unpaidFor(User $pic): array
+    {
+        $payment = $pic->payment;
+
+        $children = $pic->children()
+            ->with(['participants.registration.competition'])
+            ->get();
+
+        $hasUnpaid = $children->isNotEmpty()
+            && ($payment === null || in_array($payment->status, [Payment::STATUS_BELUM_BAYAR, Payment::STATUS_DITOLAK], true));
+
+        return [
+            'payment' => $payment,
+            'children' => $children,
+            'has_unpaid' => $hasUnpaid,
+        ];
+    }
+
+    /**
      * Hitung ulang total di server. Nominal terverifikasi tidak pernah
      * ditimpa diam-diam; selisih ditampilkan lewat model.
      */
@@ -104,6 +125,8 @@ class PaymentService
 
             event(new AdminDataChanged('payment', 'submitted', $payment->id));
             event(new UserDataChanged($payment->pic_id, 'payment', 'submitted', $payment->id));
+
+            $this->notifyProofSubmitted($payment);
 
             return $proof;
         });
@@ -170,6 +193,21 @@ class PaymentService
         });
     }
 
+    protected function notifyProofSubmitted(Payment $payment): void
+    {
+        $pic = $payment->pic;
+
+        if (! $pic) {
+            return;
+        }
+
+        try {
+            $pic->notify(new \App\Notifications\ProofSubmittedNotification($payment));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+    }
+
     protected function recordHistory(Payment $payment, string $status, ?string $reason, ?int $changedBy): void
     {
         $payment->histories()->create([
@@ -181,10 +219,6 @@ class PaymentService
 
     protected function notify(Payment $payment, string $event, ?string $reason = null): void
     {
-        if (! config('festival.notify.enabled')) {
-            return;
-        }
-
         $pic = $payment->pic;
 
         if (! $pic) {

@@ -40,4 +40,9 @@ class Registration extends Model
     {
         return $this->hasOne(Participant::class);
     }
+
+    public function checkIn()
+    {
+        return $this->hasOne(CheckIn::class);
+    }
 }

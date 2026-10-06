@@ -70,7 +70,7 @@ class PaymentUploadTest extends TestCase
             ->post(route('user.payment.proof.store'), [
                 'sender_name' => 'Budi',
                 'transfer_date' => now()->toDateString(),
-                'proof' => UploadedFile::fake()->create('bukti.pdf', 4000, 'application/pdf'),
+                'proof' => UploadedFile::fake()->create('bukti.pdf', 25000, 'application/pdf'),
             ]);
 
         $response->assertSessionHasErrors('proof');

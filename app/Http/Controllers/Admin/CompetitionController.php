@@ -101,9 +101,9 @@ class CompetitionController extends Controller
             ActivityLogger::log('admin.competition.created', 'Menambah lomba: ' . $competition->name, $competition);
             event(new AdminDataChanged('competition', 'created', $competition->id));
 
-            return redirect()->route('admin.dashboard.competition')->with('success', 'Competition created successfully.');
+            return redirect()->route('admin.dashboard.competition')->with('success', 'Lomba berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to create competition: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan lomba: ' . $e->getMessage());
         }
     }
 
@@ -188,9 +188,9 @@ class CompetitionController extends Controller
             ActivityLogger::log('admin.competition.updated', 'Mengubah lomba: ' . $competition->name, $competition);
             event(new AdminDataChanged('competition', 'updated', $competition->id));
 
-            return redirect()->route('admin.dashboard.competition')->with('success', 'Competition updated successfully.');
+            return redirect()->route('admin.dashboard.competition')->with('success', 'Lomba berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to update competition: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui lomba: ' . $e->getMessage());
         }
     }
 
@@ -220,9 +220,9 @@ class CompetitionController extends Controller
             ActivityLogger::log('admin.competition.deleted', 'Menghapus lomba: ' . $competitionName);
             event(new AdminDataChanged('competition', 'deleted', $competitionId));
 
-            return redirect()->route('admin.dashboard.competition')->with('success', 'Competition deleted successfully.');
+            return redirect()->route('admin.dashboard.competition')->with('success', 'Lomba berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete competition: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus lomba: ' . $e->getMessage());
         }
     }
 }

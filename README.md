@@ -132,3 +132,101 @@ Tes menggunakan **SQLite in-memory** (`phpunit.xml`). Jangan arahkan tes ke data
 `RefreshDatabase` akan menghapus data. `tests/TestCase.php` memasang pengaman yang menolak
 berjalan bila `DB_CONNECTION` bukan `sqlite`.
 
+---
+
+## Landing Page CMS (Konten, Layout, Sponsor, Kontak, Footer)
+
+Konten landing page (`/`) dikelola dari admin melalui menu **Landing Page** di sidebar, dengan
+pendekatan *block builder* (mirip WordPress): blok dapat ditambah, digeser urutannya, dan
+disembunyikan tanpa mengubah kode.
+
+### Konsep
+
+- **Blok (`landing_blocks`)** — section halaman. Tiap blok punya `type`, `content` (JSON),
+  `sort_order`, `is_active`. Tipe awal: `hero`, `info_acara`, `competitions`, `sponsors`,
+  `contact`, `rich_text`. Form admin dirender dinamis dari registry
+  `app/Support/LandingBlockTypes.php` (menambah tipe baru = tambah entri registry + satu partial
+  `resources/views/landing/blocks/{type}.blade.php`).
+- **Pengaturan (`landing_settings`)** — key-value global: nama situs, meta, warna tema
+  (`primary_color`/`accent_color`), link navbar, isi footer, dan tanggal acara (target hitung mundur).
+- **Kontak Person (`contact_persons`)** — daftar narahubung (CRUD sendiri).
+- **Sponsor (`sponsors`)** — ditambah field `sort_order`, `is_active`, `website_url`.
+
+### Menu admin
+
+- **Konten & Layout** (`/admin-dashboard/landing/content`) — susun blok (drag untuk urut, toggle aktif).
+- **Pengaturan** (`/admin-dashboard/landing/settings`) — tab Umum, Tema, Navbar, Footer, Acara.
+- **Kontak Person** (`/admin-dashboard/landing/contact`).
+- **Sponsor** tetap di menu Sponsor, kini dengan urutan & status aktif.
+
+### Hero Coming Soon
+
+Blok `hero` punya mode `coming_soon` (default) yang menampilkan **hitung mundur** ke
+`countdown_target` dan menyembunyikan tombol pendaftaran, atau `normal` untuk banner penuh.
+
+### Seeder & aset
+
+```bash
+php artisan migrate
+php artisan storage:link          # gambar unggahan (landing & sponsor)
+php artisan db:seed --class=LandingSeeder   # memindahkan konten lama ke DB (idempotent)
+```
+
+`LandingSeeder` sudah dipanggil dari `DatabaseSeeder` untuk instalasi baru. Halaman publik
+di-cache (`landing.blocks`, `landing.settings`) dan cache otomatis dibersihkan saat admin menyimpan.
+
+### Tes
+
+```bash
+php artisan test --filter=LandingTest
+```
+
+---
+
+## Pengalaman Wali, Notifikasi & Pengumuman
+
+### Pesan error Bahasa Indonesia
+
+Semua pesan validasi memakai Bahasa Indonesia lewat `lang/id/validation.php`, `lang/id/auth.php`,
+dan `lang/id/passwords.php`, dengan label ramah (mis. `participants.*.photo_url` → "Foto peserta").
+Aktifkan dengan `APP_LOCALE=id` di `.env`.
+
+### Batas ukuran upload
+
+Semua unggahan berkas dibatasi **maksimal 20 MB** (favicon tetap 2 MB). Untuk bukti bayar diatur lewat
+`FESTIVAL_PROOF_MAX_KB` (default `20480`).
+
+> ⚠️ Wajib disetel di server/hosting: `upload_max_filesize` dan `post_max_size` minimal `24M`.
+> Tanpa itu, berkas >2 MB akan gagal sebelum validasi berjalan.
+
+### Keranjang & peserta belum bayar
+
+Wali melihat daftar peserta yang **belum dibayar** di dashboard, plus widget **keranjang** melayang di
+pojok kanan bawah (daftar anak + total tagihan + tombol ke halaman Pembayaran). Keranjang otomatis
+hilang saat status pembayaran sudah menunggu verifikasi/lunas.
+
+### Mobile bottom navbar
+
+Bar navigasi bawah (`layouts/partials/app/bottom-nav.blade.php`) tampil di layar kecil untuk semua role:
+- **Wali/khitan**: Dashboard, Pembayaran, Peserta, Akun.
+- **Admin**: Dashboard, Registrasi, Pembayaran, Akun.
+
+### Notifikasi & Pengumuman
+
+- Notifikasi in-app (tabel `notifications`) untuk: pendaftaran lomba, unggah bukti bayar, verifikasi/penolakan
+  pembayaran, dan check-in (scan QR). Lonceng notifikasi ada di header semua halaman (`/notifications`).
+- Admin dapat membuat **Pengumuman** (`/admin-dashboard/announcement`). Saat dikirim, pengumuman masuk ke
+  notifikasi in-app **dan email** pengguna sesuai sasaran.
+- Email memakai `MAIL_*` di `.env` (default `log`). Isi konfigurasi SMTP agar email benar-benar terkirim.
+- Realtime opsional via Pusher (`PUSHER_*`); jumlah notifikasi tetap diperbarui lewat polling ringan.
+
+### Perintah
+
+```bash
+php artisan migrate
+php artisan config:clear
+npm run build
+```
+
+
+

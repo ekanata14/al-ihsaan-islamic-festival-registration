@@ -29,6 +29,11 @@
                                 <span class="px-3 py-1 bg-white/10 rounded-lg text-xs font-bold border border-white/20">
                                     PIC: {{ $data->pic->name }}
                                 </span>
+                                @if ($data->checkIn)
+                                    <span class="px-3 py-1 bg-[#E9AA14] rounded-lg text-xs font-extrabold border border-white/20">
+                                        Nomor Urut: {{ $data->checkIn->participant_number }}
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
@@ -90,6 +95,11 @@
                                         </div>
                                         <p class="text-center font-bold text-gray-800 text-sm leading-tight">
                                             {{ $participant->name }}</p>
+                                        @if ($participant->checkIn)
+                                            <span class="px-2.5 py-0.5 bg-[#1D6594] text-white text-[10px] font-extrabold rounded-full">
+                                                Nomor Urut {{ $participant->checkIn->participant_number }}
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="md:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12">

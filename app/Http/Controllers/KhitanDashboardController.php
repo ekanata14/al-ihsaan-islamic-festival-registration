@@ -31,7 +31,7 @@ class KhitanDashboardController extends Controller
         }
 
         $viewData = [
-            'title' => 'Khitan Dashboard',
+            'title' => 'Dashboard Khitan',
             'datas' => $query->latest()->paginate(10)->appends(['search' => $search]),
             'search' => $search
         ];
@@ -67,9 +67,9 @@ class KhitanDashboardController extends Controller
             'birth_place' => 'required|string',
             'domicile' => 'required|string',
             'is_sanur' => 'required|boolean',
-            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'family_card_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'family_card_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
 
         // Generate Registration Number

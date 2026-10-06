@@ -52,9 +52,9 @@ class KhitanRegistrationController extends Controller
             'birth_place' => 'required|string',
             'domicile' => 'required|string',
             'is_sanur' => 'required|boolean',
-            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'family_card_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'certificate_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'family_card_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
 
         try {
@@ -95,10 +95,10 @@ class KhitanRegistrationController extends Controller
             ActivityLogger::log('admin.khitan-registration.created', 'Menambah pendaftaran khitan: ' . $khitanRegistration->name, $khitanRegistration);
             event(new AdminDataChanged('khitan-registration', 'created', $khitanRegistration->id));
 
-            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration created successfully.');
+            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Pendaftaran khitan berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to create registration: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal menambahkan pendaftaran: ' . $e->getMessage()]);
         }
     }
 
@@ -142,9 +142,9 @@ class KhitanRegistrationController extends Controller
             'domicile' => 'required|string',
             'is_sanur' => 'required|boolean',
             'status' => 'required|string',
-            'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'certificate_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'family_card_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'certificate_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
+            'family_card_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
 
         unset($validatedData['family_card_url']);
@@ -180,10 +180,10 @@ class KhitanRegistrationController extends Controller
             event(new AdminDataChanged('khitan-registration', 'updated', $khitanRegistration->id));
             event(new UserDataChanged($khitanRegistration->pic_id, 'khitan-registration', 'updated', $khitanRegistration->id));
 
-            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration updated successfully.');
+            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Pendaftaran khitan berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to update registration: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui pendaftaran: ' . $e->getMessage()]);
         }
     }
 
@@ -203,10 +203,10 @@ class KhitanRegistrationController extends Controller
             ActivityLogger::log('admin.khitan-registration.deleted', 'Menghapus pendaftaran khitan: ' . $khitanName);
             event(new AdminDataChanged('khitan-registration', 'deleted', $khitanId));
 
-            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Registration deleted successfully.');
+            return redirect()->route('admin.dashboard.khitan-registration')->with('success', 'Pendaftaran khitan berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to delete registration: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal menghapus pendaftaran: ' . $e->getMessage()]);
         }
     }
 }

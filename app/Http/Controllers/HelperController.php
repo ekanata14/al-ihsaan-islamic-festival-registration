@@ -12,7 +12,7 @@ class HelperController extends Controller
         $path = ltrim($path, '/');
 
         if (!Storage::disk('public')->exists($path)) {
-            abort(404, 'Image not found.');
+            abort(404, 'Gambar tidak ditemukan.');
         }
 
         $file = Storage::disk('public')->get($path);

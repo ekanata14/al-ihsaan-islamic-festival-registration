@@ -17,7 +17,23 @@ class PaymentRejectedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        $channels = ['database'];
+
+        if (config('festival.notify.enabled')) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
+    }
+
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'title' => 'Pembayaran Ditolak',
+            'message' => 'Bukti pembayaran tagihan ' . $this->payment->invoice_number . ' ditolak. Alasan: ' . $this->reason,
+            'url' => route('user.payment'),
+            'icon' => 'warning',
+        ];
     }
 
     public function toMail(object $notifiable): MailMessage

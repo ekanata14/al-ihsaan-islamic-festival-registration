@@ -47,6 +47,97 @@
                 </div>
             </div>
 
+            @if (!empty($unpaid['has_unpaid']))
+                <div class="px-4 sm:px-0">
+                    <div class="bg-rose-50 border border-rose-100 rounded-2xl p-6">
+                        <div class="flex items-center justify-between gap-4 flex-wrap">
+                            <div>
+                                <h3 class="text-lg font-extrabold text-rose-700">Peserta Belum Dibayar</h3>
+                                <p class="text-sm text-rose-600/80">Selesaikan pembayaran pendaftaran agar peserta dapat mengikuti lomba.</p>
+                            </div>
+                            <a href="{{ route('user.payment') }}"
+                                class="px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl shadow-md transition-all whitespace-nowrap">
+                                Bayar Sekarang
+                            </a>
+                        </div>
+                        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            @foreach (($unpaid['children'] ?? []) as $child)
+                                <div class="bg-white rounded-xl border border-rose-100 p-4">
+                                    <p class="font-bold text-gray-800">{{ $child->name }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        {{ $child->participants->map(fn ($p) => $p->registration?->competition?->name)->filter()->unique()->implode(', ') ?: 'Belum terdaftar lomba' }}
+                                    </p>
+                                </div>
+                            @endforeach
+                        </div>
+                        @if (!empty($unpaid['payment']))
+                            <p class="mt-4 text-sm font-bold text-rose-700">
+                                Total tagihan: Rp {{ number_format($unpaid['payment']->total_amount, 0, ',', '.') }}
+                            </p>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+            @if (($competitionProgress ?? collect())->isNotEmpty())
+                <div class="px-4 sm:px-0">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6">
+                        <div class="flex items-center gap-3 mb-5">
+                            <span class="w-10 h-10 rounded-xl bg-[#1D6594]/10 text-[#1D6594] flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </span>
+                            <div>
+                                <h3 class="text-lg font-extrabold text-gray-800">Alur Perlombaan</h3>
+                                <p class="text-sm text-gray-500">Pantau nomor urut yang sedang berjalan di tiap lomba.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            @foreach ($competitionProgress as $progress)
+                                @php
+                                    $total = max(1, $progress['total']);
+                                    $pct = min(100, (int) round($progress['checked_in'] / $total * 100));
+                                    $running = $progress['checked_in'] > 0;
+                                @endphp
+                                <div class="border border-gray-100 rounded-xl p-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="min-w-0">
+                                            <p class="font-bold text-gray-800 truncate">{{ $progress['competition']->name }}</p>
+                                            <p class="text-xs text-gray-400">{{ $progress['competition']->category->name ?? '-' }}</p>
+                                        </div>
+                                        @if ($running)
+                                            <span class="inline-flex items-center px-2.5 py-1 text-[10px] font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                                                <span class="w-1.5 h-1.5 me-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Sedang Berlangsung
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2.5 py-1 text-[10px] font-bold rounded-full bg-gray-100 text-gray-500 border border-gray-200 shrink-0">
+                                                Menunggu Jadwal
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <div class="mt-3 flex items-center justify-between text-xs text-gray-500">
+                                        <span>Nomor urut berjalan: <b class="text-[#1D6594] text-sm">{{ $progress['current_number'] ?: '-' }}</b></span>
+                                        <span>{{ $progress['checked_in'] }}/{{ $progress['total'] }} peserta</span>
+                                    </div>
+                                    <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-[#1D6594] rounded-full transition-all" style="width: {{ $pct }}%"></div>
+                                    </div>
+
+                                    @if ($progress['my_numbers']->isNotEmpty())
+                                        <p class="mt-2 text-xs font-bold text-amber-600">
+                                            Nomor urut peserta Anda: {{ $progress['my_numbers']->implode(', ') }}
+                                        </p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="px-4 sm:px-0">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-4">
                     <h3 class="text-2xl font-extrabold text-gray-800">Daftar Lomba</h3>
@@ -84,13 +175,13 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 sm:px-0 pb-10">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 px-4 sm:px-0 pb-10">
                 @forelse ($competitions as $item)
                     <div
                         class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden flex flex-col group transition-shadow duration-300">
-                        <div class="relative h-48 bg-gray-100 overflow-hidden flex justify-center items-center">
+                        <div class="relative h-32 sm:h-48 bg-gray-100 overflow-hidden flex justify-center items-center">
                             <span
-                                class="absolute top-3 right-3 z-10 text-xs font-bold px-3 py-1 rounded-full shadow-sm
+                                class="absolute top-2 right-2 z-10 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-sm
                                 {{ $item->category->id == 1 ? 'bg-yellow-100 text-yellow-800' : '' }}
                                 {{ $item->category->id == 2 ? 'bg-blue-100 text-blue-800' : '' }}
                                 {{ $item->category->id == 3 ? 'bg-green-100 text-green-800' : '' }}
@@ -98,20 +189,20 @@
                                 {{ $item->category->id == 5 ? 'bg-gray-800 text-white' : '' }}">
                                 {{ $item->category->name }}
                             </span>
-                            <img class="w-full h-full object-contain p-4 transform group-hover:scale-110 transition-transform duration-500"
+                            <img class="w-full h-full object-contain p-3 sm:p-4 transform group-hover:scale-110 transition-transform duration-500"
                                 src="{{ asset('assets/images/logo_only.png') }}" alt="{{ $item->name }}" />
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                         </div>
 
-                        <div class="p-5 flex flex-col flex-grow justify-between gap-4">
+                        <div class="p-3 sm:p-5 flex flex-col flex-grow justify-between gap-2 sm:gap-4">
                             <div>
                                 <h5
-                                    class="text-xl font-extrabold text-gray-900 group-hover:text-[#1D6594] transition-colors line-clamp-2 leading-tight">
+                                    class="text-sm sm:text-xl font-extrabold text-gray-900 group-hover:text-[#1D6594] transition-colors line-clamp-2 leading-tight">
                                     {{ $item->name }}
                                 </h5>
-                                <p class="text-sm font-medium text-gray-500 mt-2 flex items-center gap-1.5">
+                                <p class="text-[11px] sm:text-sm font-medium text-gray-500 mt-1.5 flex items-center gap-1.5">
                                     <svg class="w-4 h-4 text-[#E9AA14]" fill="currentColor" viewBox="0 0 20 20">
                                         <path
                                             d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z">
@@ -122,7 +213,7 @@
                                 </p>
                             </div>
                             <a href="{{ route('user.dashboard.competitions.detail', $item->id) }}"
-                                class="w-full py-2.5 bg-[#1D6594] hover:bg-[#154d73] text-white font-bold rounded-xl text-center shadow-md transition-all hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                                class="w-full py-2 sm:py-2.5 text-xs sm:text-base bg-[#1D6594] hover:bg-[#154d73] text-white font-bold rounded-xl text-center shadow-md transition-all hover:-translate-y-0.5 flex justify-center items-center gap-1.5 sm:gap-2">
                                 Daftarkan Peserta
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">

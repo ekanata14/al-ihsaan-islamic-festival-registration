@@ -15,6 +15,14 @@ use App\Http\Controllers\Admin\SponsorController as AdminSponsorController;
 use App\Http\Controllers\Admin\KhitanRegistrationController as AdminKhitanRegistrationController;
 use App\Http\Controllers\Admin\ActivityLogController as AdminActivityLogController;
 use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Admin\LandingBlockController as AdminLandingBlockController;
+use App\Http\Controllers\Admin\LandingSettingController as AdminLandingSettingController;
+use App\Http\Controllers\Admin\ContactPersonController as AdminContactPersonController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+
+
+// Landing Controller
+use App\Http\Controllers\LandingController;
 
 
 // User Controller
@@ -27,24 +35,15 @@ use App\Http\Controllers\KhitanDashboardController as KhitanUserDashboardControl
 // Helper Controller
 use App\Http\Controllers\HelperController;
 
-// Models
-use App\Models\Competition;
-use App\Models\Sponsor;
+// Notification Controller
+use App\Http\Controllers\NotificationController;
 
 use App\Exports\KhitanRegistrationExport;
 use App\Exports\VerifiedParticipantsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
-Route::get('/', function () {
-    $viewData = [
-        'title' => 'Home',
-        'description' => 'Welcome to the home page.',
-        'competitions' => Competition::where('status', 'open')->latest()->get(),
-        'sponsors' => Sponsor::all(),
-    ];
-    return view('welcome', $viewData);
-});
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/image/{path}', [HelperController::class, 'getImage'])->where('path', '.*')->name('get.image');
 Route::get('/group/getAllGroups', [AdminGroupController::class, 'getAllGroups'])->name('group.getAllGroups');
 Route::get('/group/getGroupByName', [AdminGroupController::class, 'getGroupByName'])->name('group.getGroupByName');
@@ -117,8 +116,39 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::put('/admin-dashboard/sponsor/update', [AdminSponsorController::class, 'update'])->name('admin.dashboard.sponsor.update');
     Route::delete('/admin-dashboard/sponsor/delete', [AdminSponsorController::class, 'destroy'])->name('admin.dashboard.sponsor.destroy');
 
+    // Admin Landing Page Route
+    Route::prefix('admin-dashboard/landing')->name('admin.dashboard.landing.')->group(function () {
+        Route::get('content', [AdminLandingBlockController::class, 'index'])->name('content');
+        Route::get('content/create', [AdminLandingBlockController::class, 'create'])->name('content.create');
+        Route::post('content/store', [AdminLandingBlockController::class, 'store'])->name('content.store');
+        Route::get('content/edit/{id}', [AdminLandingBlockController::class, 'edit'])->name('content.edit');
+        Route::put('content/update', [AdminLandingBlockController::class, 'update'])->name('content.update');
+        Route::delete('content/delete', [AdminLandingBlockController::class, 'destroy'])->name('content.destroy');
+        Route::post('content/reorder', [AdminLandingBlockController::class, 'reorder'])->name('content.reorder');
+        Route::post('content/toggle', [AdminLandingBlockController::class, 'toggle'])->name('content.toggle');
+
+        Route::get('settings', [AdminLandingSettingController::class, 'edit'])->name('settings');
+        Route::put('settings', [AdminLandingSettingController::class, 'update'])->name('settings.update');
+
+        Route::get('contact', [AdminContactPersonController::class, 'index'])->name('contact');
+        Route::get('contact/create', [AdminContactPersonController::class, 'create'])->name('contact.create');
+        Route::post('contact/store', [AdminContactPersonController::class, 'store'])->name('contact.store');
+        Route::get('contact/edit/{id}', [AdminContactPersonController::class, 'edit'])->name('contact.edit');
+        Route::put('contact/update', [AdminContactPersonController::class, 'update'])->name('contact.update');
+        Route::delete('contact/delete', [AdminContactPersonController::class, 'destroy'])->name('contact.destroy');
+    });
+
     // Admin Activity Log Route
     Route::get('/admin-dashboard/activity-log', [AdminActivityLogController::class, 'index'])->name('admin.dashboard.activity-log');
+
+    // Admin Announcement Route
+    Route::get('/admin-dashboard/announcement', [AdminAnnouncementController::class, 'index'])->name('admin.dashboard.announcement');
+    Route::get('/admin-dashboard/announcement/create', [AdminAnnouncementController::class, 'create'])->name('admin.dashboard.announcement.create');
+    Route::post('/admin-dashboard/announcement/store', [AdminAnnouncementController::class, 'store'])->name('admin.dashboard.announcement.store');
+    Route::get('/admin-dashboard/announcement/edit/{id}', [AdminAnnouncementController::class, 'edit'])->name('admin.dashboard.announcement.edit');
+    Route::put('/admin-dashboard/announcement/update', [AdminAnnouncementController::class, 'update'])->name('admin.dashboard.announcement.update');
+    Route::delete('/admin-dashboard/announcement/delete', [AdminAnnouncementController::class, 'destroy'])->name('admin.dashboard.announcement.destroy');
+    Route::post('/admin-dashboard/announcement/publish', [AdminAnnouncementController::class, 'publish'])->name('admin.dashboard.announcement.publish');
 
     // Admin Payment Route
     Route::get('/admin-dashboard/payment', [AdminPaymentController::class, 'index'])->name('admin.dashboard.payment');
@@ -164,6 +194,11 @@ Route::middleware(['auth', 'verified', 'role:user,khitan'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

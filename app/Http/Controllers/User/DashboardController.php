@@ -19,6 +19,7 @@ use App\Models\Competition;
 use App\Models\Category;
 use App\Models\Registration;
 use App\Models\Participant;
+use App\Models\CheckIn;
 
 class DashboardController extends Controller
 {
@@ -33,13 +34,67 @@ class DashboardController extends Controller
         }
 
         $viewData = [
-            "title" => "User Dashboard",
+            "title" => "Dashboard",
             "competitions" => $query->get(), // Eksekusi query
             'category_id' => '0',
             'categories' => Category::latest()->get(),
+            'unpaid' => app(PaymentService::class)->unpaidFor($request->user()),
+            'competitionProgress' => $this->competitionProgressFor($request->user()),
         ];
 
         return view("user.dashboard", $viewData);
+    }
+
+    /**
+     * Progres antrian tiap lomba yang diikuti PIC: nomor urut terakhir dipanggil,
+     * jumlah check-in, total peserta, dan nomor urut milik PIC.
+     */
+    private function competitionProgressFor($pic)
+    {
+        $registrations = Registration::where('pic_id', $pic->id)
+            ->with(['competition.category', 'participants.checkIn'])
+            ->get();
+
+        $competitionIds = $registrations->pluck('competition_id')->unique()->filter()->values();
+
+        if ($competitionIds->isEmpty()) {
+            return collect();
+        }
+
+        $progress = CheckIn::whereIn('competition_id', $competitionIds)
+            ->selectRaw('competition_id, MAX(participant_number) as current_number, COUNT(*) as checked_in')
+            ->groupBy('competition_id')
+            ->get()
+            ->keyBy('competition_id');
+
+        $totals = Participant::query()
+            ->join('registrations', 'participants.registration_id', '=', 'registrations.id')
+            ->whereIn('registrations.competition_id', $competitionIds)
+            ->selectRaw('registrations.competition_id as competition_id, COUNT(*) as total')
+            ->groupBy('registrations.competition_id')
+            ->pluck('total', 'competition_id');
+
+        return $registrations->groupBy('competition_id')->map(function ($regs, $competitionId) use ($progress, $totals) {
+            $competition = optional($regs->first())->competition;
+
+            if (! $competition) {
+                return null;
+            }
+
+            $item = $progress->get($competitionId);
+            $myNumbers = $regs
+                ->flatMap(fn ($r) => $r->participants->pluck('checkIn')->filter()->pluck('participant_number'))
+                ->filter()
+                ->values();
+
+            return [
+                'competition' => $competition,
+                'current_number' => (int) ($item->current_number ?? 0),
+                'checked_in' => (int) ($item->checked_in ?? 0),
+                'total' => (int) ($totals[$competitionId] ?? 0),
+                'my_numbers' => $myNumbers,
+            ];
+        })->filter()->sortByDesc('checked_in')->values();
     }
 
 
@@ -49,6 +104,7 @@ class DashboardController extends Controller
 
         // Pastikan hanya mengambil data milik user yang sedang login
         $query = Registration::where('pic_id', auth()->user()->id);
+        $query->with(['checkIn', 'competition.category', 'participants']);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -71,7 +127,7 @@ class DashboardController extends Controller
         $registrations = $query->latest()->paginate(10)->appends(['search' => $search]);
 
         $viewData = [
-            "title" => "My Registrations",
+            "title" => "Peserta Saya",
             "datas" => $registrations,
             "search" => $search // Kirim keyword search ke view
         ];
@@ -83,10 +139,12 @@ class DashboardController extends Controller
     {
         $competitions = Competition::where('category_id', $id)->where('status', 'open')->latest()->get();
         $viewData = [
-            "title" => "Competitions",
+            "title" => "Daftar Lomba",
             "competitions" => $competitions,
             'category_id' => $id,
             'categories' => Category::latest()->get(),
+            'unpaid' => app(PaymentService::class)->unpaidFor(request()->user()),
+            'competitionProgress' => $this->competitionProgressFor(request()->user()),
         ];
 
         return view("user.dashboard", $viewData);
@@ -102,7 +160,7 @@ class DashboardController extends Controller
             ->pluck('participants') // Extract participants from the registrations
             ->flatten(); // Flatten the collection to get a single list of participants
         $viewData = [
-            "title" => "Competition Detail",
+            "title" => "Detail Lomba",
             "data" => $competition,
             'categories' => Category::latest()->get(),
             'participants' => $participants,
@@ -115,7 +173,7 @@ class DashboardController extends Controller
     {
         $competition = Competition::findOrFail($id);
         $viewData = [
-            "title" => "Competition Registration",
+            "title" => "Pendaftaran Lomba",
             "data" => $competition,
             'categories' => Category::latest()->get(),
             'participants' => [],
@@ -135,8 +193,8 @@ class DashboardController extends Controller
             'participants.*.nik' => 'required|string',
             'participants.*.birth_place' => 'required|string',
             'participants.*.birth_date' => 'required|date',
-            'participants.*.photo_url' => 'required|file|mimes:jpeg,png,pdf',
-            'participants.*.certificate_url' => 'required|file|mimes:jpeg,png,pdf',
+            'participants.*.photo_url' => 'required|file|mimes:jpeg,png,jpg,pdf|max:20480',
+            'participants.*.certificate_url' => 'required|file|mimes:jpeg,png,jpg,pdf|max:20480',
         ]);
 
         $competition = Competition::findOrFail($validatedData['competition_id']);
@@ -182,8 +240,8 @@ class DashboardController extends Controller
             }
             DB::commit();
 
-            // Hitung ulang tagihan bila PIC sudah punya tagihan.
-            app(PaymentService::class)->syncIfExists($pic);
+            // Buat/sinkronkan tagihan PIC agar peserta masuk daftar "belum dibayar".
+            app(PaymentService::class)->getOrCreateFor($pic);
 
             $competitionName = $competition->name ?? '-';
             $participantCount = count($validatedData['participants']);
@@ -203,10 +261,16 @@ class DashboardController extends Controller
             event(new AdminDataChanged('registration', 'created', $registration->id));
             event(new UserDataChanged($pic->id, 'registration', 'created', $registration->id));
 
-            return redirect()->route('user.participants')->with('success', 'Registration and participants saved successfully.');
+            try {
+                $pic->notify(new \App\Notifications\RegistrationCreatedNotification($registration, $participantCount));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+
+            return redirect()->route('user.participants')->with('success', 'Alhamdulillah, pendaftaran berhasil! Data peserta sudah kami simpan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Maaf, pendaftaran gagal diproses. Silakan coba lagi. (' . $e->getMessage() . ')');
         }
     }
 
@@ -214,8 +278,9 @@ class DashboardController extends Controller
     {
         // Batasi hanya data milik PIC yang sedang login (cegah akses lewat ID).
         $registration = Registration::where('pic_id', auth()->id())->findOrFail($id);
+        $registration->load(['checkIn', 'participants.checkIn', 'competition.category']);
         $viewData = [
-            'title' => 'Registration Detail',
+            'title' => 'Detail Pendaftaran',
             'data' => $registration,
         ];
 
@@ -231,7 +296,7 @@ class DashboardController extends Controller
         $qrCode = QRCode::size(200)->generate($registration->registration_number);
 
         $viewData = [
-            'title' => 'Registration QR Code',
+            'title' => 'QR Code Pendaftaran',
             'data' => $registration,
             'qrCode' => $qrCode,
         ];
