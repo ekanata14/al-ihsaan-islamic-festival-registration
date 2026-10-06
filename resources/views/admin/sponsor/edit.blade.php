@@ -77,6 +77,27 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <x-input-label for="website_url" :value="__('Website (opsional)')" class="font-bold text-gray-700 mb-1.5 block" />
+                        <x-text-input type="text" id="website_url" name="website_url" value="{{ old('website_url', $data->website_url) }}"
+                            class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 transition-colors bg-gray-50 focus:bg-white"
+                            placeholder="https://..." />
+                    </div>
+                    <div>
+                        <x-input-label for="sort_order" :value="__('Urutan Tampil')" class="font-bold text-gray-700 mb-1.5 block" />
+                        <x-text-input type="number" id="sort_order" name="sort_order" value="{{ old('sort_order', $data->sort_order) }}" min="0"
+                            class="block w-full px-4 py-3 rounded-xl border-gray-300 focus:border-amber-500 focus:ring-amber-500 transition-colors bg-gray-50 focus:bg-white" />
+                    </div>
+                </div>
+
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                    <input type="hidden" name="is_active" value="0">
+                    <input type="checkbox" name="is_active" value="1" {{ old('is_active', $data->is_active) ? 'checked' : '' }}
+                        class="rounded border-gray-300 text-amber-500 focus:ring-amber-500">
+                    <span class="text-sm font-medium text-gray-600">Tampilkan sponsor ini di landing page</span>
+                </label>
+
                 <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100 mt-8">
                     <a href="{{ route('admin.dashboard.sponsor') }}"
                         class="px-6 py-3 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors">Batal</a>

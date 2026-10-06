@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sponsor extends Model
+class ContactPerson extends Model
 {
+    protected $table = 'contact_persons';
+
     protected $fillable = [
         'name',
-        'img_url',
-        'nominal',
+        'label',
+        'whatsapp',
         'sort_order',
         'is_active',
-        'website_url',
     ];
 
     protected $casts = [
@@ -28,5 +29,15 @@ class Sponsor extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order')->orderBy('id');
+    }
+
+    /**
+     * Bangun tautan wa.me dari nomor yang diisi admin.
+     */
+    public function whatsappUrl(): string
+    {
+        $number = preg_replace('/[^0-9]/', '', (string) $this->whatsapp);
+
+        return 'https://wa.me/' . $number;
     }
 }

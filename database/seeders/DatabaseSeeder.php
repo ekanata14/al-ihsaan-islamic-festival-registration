@@ -132,5 +132,8 @@ class DatabaseSeeder extends Seeder
         Sponsor::create(['name' => 'Bengkel Motor Jaya', 'img_url' => 'assets/images/sponsors/sponsor9.png', 'nominal' => 500000]),
         Sponsor::create(['name' => 'Toko Alat Tulis', 'img_url' => 'assets/images/sponsors/sponsor10.png', 'nominal' => 500000]),
     ];
+
+        // 8. Landing page content (blocks, settings, contact persons)
+        $this->call(LandingSeeder::class);
     }
 }

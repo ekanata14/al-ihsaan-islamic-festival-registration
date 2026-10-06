@@ -22,7 +22,7 @@ class SponsorController extends Controller
         $viewData = [
             'title' => 'Sponsor',
             'description' => 'Sponsor Page',
-            'datas' => Sponsor::paginate(10),
+            'datas' => Sponsor::ordered()->paginate(10),
         ];
         return view('admin.sponsor.index', $viewData);
     }
@@ -46,12 +46,17 @@ class SponsorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'img_url' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'img_url' => 'required|image|mimes:jpeg,png,jpg,gif,webp',
             'nominal' => 'nullable|integer|min:0',
+            'website_url' => 'nullable|string|max:255',
+            'sort_order' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
         ]);
 
         try {
             DB::beginTransaction();
+
+            $validatedData['is_active'] = $request->boolean('is_active', true);
 
             // Handle file upload
             if ($request->hasFile('img_url')) {
@@ -69,10 +74,10 @@ class SponsorController extends Controller
             ActivityLogger::log('admin.sponsor.created', 'Menambah sponsor: ' . $sponsor->name, $sponsor);
             event(new AdminDataChanged('sponsor', 'created', $sponsor->id));
 
-            return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor created successfully.');
+            return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the sponsor: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal menambahkan sponsor: ' . $e->getMessage()]);
         }
     }
 
@@ -91,7 +96,7 @@ class SponsorController extends Controller
     {
         $sponsor = Sponsor::find($request->id);
         if (!$sponsor) {
-            return redirect()->back()->withErrors(['error' => 'Sponsor not found.']);
+            return redirect()->back()->withErrors(['error' => 'Data sponsor tidak ditemukan.']);
         }
 
         $viewData = [
@@ -109,8 +114,11 @@ class SponsorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'img_url' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'img_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
             'nominal' => 'nullable|integer|min:0',
+            'website_url' => 'nullable|string|max:255',
+            'sort_order' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
         ]);
 
         try {
@@ -118,8 +126,10 @@ class SponsorController extends Controller
 
             $sponsor = Sponsor::find($request->id);
             if (!$sponsor) {
-                return redirect()->back()->withErrors(['error' => 'Sponsor not found.']);
+                return redirect()->back()->withErrors(['error' => 'Data sponsor tidak ditemukan.']);
             }
+
+            $validatedData['is_active'] = $request->boolean('is_active', true);
 
             // Handle file upload
             if ($request->hasFile('img_url')) {
@@ -142,10 +152,10 @@ class SponsorController extends Controller
             ActivityLogger::log('admin.sponsor.updated', 'Mengubah sponsor: ' . $sponsor->name, $sponsor);
             event(new AdminDataChanged('sponsor', 'updated', $sponsor->id));
 
-            return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor updated successfully.');
+            return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'An error occurred while updating the sponsor: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui sponsor: ' . $e->getMessage()]);
         }
     }
 
@@ -159,7 +169,7 @@ class SponsorController extends Controller
 
             $sponsor = Sponsor::find($request->id);
             if (!$sponsor) {
-                return redirect()->back()->withErrors(['error' => 'Sponsor not found.']);
+                return redirect()->back()->withErrors(['error' => 'Data sponsor tidak ditemukan.']);
             }
 
             // Delete image if exists
@@ -177,10 +187,10 @@ class SponsorController extends Controller
             ActivityLogger::log('admin.sponsor.deleted', 'Menghapus sponsor: ' . $sponsorName);
             event(new AdminDataChanged('sponsor', 'deleted', $sponsorId));
 
-            return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor deleted successfully.');
+            return redirect()->route('admin.dashboard.sponsor')->with('success', 'Sponsor berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'An error occurred while deleting the sponsor: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal menghapus sponsor: ' . $e->getMessage()]);
         }
     }
 }

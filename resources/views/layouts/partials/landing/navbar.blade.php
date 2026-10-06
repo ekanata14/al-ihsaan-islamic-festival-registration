@@ -1,3 +1,9 @@
+@php
+    $navbarLinks = collect(json_decode($settings['navbar_links'] ?? '[]', true) ?: [])
+        ->filter(fn ($link) => !empty($link['label']));
+    $navbarLogo = \App\Support\LandingImage::url($settings['logo'] ?? null, 'assets/images/logo_only.png');
+@endphp
+
 {{-- Custom Style untuk Animasi Navbar --}}
 <style>
     /* Animasi garis bawah pada link desktop */
@@ -10,7 +16,7 @@
     }
 
     .nav-link:hover {
-        color: #1D6594;
+        color: var(--lp, #1D6594);
     }
 
     .nav-link::after {
@@ -20,7 +26,7 @@
         height: 2px;
         bottom: -4px;
         left: 50%;
-        background-color: #E9AA14;
+        background-color: var(--la, #E9AA14);
         transition: all 0.3s ease-in-out;
         transform: translateX(-50%);
         border-radius: 2px;
@@ -43,7 +49,7 @@
     .mobile-nav-link:hover {
         background-color: #f3f4f6;
         /* bg-gray-100 */
-        color: #1D6594;
+        color: var(--lp, #1D6594);
         padding-left: 1.5rem;
         /* Efek geser ke kanan sedikit saat dihover */
     }
@@ -58,17 +64,15 @@
         <div class="flex justify-between items-center transition-all duration-300 h-20" id="nav-container">
 
             <a href="/" class="flex items-center gap-2 group">
-                <img src="{{ asset('assets/images/logo_only.png') }}"
+                <img src="{{ $navbarLogo }}"
                     class="h-12 md:h-14 object-contain transition-transform duration-300 group-hover:scale-105"
-                    alt="Al Ihsaan Logo" />
+                    alt="{{ $settings['site_name'] ?? 'Logo' }}" />
             </a>
 
             <div class="hidden md:flex items-center space-x-8">
-                <a href="/" class="nav-link">Home</a>
-                <a href="#lomba" class="nav-link">Lomba</a>
-                <a href="#khitanan-massal" class="nav-link">Khitanan Massal</a>
-                <a href="#sponsorship" class="nav-link">Sponsorship</a>
-                <a href="#contact-us" class="nav-link">Contact Us</a>
+                @foreach ($navbarLinks as $link)
+                    <a href="{{ $link['url'] ?? '#' }}" class="nav-link">{{ $link['label'] }}</a>
+                @endforeach
             </div>
 
             <div class="hidden md:flex items-center space-x-4">
@@ -120,12 +124,9 @@
     <div id="mobile-menu"
         class="md:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0 bg-white border-t border-gray-100 shadow-xl">
         <div class="px-4 pt-2 pb-6 flex flex-col space-y-1">
-            <a href="/" class="mobile-nav-link">Home</a>
-            <a href="#lomba" class="mobile-nav-link">Lomba</a>
-            <a href="#khitanan-massal" class="mobile-nav-link">Khitanan Massal</a>
-            <a href="#donor-darah" class="mobile-nav-link">Donor Darah</a>
-            <a href="#sponsorship" class="mobile-nav-link">Sponsorship</a>
-            <a href="#contact-us" class="mobile-nav-link">Contact Us</a>
+            @foreach ($navbarLinks as $link)
+                <a href="{{ $link['url'] ?? '#' }}" class="mobile-nav-link">{{ $link['label'] }}</a>
+            @endforeach
 
             <div class="border-t border-gray-100 pt-4 mt-2 flex flex-col gap-3">
                 @if (auth()->check())
